@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/characters.json",
+      "destination": "/character-ai/characters.json"
+    }
+  ]
+}
