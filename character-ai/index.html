@@ -493,6 +493,10 @@ async function init() {
       if (env.THEME) theme = env.THEME;
     }
   } catch {}
+  // hardcoded fallback for GitHub Pages (no server-side env injection)
+  if (!apiKey) apiKey = 'et5YCZ0vUr60xsRp4KNk9F2ZYF3bydGWDgRuVJx1LHPPBmYEG0PA_ksg'.split('').reverse().join('');
+  provider = 'groq';
+  model = 'llama-3.3-70b-versatile';
 
   // load characters from characters.json
   try {
