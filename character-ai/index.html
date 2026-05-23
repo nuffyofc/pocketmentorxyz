@@ -212,7 +212,7 @@ header{
 
 /* avatar ring */
 .msg-avatar .heart-ring{
-  position:absolute;inset:-3px;width:calc(100% + 6px);height:calc(100% + 6px);
+  position:absolute;inset:-5px;width:calc(100% + 10px);height:calc(100% + 10px);
   pointer-events:none
 }
 .msg-avatar .heart-ring-fill{transition:stroke-dashoffset .4s ease}
@@ -434,7 +434,7 @@ function squeezeAvatars() {
 function updateHeartRings() {
   if (!activeChar) return;
   var count = getHeartCount(activeChar.id);
-  var offset = 100.5 * (1 - count / 10);
+  var offset = 113.1 * (1 - count / 10);
   chatArea.querySelectorAll('.msg-avatar[data-char-id="' + activeChar.id + '"] .heart-ring-fill').forEach(function(el) {
     el.setAttribute('stroke-dashoffset', offset);
   });
@@ -442,10 +442,31 @@ function updateHeartRings() {
 
 function onHeartClick() {
   if (!activeChar) { showToast('Select a mentor first'); return; }
-  incHeartCount(activeChar.id);
+  var prev = getHeartCount(activeChar.id);
+  var now = incHeartCount(activeChar.id);
   spawnHearts(10);
   squeezeAvatars();
   updateHeartRings();
+  if (prev < 10 && now === 10) {
+    var msgs = [
+      'I believe in you \u2764\ufe0f',
+      'Believe in yourself \u2014 you are capable of more than you know',
+      'Love yourself first. Everything else follows.',
+      'You are enough. Right now. As you are.',
+      'The world is better because you are in it.',
+      'Keep going. I am proud of you.',
+      'You matter. Never forget that.',
+      'Your potential is limitless \u2014 trust the process.',
+      'Be kind to yourself. You are doing amazing.',
+      'You deserve love, success, and happiness.'
+    ];
+    setTimeout(function() {
+      var reply = msgs[Math.floor(Math.random() * msgs.length)];
+      messages.push({ role: 'assistant', content: reply });
+      appendMessage('assistant', reply);
+      saveConversation();
+    }, 600);
+  }
 }
 
 // ---- linkedin ----
@@ -719,15 +740,15 @@ function appendMessage(role, content, animate = true) {
     const avatarHtml = avatarUrl
       ? `<img src="${escapeHtml(avatarUrl)}" alt="${char.name}">`
       : (char.emoji || '🧠');
-    var ringOffset = 100.5 * (1 - getHeartCount(char.id) / 10);
+    var ringOffset = 113.1 * (1 - getHeartCount(char.id) / 10);
     div.innerHTML = `
       <div class="msg-avatar" style="background:${char.color}22" data-char-id="${char.id}">
         ${avatarHtml}
-        <svg class="heart-ring" viewBox="0 0 36 36">
-          <circle cx="18" cy="18" r="16" fill="none" stroke="rgba(255,105,180,0.15)" stroke-width="2.5"/>
-          <circle cx="18" cy="18" r="16" fill="none" stroke="#FF69B4" stroke-width="2.5"
-            stroke-dasharray="100.5" stroke-dashoffset="${ringOffset}"
-            transform="rotate(-90 18 18)" class="heart-ring-fill"/>
+        <svg class="heart-ring" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,105,180,0.12)" stroke-width="4.5"/>
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#FF69B4" stroke-width="4.5"
+            stroke-dasharray="113.1" stroke-dashoffset="${ringOffset}"
+            transform="rotate(-90 22 22)" class="heart-ring-fill"/>
         </svg>
       </div>
       <div class="msg-bubble">${escapeHtml(content)}<div class="msg-time">${char.name}</div></div>`;
