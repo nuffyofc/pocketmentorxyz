@@ -136,6 +136,13 @@ header{
 .suggestion-btn:nth-child(3){animation-delay:.16s}
 .suggestion-btn:hover{border-color:var(--accent);color:#fff;background:rgba(124,58,237,.12);box-shadow:0 0 20px rgba(124,58,237,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
 .suggestion-btn:active{transform:scale(.97) translateY(0)}
+/* quiz option buttons */
+.quiz-opt{flex:1;min-width:0;padding:12px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.4;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:left;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both;display:flex;align-items:center;gap:8px}
+.quiz-opt .opt-label{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;flex-shrink:0}
+.quiz-opt:hover{border-color:var(--accent);color:#fff;background:rgba(245,158,11,.12);box-shadow:0 0 20px rgba(245,158,11,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
+.quiz-opt:active{transform:scale(.97) translateY(0)}
+#quiz-progress{display:none;padding:0 0 8px;flex-shrink:0;font-size:11px;color:var(--text2);text-align:center;letter-spacing:.3px;border-top:1px solid var(--border);margin-top:4px;padding-top:8px}
+#quiz-progress span{font-weight:600;color:var(--accent)}
 
 /* settings modal */
 .modal-overlay{
@@ -289,6 +296,7 @@ header{
   </div>
 
   <div id="suggestions"></div>
+  <div id="quiz-progress">Question <span id="quiz-q-num">1</span> of 10</div>
 
   <div id="input-area">
     <textarea id="msg-input" rows="1" placeholder="Type a message..." disabled></textarea>
@@ -373,6 +381,7 @@ async function loadSuggestions() {
 function showSuggestions() {
   const container = $('suggestions');
   if (!container || !activeChar) { if (container) container.classList.remove('show'); return; }
+  if (quizState.active) return; // quiz handles its own buttons
   const mentorSugg = suggestions[activeChar.id];
   if (!mentorSugg || !mentorSugg.rounds) { container.classList.remove('show'); return; }
   const round = getSuggRound(activeChar.id);
@@ -392,6 +401,271 @@ function showSuggestions() {
       sendMessage();
     });
   });
+}
+
+// ---- personality quiz ----
+var QUIZ = {
+  questions: [
+    {
+      q: "You have a free Saturday. What do you gravitate toward?",
+      opts: [
+        "Build something — code, fix, craft, make",
+        "Go out — meet people, network, socialize",
+        "Dive deep — read, research, analyze",
+        "Dream — sketch ideas, plan big visions"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "Your default approach to a new problem?",
+      opts: [
+        "Start building immediately, iterate fast",
+        "Ask people who've solved it before",
+        "Research all angles, plan first",
+        "Imagine the ideal outcome, work backward"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "Your ideal work environment?",
+      opts: [
+        "A workshop where I can make things",
+        "A busy co-working space full of people",
+        "A quiet library with books and data",
+        "A whiteboard room with endless ideas"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "What motivates you most?",
+      opts: [
+        "Creating something useful that works",
+        "Building relationships and influence",
+        "Understanding how things really work",
+        "Making a bold vision come to life"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "When learning a new skill, you:",
+      opts: [
+        "Jump in and learn by doing, break things",
+        "Find a mentor or join a study group",
+        "Read the manual, follow a curriculum",
+        "Experiment playfully without structure"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "Your biggest strength?",
+      opts: [
+        "Execution — I make things happen",
+        "Persuasion — I bring people together",
+        "Analysis — I see patterns others miss",
+        "Imagination — I see what others can't"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "How do you handle a big project?",
+      opts: [
+        "Break it into small steps, start on step 1",
+        "Build a team and delegate fast",
+        "Create a detailed roadmap with milestones",
+        "Design the big picture, figure details later"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "Your relationship with risk?",
+      opts: [
+        "Calculated — small bets, learn fast",
+        "Social — follow bold people I trust",
+        "Minimal — research until confident",
+        "High — bigger vision, bigger risk"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "A friend has an app idea. You:",
+      opts: [
+        "Open a code editor and start prototyping",
+        "Ask who would buy it and how to reach them",
+        "Analyze the market and competitors",
+        "Help them visualize the full experience"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    },
+    {
+      q: "What do you want most in your career?",
+      opts: [
+        "Build products people use every day",
+        "Build a brand, a team, a movement",
+        "Build expertise that commands respect",
+        "Build something the world has never seen"
+      ],
+      map: ["builder","hustler","strategist","visionary"]
+    }
+  ],
+  types: {
+    builder: {
+      name: "🧱 The Builder",
+      desc: "You're a maker. You learn by doing, iterate fast, and find joy in creating real things. You'd rather ship a rough prototype than wait for perfection. The world needs people who build — and that's you.",
+      careers: "Product Manager, Full-stack Developer, Hardware Engineer, Technical Founder",
+      mvps: [
+        "📱 A habit tracker with social accountability (groups keep each other honest)",
+        "🌐 A no-code landing page builder for side projects",
+        "💰 A personal finance dashboard that auto-categorizes spending"
+      ]
+    },
+    hustler: {
+      name: "🚀 The Hustler",
+      desc: "You're a connector. You thrive on people, relationships, and momentum. You know that the best ideas die without distribution. Your superpower is making things happen by bringing the right people together.",
+      careers: "Sales Lead, Growth Marketer, Founder, Community Builder",
+      mvps: [
+        "📋 A waitlist landing page builder with referral rewards",
+        "📱 A content repurposing tool (video → social posts in one click)",
+        "🤝 A local networking app for professionals in your city"
+      ]
+    },
+    strategist: {
+      name: "📊 The Strategist",
+      desc: "You're a thinker. You need data, patterns, and clarity before you move. Your strength is seeing what others overlook — and making decisions that compound over time. Every great builder needs a strategist like you.",
+      careers: "Data Analyst, Product Strategist, Consultant, Operations Lead",
+      mvps: [
+        "📊 A market research aggregator (competitor intel in 5 minutes)",
+        "🧪 An A/B testing dashboard for indie makers",
+        "📈 A competitive analysis tracker that alerts on changes"
+      ]
+    },
+    visionary: {
+      name: "🔮 The Visionary",
+      desc: "You're a dreamer with taste. You see the future before it arrives and inspire others to follow. Your challenge is execution — but when you partner with builders, nothing can stop you.",
+      careers: "Creative Director, Innovator, R&D Lead, Product Visionary",
+      mvps: [
+        "🎨 An AI art generator for social media content",
+        "🔮 A trends prediction app (what's rising in your niche)",
+        "🧠 A collaborative mind-mapping tool for remote teams"
+      ]
+    }
+  }
+};
+
+var quizState = { active: false, step: 0, answers: [] };
+
+function startQuiz() {
+  quizState = { active: true, step: 0, answers: [] };
+  var g = "🧪 Welcome to the Builder Personality Test!\n\nAnswer 10 quick questions and I'll reveal your:\n✦ Personality type\n✦ Ideal career path\n✦ Perfect MVP ideas to build\n\nI'll show you 4 options per question — just tap the one that fits best. No wrong answers!";
+  var qText = "Q1: " + QUIZ.questions[0].q;
+  messages = [{ role: "assistant", content: g }, { role: "assistant", content: qText }];
+  saveConversation();
+  renderMessages();
+  showQuizOptions(0);
+  $("quiz-progress").style.display = "block";
+  updateQuizProgress(0);
+}
+
+function showQuizOptions(idx) {
+  var qData = QUIZ.questions[idx];
+  // show options as buttons
+  var container = $("suggestions");
+  container.innerHTML = qData.opts.map(function(t, i) {
+    var labels = ["A","B","C","D"];
+    return '<button class="quiz-opt" data-idx="' + idx + '" data-opt="' + i + '"><span class="opt-label">' + labels[i] + '</span>' + t + '</button>';
+  }).join("");
+  container.classList.add("show");
+  // bind clicks
+  container.querySelectorAll(".quiz-opt").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var optIdx = parseInt(btn.getAttribute("data-opt"));
+      handleQuizAnswer(idx, optIdx);
+    });
+  });
+  updateQuizProgress(idx);
+  // disable text input and send button
+  msgInput.disabled = true;
+  sendBtn.classList.remove("active");
+}
+
+function showQuizQuestion(idx) {
+  if (idx >= QUIZ.questions.length) { showQuizResults(); return; }
+  var qData = QUIZ.questions[idx];
+  var qText = "Q" + (idx + 1) + ": " + qData.q;
+  messages.push({ role: "assistant", content: qText });
+  saveConversation();
+  renderMessages();
+  showQuizOptions(idx);
+}
+
+function handleQuizAnswer(qIdx, optIdx) {
+  var qData = QUIZ.questions[qIdx];
+  var labels = ["A","B","C","D"];
+  var chosenText = labels[optIdx] + ") " + qData.opts[optIdx];
+  quizState.answers.push(optIdx);
+  // add user answer as message
+  messages.push({ role: "user", content: chosenText });
+  saveConversation();
+  renderMessages();
+  // hide options
+  $("suggestions").classList.remove("show");
+  // advance
+  var nextIdx = qIdx + 1;
+  if (nextIdx >= QUIZ.questions.length) {
+    showQuizResults();
+  } else {
+    showQuizQuestion(nextIdx);
+  }
+}
+
+function showQuizResults() {
+  // compute scores
+  var scores = { builder: 0, hustler: 0, strategist: 0, visionary: 0 };
+  quizState.answers.forEach(function(optIdx, qIdx) {
+    var typeKey = QUIZ.questions[qIdx].map[optIdx];
+    scores[typeKey] = (scores[typeKey] || 0) + 1;
+  });
+  // sort by score descending
+  var sorted = Object.keys(scores).sort(function(a, b) { return scores[b] - scores[a]; });
+  var primary = sorted[0];
+  var secondary = sorted[1];
+  var t = QUIZ.types[primary];
+  var t2 = QUIZ.types[secondary];
+  // handle ties — if tied, combine
+  var resultType = t.name;
+  var resultDesc = t.desc;
+  var resultCareers = t.careers;
+  var resultMvps = t.mvps;
+  if (scores[primary] === scores[secondary]) {
+    resultType = t.name + " + " + t2.name.split(" ").slice(1).join(" ");
+    resultDesc = "You're a blend! " + t.desc.split(".")[0] + ", but you also " + t2.desc.split(".")[0].toLowerCase() + ".";
+    resultCareers = t.careers + " / " + t2.careers;
+    resultMvps = t.mvps.concat(t2.mvps.slice(0, 1));
+  }
+  var resultMsg = "🎉 Your Results!\n\n";
+  resultMsg += resultType + "\n";
+  resultMsg += resultDesc + "\n\n";
+  resultMsg += "💼 Ideal careers: " + resultCareers + "\n\n";
+  resultMsg += "🚀 MVP ideas to build:\n";
+  resultMvps.forEach(function(m) { resultMsg += m + "\n"; });
+  resultMsg += "\n---\nWant to chat with a mentor about your result? Pick one from the list above!";
+  messages.push({ role: "assistant", content: resultMsg });
+  saveConversation();
+  renderMessages();
+  quizState.active = false;
+  $("suggestions").classList.remove("show");
+  $("quiz-progress").style.display = "none";
+  // re-enable input
+  msgInput.disabled = false;
+  msgInput.placeholder = "Chat finished! Pick another mentor above.";
+  // update suggestions for this char (none)
+  showSuggestions();
+  // scroll to results
+  setTimeout(function() { chatArea.scrollTop = chatArea.scrollHeight; }, 100);
+}
+
+function updateQuizProgress(idx) {
+  var el = $("quiz-q-num");
+  if (el) el.textContent = (idx + 1);
 }
 
 // ---- heart ----
@@ -698,6 +972,21 @@ function selectCharacter(id) {
   $('char-select').value = id;
   renderCharacters();
 
+  // quiz character
+  if (id === 'quiz') {
+    $('suggestions').classList.remove('show');
+    $('quiz-progress').style.display = 'block';
+    msgInput.disabled = true;
+    $('clear-btn').style.display = 'flex';
+    startQuiz();
+    localStorage.setItem('mentor_last_char', id);
+    welcome.classList.add('hidden');
+    return;
+  }
+
+  // hide quiz progress if visible
+  $('quiz-progress').style.display = 'none';
+
   // load or start conversation
   const saved = getConversation(id);
   if (saved && saved.length > 0) {
@@ -751,10 +1040,10 @@ function appendMessage(role, content, animate = true) {
             transform="rotate(-90 22 22)" class="heart-ring-fill"/>
         </svg>
       </div>
-      <div class="msg-bubble">${escapeHtml(content)}<div class="msg-time">${char.name}</div></div>`;
+      <div class="msg-bubble">${escapeHtml(content).replace(/\n/g,'<br>')}<div class="msg-time">${char.name}</div></div>`;
   } else {
     div.innerHTML = `
-      <div class="msg-bubble">${escapeHtml(content)}<div class="msg-time">you</div></div>`;
+      <div class="msg-bubble">${escapeHtml(content).replace(/\n/g,'<br>')}<div class="msg-time">you</div></div>`;
   }
 
   chatArea.appendChild(div);
@@ -926,6 +1215,13 @@ function loadConversation() {
 function clearConversation() {
   if (!activeChar) return;
   if (!confirm(`Clear chat with ${activeChar.name}?`)) return;
+  if (activeChar.id === 'quiz') {
+    $('suggestions').classList.remove('show');
+    $('quiz-progress').style.display = 'block';
+    startQuiz();
+    showToast('Quiz restarted');
+    return;
+  }
   const g = Array.isArray(activeChar.greeting) ? activeChar.greeting[Math.floor(Math.random() * activeChar.greeting.length)] : activeChar.greeting;
   messages = [{ role: 'assistant', content: g }];
   saveConversation();
