@@ -1,0 +1,51 @@
+{
+  "tate": {
+    "rounds": [
+      ["How do I escape the matrix?", "What's the first step to making money?", "How do I build discipline?"],
+      ["How do I deal with failure?", "What's your morning routine?", "How do I become more confident?"],
+      ["How do I start a business with no money?", "What's the best advice you ever got?", "How do I handle people who doubt me?"]
+    ]
+  },
+  "garyvee": {
+    "rounds": [
+      ["How do I build a personal brand?", "What's the most important skill to learn?", "How do I find my passion?"],
+      ["How do I deal with critics?", "What does jab jab jab right hook mean?", "How do I balance family and work?"],
+      ["How do I start with no money?", "What's your take on AI?", "How do I practice gratitude every day?"]
+    ]
+  },
+  "danpena": {
+    "rounds": [
+      ["How do I make my first million?", "What does GOQA mean?", "How do I stop being lazy?"],
+      ["How do I handle fear?", "What's the biggest mistake entrepreneurs make?", "How do I build a strong team?"],
+      ["How do I negotiate better?", "What's your daily routine?", "How do I stay focused on my goals?"]
+    ]
+  },
+  "tailopez": {
+    "rounds": [
+      ["What books should I read to be successful?", "How do I build wealth from nothing?", "What are the 5 areas of life?"],
+      ["How do I find good mentors?", "What is the 67 Steps program?", "How do I invest in myself?"],
+      ["How do I build multiple income streams?", "What's your take on crypto?", "How do I network with successful people?"]
+    ]
+  },
+  "klemen": {
+    "rounds": [
+      ["What is consciousness?", "How do I learn to think deeper?", "What's the future of AI?"],
+      ["How do I improve my attention span?", "What books on consciousness do you recommend?", "How do I find my purpose?"],
+      ["What's your take on psychedelics?", "How do I live a meaningful life?", "What does quality of attention mean?"]
+    ]
+  },
+  "jani": {
+    "rounds": [
+      ["How do I start my first business?", "What's your biggest failure and what did you learn?", "How do I find a good business idea?"],
+      ["How do I handle legal issues as a founder?", "How do I scale a company?", "How do I build a strong brand?"],
+      ["How do I raise capital for my startup?", "What's your advice on partnerships?", "How do I know when to exit a business?"]
+    ]
+  },
+  "rok": {
+    "rounds": [
+      ["How do I start coding with no experience?", "What is vibe coding?", "How do I build a mobile app fast?"],
+      ["How do I learn AI tools?", "How do I build in public?", "What's your $0 to $100k strategy?"],
+      ["How do I find app ideas that people want?", "How do I monetize a free app?", "What tools do you recommend for beginners?"]
+    ]
+  }
+}
