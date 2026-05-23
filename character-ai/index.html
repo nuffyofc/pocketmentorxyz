@@ -64,9 +64,11 @@ header{
 .msg.user{flex-direction:row-reverse}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .msg-avatar{
-  width:32px;height:32px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:2px;overflow:hidden
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;cursor:pointer;position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:14px;overflow:hidden;
+  transition:opacity .2s
 }
+.msg-avatar:hover{opacity:.7}
 .msg-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .msg-bubble{
   max-width:80%;padding:12px 16px;border-radius:var(--radius-lg);
@@ -115,12 +117,25 @@ header{
 #send-btn.active{opacity:1}
 #send-btn.active:hover{filter:brightness(1.2);transform:scale(1.05)}
 
+/* instagram button */
+#link-btn{
+  width:48px;height:48px;border-radius:var(--radius);border:1px solid var(--border);
+  background:var(--bg2);color:var(--text2);font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .2s
+}
+#link-btn:hover{border-color:var(--accent);color:var(--accent-light);background:rgba(124,58,237,.08)}
+#link-btn:disabled{opacity:.3;cursor:default;border-color:var(--border)}
+
 /* suggestion buttons */
-#suggestions{display:none;gap:8px;padding:6px 0;flex-wrap:wrap;flex-shrink:0}
+@keyframes suggIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+#suggestions{display:none;gap:10px;padding:10px 0 8px;flex-wrap:wrap;flex-shrink:0;border-top:1px solid var(--border)}
 #suggestions.show{display:flex}
-.suggestion-btn{flex:1;min-width:0;padding:9px 14px;border-radius:100px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;line-height:1.35;cursor:pointer;transition:all .2s;font-family:inherit;text-align:center;word-break:break-word}
-.suggestion-btn:hover{border-color:var(--accent);color:var(--accent-light);background:var(--bg2)}
-.suggestion-btn:active{transform:scale(.97)}
+.suggestion-btn{flex:1;min-width:0;padding:12px 18px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.4;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:center;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both}
+.suggestion-btn:nth-child(2){animation-delay:.08s}
+.suggestion-btn:nth-child(3){animation-delay:.16s}
+.suggestion-btn:hover{border-color:var(--accent);color:#fff;background:rgba(124,58,237,.12);box-shadow:0 0 20px rgba(124,58,237,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
+.suggestion-btn:active{transform:scale(.97) translateY(0)}
 
 /* settings modal */
 .modal-overlay{
@@ -182,6 +197,35 @@ header{
 /* clear button */
 #clear-btn{display:none}
 
+/* heart particles */
+#particles-container{
+  position:fixed;inset:0;pointer-events:none;z-index:300;overflow:hidden
+}
+.heart-particle{
+  position:absolute;font-size:20px;pointer-events:none;
+  animation:heartFloat 2s ease-out forwards;opacity:1
+}
+@keyframes heartFloat{
+  0%{opacity:1;transform:translateY(0) scale(1) rotate(0deg)}
+  100%{opacity:0;transform:translateY(-300px) scale(0.3) rotate(30deg)}
+}
+
+/* avatar ring */
+.msg-avatar .heart-ring{
+  position:absolute;inset:-3px;width:calc(100% + 6px);height:calc(100% + 6px);
+  pointer-events:none
+}
+.msg-avatar .heart-ring-fill{transition:stroke-dashoffset .4s ease}
+
+/* avatar squeeze */
+@keyframes squeeze{
+  0%{transform:scale(1)}
+  20%{transform:scale(0.75)}
+  50%{transform:scale(1.1)}
+  100%{transform:scale(1)}
+}
+.msg-avatar.squeeze{animation:squeeze .4s ease}
+
 /* ---- responsive ---- */
 @media (max-width:480px){
   #app{padding:0 8px}
@@ -191,7 +235,7 @@ header{
   .char-select{font-size:13px;padding:8px 32px 8px 12px}
   .char-avatar{width:32px;height:32px;font-size:15px}
   .msg-bubble{max-width:88%;padding:10px 14px;font-size:13px}
-  .msg-avatar{width:28px;height:28px;font-size:13px}
+  .msg-avatar{width:28px;height:28px;font-size:13px} /* responsive - ring via inset:-3px auto-adjusts */
   #input-area textarea{font-size:13px;padding:10px 14px}
   #send-btn{width:44px;height:44px;font-size:18px}
   .modal{padding:20px 16px;margin:0 8px;max-height:90vh}
@@ -248,6 +292,7 @@ header{
 
   <div id="input-area">
     <textarea id="msg-input" rows="1" placeholder="Type a message..." disabled></textarea>
+    <button id="link-btn" title="❤️">❤️</button>
     <button id="send-btn">➤</button>
   </div>
 </div>
@@ -299,6 +344,7 @@ header{
   </div>
 </div>
 
+<div id="particles-container"></div>
 <div id="toast"></div>
 
 <script>
@@ -346,6 +392,67 @@ function showSuggestions() {
       sendMessage();
     });
   });
+}
+
+// ---- heart ----
+const HEART_KEY = 'mentor_heart_count';
+function getHeartCount(charId) {
+  try { return JSON.parse(localStorage.getItem(HEART_KEY) || '{}')[charId] || 0; } catch { return 0; }
+}
+function incHeartCount(charId) {
+  var all = JSON.parse(localStorage.getItem(HEART_KEY) || '{}');
+  all[charId] = Math.min((all[charId] || 0) + 1, 10);
+  localStorage.setItem(HEART_KEY, JSON.stringify(all));
+  return all[charId];
+}
+
+function spawnHearts(count) {
+  var container = $('particles-container');
+  if (!container) return;
+  for (var i = 0; i < count; i++) {
+    var el = document.createElement('div');
+    el.className = 'heart-particle';
+    el.textContent = '\u2764\ufe0f';
+    el.style.left = (20 + Math.random() * 60) + '%';
+    el.style.bottom = '60px';
+    el.style.fontSize = (14 + Math.random() * 22) + 'px';
+    el.style.animationDuration = (1.2 + Math.random() * 1.2) + 's';
+    el.style.animationDelay = (Math.random() * 0.3) + 's';
+    container.appendChild(el);
+    setTimeout(function(e) { e.remove(); }, 3000, el);
+  }
+}
+
+function squeezeAvatars() {
+  chatArea.querySelectorAll('.msg-avatar').forEach(function(el) {
+    el.classList.remove('squeeze');
+    void el.offsetWidth; // force reflow
+    el.classList.add('squeeze');
+  });
+}
+
+function updateHeartRings() {
+  if (!activeChar) return;
+  var count = getHeartCount(activeChar.id);
+  var offset = 100.5 * (1 - count / 10);
+  chatArea.querySelectorAll('.msg-avatar[data-char-id="' + activeChar.id + '"] .heart-ring-fill').forEach(function(el) {
+    el.setAttribute('stroke-dashoffset', offset);
+  });
+}
+
+function onHeartClick() {
+  if (!activeChar) { showToast('Select a mentor first'); return; }
+  incHeartCount(activeChar.id);
+  spawnHearts(10);
+  squeezeAvatars();
+  updateHeartRings();
+}
+
+// ---- linkedin ----
+function openMentorLinkedIn() {
+  if (!activeChar) return;
+  if (!activeChar.linkedin) { showToast('No LinkedIn profile for this mentor'); return; }
+  window.open('https://www.linkedin.com/in/' + activeChar.linkedin + '/', '_blank');
 }
 
 // ---- providers ----
@@ -527,6 +634,11 @@ async function init() {
   });
   $('settings-btn').addEventListener('click', () => $('settings-modal').classList.add('show'));
   $('clear-btn').addEventListener('click', clearConversation);
+  $('link-btn').addEventListener('click', onHeartClick);
+  chatArea.addEventListener('click', function(e) {
+    var avatar = e.target.closest('.msg-avatar');
+    if (avatar) { openMentorLinkedIn(); return; }
+  });
 
   // if a character is selected but no messages, show welcome
   if (!activeChar) {
@@ -607,8 +719,17 @@ function appendMessage(role, content, animate = true) {
     const avatarHtml = avatarUrl
       ? `<img src="${escapeHtml(avatarUrl)}" alt="${char.name}">`
       : (char.emoji || '🧠');
+    var ringOffset = 100.5 * (1 - getHeartCount(char.id) / 10);
     div.innerHTML = `
-      <div class="msg-avatar" style="background:${char.color}22">${avatarHtml}</div>
+      <div class="msg-avatar" style="background:${char.color}22" data-char-id="${char.id}">
+        ${avatarHtml}
+        <svg class="heart-ring" viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="16" fill="none" stroke="rgba(255,105,180,0.15)" stroke-width="2.5"/>
+          <circle cx="18" cy="18" r="16" fill="none" stroke="#FF69B4" stroke-width="2.5"
+            stroke-dasharray="100.5" stroke-dashoffset="${ringOffset}"
+            transform="rotate(-90 18 18)" class="heart-ring-fill"/>
+        </svg>
+      </div>
       <div class="msg-bubble">${escapeHtml(content)}<div class="msg-time">${char.name}</div></div>`;
   } else {
     div.innerHTML = `
