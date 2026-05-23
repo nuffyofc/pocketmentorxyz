@@ -1,8 +1,0 @@
-{
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "routes": [
-    { "src": "/character-ai/(.*)", "dest": "/character-ai/$1" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
-}
