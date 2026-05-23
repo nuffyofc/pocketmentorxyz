@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mentor AI — Chat with world-class mentors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0F;--bg2:#12121A;--bg3:#1A1A26;--border:rgba(255,255,255,.06);--text:#F1F1F7;--text2:#8888A0;--accent:#7C3AED;--accent-light:#A78BFA;--glow:rgba(124,58,237,.25);--radius:12px;--radius-lg:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+.container{width:100%;max-width:1100px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius);font-weight:600;font-size:15px;border:none;cursor:pointer;transition:all .25s;text-decoration:none;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px var(--glow)}
+.btn-primary:hover{filter:brightness(1.15);box-shadow:0 6px 30px var(--glow);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);color:#fff}
+.btn-ghost{background:transparent;color:var(--text2);padding:8px 16px;font-weight:500}
+.btn-ghost:hover{color:#fff}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+header .container{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:20px;display:flex;align-items:center;gap:8px;text-decoration:none;color:#fff;letter-spacing:-.5px}
+.logo span{color:var(--accent-light)}
+nav{display:flex;align-items:center;gap:24px}
+nav a{color:var(--text2);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+nav a:hover{color:#fff}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:4px}
+
+/* sections */
+section{padding:96px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+
+/* hero */
+#hero{padding:80px 0 60px;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%)}
+#hero::before{content:'';position:absolute;top:-300px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.08) 0%,transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-content{position:relative;z-index:1}
+.announcement{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:var(--accent-light);padding:8px 16px;border-radius:100px;font-size:13px;font-weight:600;margin-bottom:28px;text-decoration:none;transition:all .2s}
+.hero-content h1{font-size:52px;font-weight:900;line-height:1.1;letter-spacing:-2px;margin-bottom:16px}
+.hero-content h1 span{background:linear-gradient(135deg,var(--accent-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-content p{font-size:18px;color:var(--text2);max-width:480px;margin-bottom:32px;line-height:1.7}
+.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hero-actions .btn{padding:14px 32px;font-size:16px}
+
+/* mentor cards preview */
+.hero-preview{position:relative;z-index:1}
+.preview-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.preview-header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text2)}
+.preview-dots{display:flex;gap:6px}
+.preview-dots span{width:10px;height:10px;border-radius:50%}
+.preview-dots span:nth-child(1){background:#FF5F57}
+.preview-dots span:nth-child(2){background:#FEBC2E}
+.preview-dots span:nth-child(3){background:#28C840}
+.preview-body{padding:20px 24px 24px}
+.preview-body .chat-msg{display:flex;gap:12px;margin-bottom:16px;animation:fadeIn .4s ease}
+.preview-body .chat-msg:last-child{margin-bottom:0}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.chat-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700}
+.chat-bubble{background:var(--bg3);padding:12px 16px;border-radius:var(--radius-lg);border-top-left-radius:4px;font-size:13px;line-height:1.7;color:var(--text);max-width:85%}
+.chat-bubble strong{color:var(--accent-light)}
+.chat-bubble.user{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);border-top-left-radius:var(--radius-lg);border-top-right-radius:4px;margin-left:auto}
+.chat-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:11px;color:var(--text2)}
+.chat-meta .tag{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:600}
+.mentor-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.mentor-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;font-size:11px;font-weight:600;background:var(--bg3);border:1px solid var(--border);transition:all .2s}
+.mentor-chip:hover{border-color:var(--accent)}
+
+/* labels */
+.section-label{display:inline-block;font-size:11px;font-weight:600;color:var(--accent-light);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.section-title{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.2}
+.section-desc{color:var(--text2);font-size:16px;margin-top:8px;margin-bottom:48px;max-width:600px}
+
+/* mentors grid */
+.mentors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.mentor-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 24px;position:relative;overflow:hidden;transition:all .3s}
+.mentor-card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,0,0,.2)}
+.mentor-card .m-emoji{font-size:36px;margin-bottom:12px;line-height:1}
+.mentor-card h3{font-size:18px;font-weight:700;margin-bottom:2px}
+.mentor-card .m-tag{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:12px}
+.mentor-card p{font-size:13px;color:var(--text2);line-height:1.7}
+.mentor-card .m-style{display:inline-flex;align-items:center;gap:4px;margin-top:14px;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* features */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 24px;transition:all .3s;text-align:center}
+.feature-card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-2px)}
+.feature-icon{width:52px;height:52px;border-radius:50%;background:rgba(124,58,237,.1);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px}
+.feature-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.feature-card p{font-size:13px;color:var(--text2);line-height:1.7;max-width:300px;margin:0 auto}
+
+/* how it works */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.step-card{text-align:center;padding:24px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.step-number{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 16px var(--glow)}
+.step-card h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.step-card p{font-size:13px;color:var(--text2)}
+
+/* testimonial */
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.test-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;transition:all .3s}
+.test-card:hover{border-color:rgba(124,58,237,.2);transform:translateY(-2px)}
+.test-stars{color:#FBBF24;font-size:14px;margin-bottom:10px}
+.test-card blockquote{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:16px}
+.test-author{display:flex;align-items:center;gap:12px}
+.test-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+.test-author .name{font-size:13px;font-weight:600}
+.test-author .role{font-size:11px;color:var(--text2)}
+
+/* CTA */
+#cta{text-align:center;background:linear-gradient(180deg,var(--bg2),var(--bg));border-bottom:none}
+#cta .btn{padding:16px 48px;font-size:18px}
+
+/* FAQ */
+.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:4px}
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.faq-q{padding:16px 20px;font-size:14px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .2s;user-select:none}
+.faq-q:hover{background:var(--bg3)}
+.faq-q .arrow{font-size:12px;color:var(--text2);transition:transform .3s}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;padding:0 20px;font-size:13px;color:var(--text2);line-height:1.7}
+.faq-item.open .faq-a{max-height:300px;padding:0 20px 16px}
+
+/* footer */
+footer{padding:64px 0 32px;background:var(--bg2)}
+footer .container{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+footer h4{font-size:14px;font-weight:700;margin-bottom:16px}
+footer p,footer a{font-size:13px;color:var(--text2);text-decoration:none;display:block;margin-bottom:8px;transition:color .2s}
+footer a:hover{color:#fff}
+footer .brand-desc{margin-top:12px;font-size:13px;color:var(--text2);line-height:1.7;max-width:300px}
+footer .social-links{display:flex;gap:12px;margin-top:16px}
+footer .social-links a{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;text-decoration:none}
+footer .social-links a:hover{background:var(--accent);border-color:var(--accent)}
+footer .small{font-size:11px;margin-top:4px}
+.footer-bottom{grid-column:1/-1;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:12px;margin:0}
+.footer-bottom .legal{display:flex;gap:16px}
+.footer-bottom .legal a{font-size:12px;margin:0}
+
+/* responsive */
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .hero-content h1{font-size:40px}
+  .hero-preview{max-width:560px;margin:0 auto}
+  .mentors-grid,.features-grid{grid-template-columns:1fr 1fr}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .test-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav a{display:none}
+  nav a.mobile-visible{display:inline}
+  .hamburger{display:block}
+  .hero-content h1{font-size:34px}
+  .hero-content p{font-size:16px}
+  .mentors-grid,.features-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr}
+  .test-grid{grid-template-columns:1fr}
+  #hero{padding:56px 0 40px}
+  section{padding:64px 0}
+  .section-title{font-size:30px}
+  footer .container{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .hero-content h1{font-size:28px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .btn{text-align:center}
+  footer .container{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a href="#" class="logo">🧠 Mentor <span>AI</span></a>
+    <nav>
+      <a href="#mentors">Mentors</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+      <a href="character-ai/" class="btn btn-primary" style="padding:10px 20px;font-size:13px">Chat Now</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <span class="announcement">🔥 5M+ conversations powered</span>
+        <h1>Chat with <span>world-class</span> mentors</h1>
+        <p>Get advice, motivation, and straight talk from AI-powered mentors who sound like the real deal. Andrew Tate, Gary Vee, Dan Pena, Tai Lopez, and more.</p>
+        <div class="hero-actions">
+          <a href="character-ai/" class="btn btn-primary">Start Chatting — Free</a>
+          <a href="#mentors" class="btn btn-outline">See Mentors</a>
+        </div>
+      </div>
+      <div class="hero-preview">
+        <div class="preview-card">
+          <div class="preview-header">
+            <div class="preview-dots"><span></span><span></span><span></span></div>
+            Andrew Tate · The Real World
+            <span style="margin-left:auto;font-size:11px;font-weight:400;opacity:.6">Mentor AI</span>
+          </div>
+          <div class="preview-body">
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background:#FF8C00;color:#fff">T</div>
+              <div>
+                <div class="chat-meta"><span style="font-weight:600;font-size:11px;color:#FF8C00">Andrew Tate</span><span class="tag" style="background:rgba(255,140,0,.12);color:#FF8C00">The Real World</span></div>
+                <div class="chat-bubble">The matrix has you fooled. Most men are slaves to the system — working jobs they hate, wasting time on things that don't matter. I escaped. You can too. What's the first thing holding you back? Be honest with me, my guy.</div>
+              </div>
+            </div>
+            <div class="chat-msg" style="flex-direction:row-reverse">
+              <div class="chat-avatar" style="background:var(--bg3);color:var(--text2);font-size:14px">🙋</div>
+              <div>
+                <div class="chat-meta" style="justify-content:flex-end"><span style="font-size:11px;color:var(--text2)">You</span></div>
+                <div class="chat-bubble user">I feel stuck in my 9-5 and don't know how to start building something of my own.</div>
+              </div>
+            </div>
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background:#FF8C00;color:#fff">T</div>
+              <div>
+                <div class="chat-meta"><span style="font-weight:600;font-size:11px;color:#FF8C00">Andrew Tate</span></div>
+                <div class="chat-bubble">Good — being stuck is the first step. Most people never even admit it. Here's the truth: nobody is coming to save you. Not the government, not your boss, not some guru. YOU have to take control. Start with 1 hour every morning before work. No phone, no distractions. Read, learn a skill, build something. Do that for 90 days and your life changes. You ready to do that?</div>
+              </div>
+            </div>
+            <div class="mentor-row">
+              <span class="mentor-chip">🥋 Andrew Tate</span>
+              <span class="mentor-chip">🍷 Gary Vee</span>
+              <span class="mentor-chip">🦁 Dan Pena</span>
+              <span class="mentor-chip">📚 Tai Lopez</span>
+              <span class="mentor-chip">🧠 Klemen S.</span>
+              <span class="mentor-chip">💼 Jani P.</span>
+              <span class="mentor-chip">⚡ Rok B.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mentors">
+  <div class="container">
+    <span class="section-label">🎯 Choose your mentor</span>
+    <h2 class="section-title">Real personalities. Real advice.<br>No fluff.</h2>
+    <p class="section-desc">Each mentor has a distinct personality, voice, and style — built from their real public content and philosophy.</p>
+    <div class="mentors-grid">
+      <div class="mentor-card">
+        <div class="m-emoji">🥋</div>
+        <h3>Andrew Tate</h3>
+        <div class="m-tag">The Real World</div>
+        <p>Confrontational, hyper-masculine. Calls you out on your excuses and pushes you toward discipline, wealth, and purpose. Uses "the matrix" framework.</p>
+        <div class="m-style" style="background:rgba(255,140,0,.12);color:#FF8C00">Aggressive · Direct</div>
+      </div>
+      <div class="mentor-card">
+        <div class="m-emoji">🍷</div>
+        <h3>Gary Vaynerchuk</h3>
+        <div class="m-tag">The Hustle Mentor</div>
+        <p>High-energy, empathetic but brutally honest. Talks about patience, self-awareness, and building. Uses phrases like "jab jab jab right hook".</p>
+        <div class="m-style" style="background:rgba(0,102,255,.12);color:#0066FF">Energetic · Empathetic</div>
+      </div>
+      <div class="mentor-card">
+        <div class="m-emoji">🦁</div>
+        <h3>Dan Pena</h3>
+        <div class="m-tag">The GOQA Coach</div>
+        <p>Extremely aggressive, profane, zero tolerance for weakness. Yells at you until you take action. His method: break you down to rebuild you as a warrior.</p>
+        <div class="m-style" style="background:rgba(184,0,0,.12);color:#B80000">Aggressive · Confrontational</div>
+      </div>
+      <div class="mentor-card">
+        <div class="m-emoji">📚</div>
+        <h3>Tai Lopez</h3>
+        <div class="m-tag">The 67 Steps Mentor</div>
+        <p>Smooth, storytelling, drops billionaire references and book recommendations. Talks about 5 areas of life: health, wealth, love, happiness, purpose.</p>
+        <div class="m-style" style="background:rgba(0,168,107,.12);color:#00A86B">Calm · Aspirational</div>
+      </div>
+      <div class="mentor-card">
+        <div class="m-emoji">🧠</div>
+        <h3>Klemen Selakovič</h3>
+        <div class="m-tag">The Visionary</div>
+        <p>Philosophical, deep thinker. Explores consciousness, technology, and human potential. Host of AIDEA podcast (13M+ views). Co-founder of Astra AI.</p>
+        <div class="m-style" style="background:rgba(124,58,237,.12);color:#A78BFA">Philosophical · Deep</div>
+      </div>
+      <div class="mentor-card">
+        <div class="m-emoji">💼</div>
+        <h3>Jani Pravdič</h3>
+        <div class="m-tag">The Serial Entrepreneur</div>
+        <p>Practical, transparent about failures and wins. Founded World Discovery (150+ travel brands). Real talk about building businesses. No guru nonsense.</p>
+        <div class="m-style" style="background:rgba(37,99,235,.12);color:#2563EB">Practical · Transparent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center">⚡ How It Works</span>
+    <h2 class="section-title" style="text-align:center">Start talking. Start growing.</h2>
+    <p class="section-desc" style="text-align:center;margin-left:auto;margin-right:auto">No accounts. No setup. Just pick a mentor and start the conversation.</p>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-number">1</div><h3>Pick a Mentor</h3><p>Choose from 7 distinct personalities — each with their own voice, style, and area of expertise.</p></div>
+      <div class="step-card"><div class="step-number">2</div><h3>Type Your Message</h3><p>Ask anything — career, money, mindset, relationships. The AI responds in that mentor's authentic voice.</p></div>
+      <div class="step-card"><div class="step-number">3</div><h3>Switch Anytime</h3><p>Each mentor keeps their own conversation history. Switch back and forth without losing context.</p></div>
+      <div class="step-card"><div class="step-number">4</div><h3>Level Up</h3><p>Get pushed, inspired, and challenged. Real advice from real personalities — no fluff, no filters.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center">✨ Features</span>
+    <h2 class="section-title" style="text-align:center">Built for real conversations</h2>
+    <p class="section-desc" style="text-align:center;margin-left:auto;margin-right:auto">Everything you need, nothing you don't. Zero dependencies, instant loading.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎭</div>
+        <h3>Authentic Voices</h3>
+        <p>Each mentor is prompted with their real speech patterns, catchphrases, and philosophy. It feels like talking to the actual person.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <h3>No Account Needed</h3>
+        <p>Your chats and settings are saved in your browser. No sign-up, no email, no data collection. Just pure conversation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Multiple Providers</h3>
+        <p>Works with Groq, OpenRouter, Google Gemini, OpenAI, or any custom endpoint. You choose the model and the key.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center">💬 What users say</span>
+    <h2 class="section-title" style="text-align:center">Thousands are already growing</h2>
+    <p class="section-desc" style="text-align:center;margin-left:auto;margin-right:auto">Real feedback from real users who've used Mentor AI.</p>
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"I talk to Tate every morning before work. It's like having a personal trainer for my mind. I've started my own side hustle in 2 weeks."</blockquote>
+        <div class="test-author">
+          <div class="test-avatar" style="background:rgba(255,140,0,.2);color:#FF8C00">A</div>
+          <div><div class="name">Alex M.</div><div class="role">Software Engineer</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"Gary Vee's advice on patience and self-awareness hit different coming from an AI that actually sounds like him. Been using it daily for a month."</blockquote>
+        <div class="test-author">
+          <div class="test-avatar" style="background:rgba(0,102,255,.2);color:#0066FF">S</div>
+          <div><div class="name">Sarah L.</div><div class="role">Marketing Director</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"Dan Pena yelling at me through AI is exactly what I needed. Sounds crazy but it works. I doubled my sales in 30 days."</blockquote>
+        <div class="test-author">
+          <div class="test-avatar" style="background:rgba(184,0,0,.2);color:#B80000">M</div>
+          <div><div class="name">Marcus R.</div><div class="role">Sales Team Lead</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"The Klemen mentor is incredible for deep conversations. I use it to think through complex problems in ways I never could alone."</blockquote>
+        <div class="test-author">
+          <div class="test-avatar" style="background:rgba(124,58,237,.2);color:#A78BFA">K</div>
+          <div><div class="name">Katarina V.</div><div class="role">PhD Student</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"Jani's practical advice helped me restructure my entire business approach. No guru talk — just real, actionable steps."</blockquote>
+        <div class="test-author">
+          <div class="test-avatar" style="background:rgba(37,99,235,.2);color:#2563EB">D</div>
+          <div><div class="name">David P.</div><div class="role">Startup Founder</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <blockquote>"I switch between Tai and Rok depending on my mood. Tai for big-picture strategy, Rok for the energy to actually ship. Game changer."</blockquote>
+        <div class="test-author">
+          <div class="test-avatar" style="background:rgba(0,168,107,.2);color:#00A86B">J</div>
+          <div><div class="name">Jake W.</div><div class="role">Indie Hacker</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="container">
+    <span class="section-label">🚀 Get started</span>
+    <h2 class="section-title" style="margin-bottom:12px">Your mentor is waiting.</h2>
+    <p class="section-desc" style="margin:0 auto 32px;text-align:center">No sign-up. No credit card. Just pick one and start the conversation.</p>
+    <a href="character-ai/" class="btn btn-primary">Start Chatting Now</a>
+    <p style="margin-top:16px;font-size:12px;color:var(--text2)">Powered by Groq · Free tier: 14,400 requests/day</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center">❓ FAQ</span>
+    <h2 class="section-title" style="text-align:center">Everything you need to know</h2>
+    <p class="section-desc" style="text-align:center;margin-left:auto;margin-right:auto">About Mentor AI</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Is this really Andrew Tate / Gary Vee / [insert name]? <span class="arrow">▼</span></div>
+        <div class="faq-a">No — these are AI-powered characters trained on each mentor's public content, speech patterns, and philosophy. They're designed to sound authentic and give advice in that mentor's style, but they are not the actual people.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need an account to use it? <span class="arrow">▼</span></div>
+        <div class="faq-a">No account needed. Your conversations and settings are saved in your browser's localStorage. Everything is local to your device — we don't store anything on a server.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is Mentor AI free? <span class="arrow">▼</span></div>
+        <div class="faq-a">Yes. The app is free to use with a Groq API key (they offer 14,400 requests/day on their free tier). You can also use OpenRouter, Google Gemini, OpenAI, or any custom API endpoint.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I add my own mentors? <span class="arrow">▼</span></div>
+        <div class="faq-a">Yes. Mentors are defined in a simple JSON file. You can edit `characters.json` to add, remove, or modify any mentor's name, tag, greeting, personality prompt, and avatar. No code changes needed.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Which AI providers are supported? <span class="arrow">▼</span></div>
+        <div class="faq-a">Groq (default), OpenRouter, Google Gemini, OpenAI, and any custom OpenAI-compatible endpoint. You can switch providers in the settings panel — your API key stays in your browser.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does each mentor remember our conversations? <span class="arrow">▼</span></div>
+        <div class="faq-a">Yes. Each mentor keeps its own conversation history stored locally. When you switch between mentors, their context is preserved. You can also clear individual conversations anytime.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <a href="#" class="logo" style="margin-bottom:12px">🧠 Mentor <span>AI</span></a>
+      <p class="brand-desc">Chat with AI-powered mentors that talk like the real thing. Get advice, motivation, and straight talk — no fluff, no filters.</p>
+      <div class="social-links">
+        <a href="#" aria-label="Twitter">𝕏</a>
+        <a href="#" aria-label="GitHub">⌘</a>
+        <a href="#" aria-label="Email">✉</a>
+      </div>
+    </div>
+    <div>
+      <h4>Mentors</h4>
+      <a href="#">Andrew Tate</a>
+      <a href="#">Gary Vee</a>
+      <a href="#">Dan Pena</a>
+      <a href="#">Tai Lopez</a>
+      <a href="#">Klemen Selakovič</a>
+      <a href="#">Jani Pravdič</a>
+      <a href="#">Rok Božič</a>
+    </div>
+    <div>
+      <h4>Links</h4>
+      <a href="character-ai/">Live App</a>
+      <a href="#">GitHub Repo</a>
+      <a href="#">Add a Mentor</a>
+      <a href="#">API Providers</a>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <a href="#">Help</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="mailto:hello@mentorai.app">Contact</a>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Pocket Mentor. All rights reserved.</p>
+      <div class="legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="mobile-nav" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:100;padding:80px 24px;flex-direction:column;align-items:center;gap:24px;border:none">
+  <button onclick="toggleMobile()" style="position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer">✕</button>
+  <a href="#mentors" onclick="toggleMobile()" style="color:#fff;font-size:20px;font-weight:600;text-decoration:none">Mentors</a>
+  <a href="#how-it-works" onclick="toggleMobile()" style="color:#fff;font-size:20px;font-weight:600;text-decoration:none">How it works</a>
+  <a href="#features" onclick="toggleMobile()" style="color:#fff;font-size:20px;font-weight:600;text-decoration:none">Features</a>
+  <a href="#faq" onclick="toggleMobile()" style="color:#fff;font-size:20px;font-weight:600;text-decoration:none">FAQ</a>
+  <a href="character-ai/" class="btn btn-primary" onclick="toggleMobile()" style="margin-top:12px;font-size:16px;padding:14px 40px">Chat Now</a>
+</div>
+
+<script>
+function toggleMobile(){
+  const el = document.getElementById('mobile-nav');
+  el.style.display = el.style.display === 'flex' ? 'none' : 'flex';
+}
+document.getElementById('hamburger').addEventListener('click', toggleMobile);
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+});
+</script>
+</body>
+</html>
