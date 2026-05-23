@@ -606,7 +606,7 @@ function selectCharacter(id) {
   localStorage.setItem('mentor_last_char', id);
   welcome.classList.add('hidden');
   msgInput.disabled = false;
-  msgInput.focus();
+  if (!('ontouchstart' in window)) msgInput.focus();
   renderMessages();
   $('clear-btn').style.display = 'flex';
   updateStatsBar();
@@ -712,7 +712,8 @@ async function sendMessage() {
   } finally {
     isGenerating = false;
     sendBtn.disabled = false;
-    msgInput.focus();
+    // only refocus on desktop — mobile keyboard stays hidden
+    if (!('ontouchstart' in window)) msgInput.focus();
   }
 }
 
