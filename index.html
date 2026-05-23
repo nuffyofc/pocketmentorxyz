@@ -508,7 +508,8 @@ function selectCharacter(id) {
   if (saved && saved.length > 0) {
     messages = saved;
   } else {
-    messages = [{ role: 'assistant', content: char.greeting }];
+    const g = Array.isArray(char.greeting) ? char.greeting[Math.floor(Math.random() * char.greeting.length)] : char.greeting;
+    messages = [{ role: 'assistant', content: g }];
     saveConversation();
   }
 
@@ -727,11 +728,11 @@ function loadConversation() {
 function clearConversation() {
   if (!activeChar) return;
   if (!confirm(`Clear chat with ${activeChar.name}?`)) return;
-  messages = [{ role: 'assistant', content: activeChar.greeting }];
+  const g = Array.isArray(activeChar.greeting) ? activeChar.greeting[Math.floor(Math.random() * activeChar.greeting.length)] : activeChar.greeting;
+  messages = [{ role: 'assistant', content: g }];
   saveConversation();
-  // re-render
   document.querySelectorAll('.msg').forEach(el => el.remove());
-  appendMessage('assistant', activeChar.greeting);
+  appendMessage('assistant', g);
   showToast('Chat cleared');
 }
 
