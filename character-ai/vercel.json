@@ -1,8 +1,0 @@
-{
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "routes": [
-    { "src": "/api/env", "dest": "/api/env.js" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
-}

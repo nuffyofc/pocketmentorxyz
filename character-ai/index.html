@@ -398,7 +398,7 @@ async function init() {
   // load env vars from server.py or Vercel serverless function
   try {
     const env = window.__ENV__ || 
-      await (await fetch('/api/env').catch(() => null))?.json() ||
+      await (await fetch('/character-ai/api/env').catch(() => null))?.json() ||
       await (await fetch('/__env').catch(() => null))?.json();
     if (env) {
       if (env.API_KEY && !localStorage.getItem('mentor_api_key')) apiKey = env.API_KEY;
