@@ -56,6 +56,14 @@ header{
 }
 .char-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 
+/* rainbow avatar ring */
+@keyframes ring-rotate{to{transform:rotate(360deg)}}
+.avatar-ring{position:relative;display:inline-flex;border-radius:50%;flex-shrink:0}
+.avatar-ring::before{content:'';position:absolute;inset:calc(var(--rw,2px)*-1);border-radius:50%;background:conic-gradient(#ff0000,#ff8800,#ffff00,#00ff00,#0088ff,#8800ff,#ff0000);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - var(--rw,2px)),#fff calc(100% - var(--rw,2px)));mask:radial-gradient(farthest-side,transparent calc(100% - var(--rw,2px)),#fff calc(100% - var(--rw,2px)));animation:ring-rotate var(--rs,3s) linear infinite;opacity:var(--ro,0.6);pointer-events:none;z-index:0}
+.avatar-ring>*{position:relative;z-index:1;border-radius:50%}
+.avatar-ring.glow::after{content:'';position:absolute;inset:calc(var(--rw,2px)*-1 - 8px);border-radius:50%;background:radial-gradient(circle,var(--glow-color,rgba(124,58,237,.3)) 0%,transparent 70%);pointer-events:none;z-index:-1;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{opacity:.5}50%{opacity:1}}
+
 /* chat */
 #chat-area{flex:1;overflow-y:auto;padding:16px 0;scroll-behavior:smooth}
 .msg{margin-bottom:16px;display:flex;gap:10px;animation:fadeIn .3s ease}
@@ -197,6 +205,51 @@ header{
   .msg-bubble{max-width:92%;font-size:12px;padding:8px 12px}
 }
 @media (hover:none){}
+/* ---- game system ---- */
+#stats-bar{display:none;align-items:center;gap:12px;padding:8px 4px;flex-shrink:0;font-size:12px;border-bottom:1px solid var(--border)}
+#stats-bar.show{display:flex}
+.level-display{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.level-badge{font-size:11px;font-weight:800;background:var(--bg3);padding:2px 8px;border-radius:4px;white-space:nowrap;letter-spacing:-.2px}
+.level-badge .lv-num{color:var(--accent-light)}
+.happiness-bar{flex:1;height:6px;border-radius:3px;background:var(--bg3);overflow:hidden;position:relative;min-width:60px}
+.happiness-bar .fill{height:100%;border-radius:3px;transition:width .4s ease,background .4s ease}
+.happiness-bar .label{position:absolute;right:0;top:-1px;font-size:7px;font-weight:700;color:var(--text2);transform:translateX(calc(100% + 4px));white-space:nowrap}
+.stats-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
+.streak-display{color:var(--text2);font-size:11px;white-space:nowrap}
+.streak-display .streak-num{color:#FBBF24;font-weight:700}
+.xp-display{color:var(--text2);font-weight:600;font-size:11px;white-space:nowrap}
+.xp-display .xp-num{color:var(--accent-light)}
+
+/* challenge overlay */
+#challenge-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);z-index:150;align-items:center;justify-content:center;padding:24px}
+#challenge-overlay.show{display:flex}
+#challenge-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:400px;text-align:center;animation:popIn .3s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+#challenge-box .mentor-name{font-size:13px;color:var(--text2);margin-bottom:4px}
+#challenge-box .challenge-icon{font-size:48px;margin-bottom:12px}
+#challenge-box h3{font-size:18px;font-weight:800;margin-bottom:8px;line-height:1.3}
+#challenge-box p{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px}
+#challenge-box .timer{font-size:40px;font-weight:900;letter-spacing:-2px;margin-bottom:20px;font-variant-numeric:tabular-nums}
+#challenge-box .timer.urgent{color:#EF4444;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.challenge-btns{display:flex;gap:10px}
+.challenge-btns button{flex:1;padding:14px;border-radius:var(--radius);font-weight:700;font-size:15px;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-accept{background:var(--accent);color:#fff;box-shadow:0 4px 20px var(--glow)}
+.btn-accept:hover{filter:brightness(1.15)}
+.btn-decline{background:var(--bg3);color:var(--text2);border:1px solid var(--border)!important}
+.btn-decline:hover{border-color:#EF4444!important;color:#EF4444}
+
+/* reward toast special */
+#reward-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:var(--bg2);border:2px solid var(--accent);border-radius:var(--radius-lg);padding:32px 28px;text-align:center;z-index:200;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.34,1.56,.64,1);max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#reward-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+#reward-toast .r-icon{font-size:48px;margin-bottom:12px}
+#reward-toast h3{font-size:18px;font-weight:800;margin-bottom:6px}
+#reward-toast p{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* challenge mini in chat */
+.msg.challenge{justify-content:center}
+.challenge-badge{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid rgba(var(--accent),.3);border-radius:100px;padding:8px 18px;font-size:12px;font-weight:600;color:var(--accent-light);cursor:default}
+
 /* safe area for notched phones */
 @supports(padding-top:env(safe-area-inset-top)){
   header{padding-top:max(12px, env(safe-area-inset-top))}
@@ -220,6 +273,17 @@ header{
     </div>
   </div>
 
+  <div id="stats-bar">
+    <div class="level-display">
+      <span class="level-badge">LV <span class="lv-num" id="level-num">0</span></span>
+      <div class="happiness-bar"><div class="fill" id="happiness-fill" style="width:0%"></div><span class="label" id="happiness-label">0/10</span></div>
+    </div>
+    <div class="stats-right">
+      <div class="streak-display">🔥<span class="streak-num" id="streak-count">0</span></div>
+      <div class="xp-display">⚡<span class="xp-num" id="xp-count">0</span></div>
+    </div>
+  </div>
+
   <div id="chat-area">
     <div id="welcome">
       <div class="big-emoji">👋</div>
@@ -240,6 +304,28 @@ header{
 </div>
 
 <input type="file" id="avatar-input" accept="image/*" style="display:none">
+
+<!-- challenge overlay -->
+<div id="challenge-overlay">
+  <div id="challenge-box">
+    <div class="challenge-icon" id="challenge-icon">🔥</div>
+    <div class="mentor-name" id="challenge-mentor"></div>
+    <h3 id="challenge-title">Accept this challenge?</h3>
+    <p id="challenge-desc">Complete this task to earn XP and make your mentor proud.</p>
+    <div class="timer" id="challenge-timer">0:30</div>
+    <div class="challenge-btns">
+      <button class="btn-decline" id="btn-decline">✕ Decline</button>
+      <button class="btn-accept" id="btn-accept">✅ Accept</button>
+    </div>
+  </div>
+</div>
+
+<!-- reward toast -->
+<div id="reward-toast">
+  <div class="r-icon" id="reward-icon">🎉</div>
+  <h3 id="reward-title">Amazing!</h3>
+  <p id="reward-text">You earned 5 XP. Keep going!</p>
+</div>
 
 <!-- settings modal -->
 <div class="modal-overlay" id="settings-modal">
@@ -519,6 +605,7 @@ function selectCharacter(id) {
   msgInput.focus();
   renderMessages();
   $('clear-btn').style.display = 'flex';
+  updateStatsBar();
 }
 
 function renderMessages() {
@@ -527,6 +614,25 @@ function renderMessages() {
 
   messages.forEach(msg => appendMessage(msg.role, msg.content, false));
   chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function getRingLevel(xp) {
+  if (xp <= 0) return 0;
+  if (xp < 10) return 1;
+  if (xp < 20) return 2;
+  if (xp < 30) return 3;
+  return 4;
+}
+
+function getRingVars(level) {
+  const levels = [
+    { rw: '0px', rs: '0s', ro: '0', glow: '' },
+    { rw: '2px', rs: '4s', ro: '.5', glow: '' },
+    { rw: '3px', rs: '3s', ro: '.7', glow: '' },
+    { rw: '4px', rs: '2.5s', ro: '.85', glow: '' },
+    { rw: '5px', rs: '2s', ro: '1', glow: 'glow' }
+  ];
+  return levels[Math.min(level, 4)];
 }
 
 function appendMessage(role, content, animate = true) {
@@ -543,8 +649,12 @@ function appendMessage(role, content, animate = true) {
     const avatarHtml = avatarUrl
       ? `<img src="${escapeHtml(avatarUrl)}" alt="${char.name}">`
       : (char.emoji || '🧠');
+    const rl = getRingLevel(getCharState(char.id).xp);
+    const rv = getRingVars(rl);
+    const ringClass = rl > 0 ? 'avatar-ring' : '';
+    const glowClass = rv.glow ? ' glow' : '';
     div.innerHTML = `
-      <div class="msg-avatar" style="background:${char.color}22">${avatarHtml}</div>
+      <div class="msg-avatar ${ringClass}${glowClass}" style="background:${char.color}22;--rw:${rv.rw};--rs:${rv.rs};--ro:${rv.ro}">${avatarHtml}</div>
       <div class="msg-bubble">${escapeHtml(content)}<div class="msg-time">${char.name}</div></div>`;
   } else {
     div.innerHTML = `
@@ -589,6 +699,8 @@ async function sendMessage() {
     typing.style.display = 'none';
     appendMessage('assistant', reply);
     saveConversation();
+    // maybe trigger a challenge
+    setTimeout(triggerChallenge, 1500);
   } catch (err) {
     typing.style.display = 'none';
     console.error('Mentor API error:', err);
@@ -630,14 +742,14 @@ async function callAPI(conversation) {
 
   const systemMsg = {
     role: 'system',
-    content: activeChar.prompt + `\n\nYou are ${activeChar.name}, ${activeChar.tag}. Respond as this character. Never break character.`
+    content: activeChar.prompt + `\n\nYou are ${activeChar.name}, ${activeChar.tag}. Respond as this character. Never break character.\n\nFormat rules: Use relevant emojis in every response. Keep paragraphs short — 1-3 sentences max. Be punchy and direct. No long-winded explanations.`
   };
 
   const body = {
     model: actualModel,
     messages: [systemMsg, ...conversation.slice(-10)],
     temperature: 0.8,
-    max_tokens: 500
+    max_tokens: 300
   };
 
   const headers = {
@@ -844,6 +956,252 @@ function applyTheme() {
     document.documentElement.style.setProperty('--text2', '#8888A0');
   }
 }
+
+// ---- game system ----
+const GAME_KEY = 'mentor_game';
+const CHALLENGES = [
+  {icon:'🏃',title:'Move your body',desc:'Do 10 pushups right now. No excuses.'},
+  {icon:'📖',title:'Read something',desc:'Read 1 page of a book. Any book. Start now.'},
+  {icon:'💧',title:'Hydrate',desc:'Drink a glass of water. Your brain needs it.'},
+  {icon:'🧘',title:'Breathe',desc:'Take 5 deep breaths. In for 4s, out for 4s.'},
+  {icon:'✍️',title:'Write it down',desc:'Write down 3 things you are grateful for.'},
+  {icon:'🚶',title:'Walk',desc:'Stand up and walk for 60 seconds.'},
+  {icon:'📵',title:'Digital detox',desc:'Put your phone face down for 10 minutes.'},
+  {icon:'💪',title:'Mindset',desc:'Say "I am capable" out loud 5 times.'},
+  {icon:'🎯',title:'Focus',desc:'Close your eyes and visualize your #1 goal for 30 seconds.'},
+  {icon:'☀️',title:'Go outside',desc:'Step outside for 1 minute. Fresh air.'},
+  {icon:'🧹',title:'Tidy up',desc:'Clean one small area of your room or desk.'},
+  {icon:'🎵',title:'Listen',desc:'Put on one song that makes you feel unstoppable.'}
+];
+
+function loadGameState() {
+  try { return JSON.parse(localStorage.getItem(GAME_KEY) || '{}'); } catch { return {}; }
+}
+function saveGameState(state) {
+  localStorage.setItem(GAME_KEY, JSON.stringify(state));
+}
+function getCharState(charId) {
+  const all = loadGameState();
+  if (!all[charId]) {
+    all[charId] = { happiness: 5, xp: 0, streak: 0, tasksCompleted: 0 };
+    saveGameState(all);
+  }
+  return all[charId];
+}
+function setCharState(charId, data) {
+  const all = loadGameState();
+  all[charId] = { ...getCharState(charId), ...data };
+  saveGameState(all);
+}
+
+function updateAvatarRings() {
+  if (!activeChar) return;
+  const rl = getRingLevel(getCharState(activeChar.id).xp);
+  const rv = getRingVars(rl);
+  document.querySelectorAll('.msg.bot .msg-avatar').forEach(el => {
+    if (rl > 0) {
+      el.classList.add('avatar-ring');
+      if (rv.glow) el.classList.add('glow');
+      else el.classList.remove('glow');
+      el.style.setProperty('--rw', rv.rw);
+      el.style.setProperty('--rs', rv.rs);
+      el.style.setProperty('--ro', rv.ro);
+    } else {
+      el.classList.remove('avatar-ring', 'glow');
+    }
+  });
+}
+
+function happinessColor(val) {
+  const t = (val - 1) / 9; // 0..1
+  if (t < 0.33) return '#EF4444';     // red
+  if (t < 0.66) return '#F59E0B';     // amber
+  return '#22C55E';                     // green
+}
+
+function happinessGradient(val) {
+  const pct = ((val - 1) / 9) * 100;
+  return `linear-gradient(90deg, #EF4444 0%, #F59E0B ${pct * 0.66}%, #22C55E 100%)`;
+}
+
+function updateStatsBar() {
+  const bar = $('stats-bar');
+  if (!activeChar) { bar.classList.remove('show'); return; }
+  bar.classList.add('show');
+  const state = getCharState(activeChar.id);
+  const h = state.happiness;
+  const fill = $('happiness-fill');
+  fill.style.width = `${((h - 1) / 9) * 100}%`;
+  fill.style.background = happinessGradient(h);
+  $('happiness-label').textContent = `${h}/10`;
+  $('level-num').textContent = `${Math.floor(state.xp / 10) + 1}.${state.xp % 10}`;
+  $('xp-count').textContent = state.xp;
+  $('streak-count').textContent = state.streak;
+  updateAvatarRings();
+}
+
+// challenge system
+let challengeTimer = null;
+let challengeSeconds = 0;
+let currentChallenge = null;
+
+const CHALLENGE_PROMPTS = [
+  "I challenge you — {task}. You have 30 seconds. Show me what you're made of. 🎯",
+  "Here's a test of your discipline: {task}. 30 seconds on the clock. Don't disappoint me. ⏱️",
+  "Stop reading. Take action. {task}. Right now. 30 seconds. Go! 🔥",
+  "You want results? Then do this: {task}. You have 30 seconds. Prove you're serious. 💪",
+  "Talk is cheap. Here's a real challenge: {task}. 30 seconds — let's see if you act. ⚡"
+];
+
+const ACCEPT_RESPONSES = [
+  "That's how you do it! Action beats intention every single time. +5 XP ❤️",
+  "YES! This is what growth looks like. One small win at a time. +5 XP 🔥",
+  "Good. You listened. You acted. That's the difference between wanters and getters. +5 XP 💪",
+  "See? Not so hard. You just leveled up. Keep stacking these wins. +5 XP ⚡",
+  "Proud of you. Most people don't even try. You did. +5 XP 🏆"
+];
+
+const DECLINE_RESPONSES = [
+  "Excuses are comfortable. Growth is not. You chose comfortable. Try the next one. 💔",
+  "Every time you say no, you build a habit of quitting. Don't let that be you. 😔",
+  "I'm not here to be nice. I'm here to push you. And you just backed down. Think about that. 🥀",
+  "You don't have to be perfect. You just have to try. Next time, say yes. 💯",
+  "A champion's mindset means doing the hard thing even when you don't want to. Don't forget that. 🎯"
+];
+
+function giveChallengeMsg() {
+  const c = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
+  currentChallenge = c;
+  const promptTmpl = CHALLENGE_PROMPTS[Math.floor(Math.random() * CHALLENGE_PROMPTS.length)];
+  const promptText = promptTmpl.replace('{task}', c.desc);
+
+  // post mentor message in chat
+  messages.push({ role: 'assistant', content: `🔥 ${promptText}` });
+  appendMessage('assistant', `🔥 ${promptText}`);
+  saveConversation();
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  // show popup
+  $('challenge-icon').textContent = c.icon;
+  $('challenge-mentor').textContent = `${activeChar.name} challenges you`;
+  $('challenge-title').textContent = c.title;
+  $('challenge-desc').textContent = c.desc;
+  $('challenge-timer').className = 'timer';
+  $('challenge-timer').textContent = '0:30';
+  $('challenge-overlay').classList.add('show');
+
+  // start 30s countdown
+  challengeSeconds = 30;
+  clearInterval(challengeTimer);
+  challengeTimer = setInterval(() => {
+    challengeSeconds--;
+    const m = String(Math.floor(challengeSeconds / 60));
+    const s = String(challengeSeconds % 60).padStart(2, '0');
+    $('challenge-timer').textContent = `${m}:${s}`;
+    if (challengeSeconds <= 10) $('challenge-timer').classList.add('urgent');
+    if (challengeSeconds <= 0) {
+      clearInterval(challengeTimer);
+      declineChallenge();
+    }
+  }, 1000);
+
+  return c;
+}
+
+function triggerChallenge() {
+  if (!activeChar || isGenerating) return;
+  if ($('challenge-overlay').classList.contains('show')) return;
+  giveChallengeMsg();
+}
+
+function acceptChallenge() {
+  if (!activeChar || !currentChallenge) return;
+  clearInterval(challengeTimer);
+  $('challenge-overlay').classList.remove('show');
+
+  const state = getCharState(activeChar.id);
+  const newHappiness = Math.min(10, state.happiness + 1);
+  const newXp = state.xp + 5;
+  const newTasks = state.tasksCompleted + 1;
+  let newStreak = state.streak + 1;
+
+  setCharState(activeChar.id, {
+    happiness: newHappiness,
+    xp: newXp,
+    streak: newStreak,
+    tasksCompleted: newTasks
+  });
+  updateStatsBar();
+
+  // mentor positive response in chat
+  const posMsg = ACCEPT_RESPONSES[Math.floor(Math.random() * ACCEPT_RESPONSES.length)];
+  messages.push({ role: 'assistant', content: `❤️ ${posMsg}` });
+  appendMessage('assistant', `❤️ ${posMsg}`);
+  saveConversation();
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  // milestone checks
+  if (newHappiness >= 10) {
+    showReward('🎉', 'Max Happiness! ❤️❤️❤️', `${activeChar.name} beams with pride. You're unstoppable! 🔥`);
+    setCharState(activeChar.id, { happiness: 5 });
+  } else if (newTasks % 2 === 0) {
+    const msgs = [
+      `You're on fire! ${newXp} XP total. This is how winners are made. Keep stacking! ⚡`,
+      `Another challenge crushed! ${newXp} XP and counting. ${activeChar.name} approves. 🏆`,
+      `Discipline = Freedom. ${newXp} XP earned. Every win compounds. 💪`
+    ];
+    showReward('⚡', `${newXp} XP Milestone!`, msgs[Math.floor(Math.random() * msgs.length)]);
+  } else {
+    showReward('✅', `+5 XP · Happiness +1`, `${activeChar.name}'s happiness: ${newHappiness}/10 ❤️`, 2000);
+  }
+
+  currentChallenge = null;
+}
+
+function declineChallenge() {
+  if (!activeChar) return;
+  clearInterval(challengeTimer);
+  $('challenge-overlay').classList.remove('show');
+
+  const state = getCharState(activeChar.id);
+  const newHappiness = Math.max(1, state.happiness - 1);
+  const newStreak = 0;
+
+  setCharState(activeChar.id, {
+    happiness: newHappiness,
+    streak: newStreak
+  });
+  updateStatsBar();
+
+  // mentor negative response in chat
+  const negMsg = DECLINE_RESPONSES[Math.floor(Math.random() * DECLINE_RESPONSES.length)];
+  const fullMsg = `💔 ${negMsg}`;
+  messages.push({ role: 'assistant', content: fullMsg });
+  appendMessage('assistant', fullMsg);
+  saveConversation();
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  // show decline popup
+  showReward('💔', `Happiness ${newHappiness}/10`, `${activeChar.name} is disappointed. Don't let this become a pattern.`, 3000);
+
+  currentChallenge = null;
+}
+
+let rewardTimeout = null;
+function showReward(icon, title, text, duration = 2500) {
+  clearTimeout(rewardTimeout);
+  $('reward-icon').textContent = icon;
+  $('reward-title').textContent = title;
+  $('reward-text').textContent = text;
+  $('reward-toast').classList.add('show');
+  rewardTimeout = setTimeout(() => $('reward-toast').classList.remove('show'), duration);
+}
+
+// hook accept/decline buttons
+document.addEventListener('DOMContentLoaded', () => {
+  $('btn-accept').addEventListener('click', acceptChallenge);
+  $('btn-decline').addEventListener('click', declineChallenge);
+});
 
 // ---- utils ----
 function showToast(msg) {
