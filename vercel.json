@@ -2,7 +2,6 @@
   "buildCommand": null,
   "outputDirectory": ".",
   "routes": [
-    { "src": "/character-ai/api/env", "dest": "/character-ai/api/env.js" },
     { "src": "/character-ai/(.*)", "dest": "/character-ai/$1" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
