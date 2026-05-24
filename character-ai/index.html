@@ -984,8 +984,8 @@ let model = localStorage.getItem('mentor_model') || 'llama-3.3-70b-versatile';
 let customBaseUrl = localStorage.getItem('mentor_custom_url') || '';
 let customModelName = localStorage.getItem('mentor_custom_model') || '';
 let theme = localStorage.getItem('mentor_theme') || 'dark';
-let elevenLabsAgentId = localStorage.getItem('mentor_el_agent_id') || '';
-let elevenLabsApiKey = localStorage.getItem('mentor_el_api_key') || '';
+let elevenLabsAgentId = localStorage.getItem('mentor_el_agent_id') || 'agent_1201kschz9e8jeavwrv2sqgv0ef1';
+let elevenLabsApiKey = localStorage.getItem('mentor_el_api_key') || 'sk_7f871978c771ab38a3e29f809742d51dcc90a8e395f58832';
 let elevenLabsVoiceId = localStorage.getItem('mentor_el_voice_id') || '';
 const CONV_KEY = 'mentor_conversations';
 const AVATAR_KEY = 'mentor_avatars';
@@ -1074,6 +1074,10 @@ async function init() {
   $('theme-select').value = theme;
   $('el-agent-id').value = elevenLabsAgentId;
   $('el-api-key').value = elevenLabsApiKey;
+  // pre-populate voice ID if empty by fetching agent config
+  if (elevenLabsApiKey && elevenLabsAgentId && !elevenLabsVoiceId) {
+    fetchVoiceId();
+  }
   updateModelList(provider);
   $('model-select').value = model;
   $('provider-select').addEventListener('change', onProviderChange);
@@ -1497,6 +1501,26 @@ function onProviderChange() {
   if (p === 'custom' && customModelName) $('custom-model-input').value = customModelName;
 }
 
+function fetchVoiceId() {
+  if (!elevenLabsApiKey || !elevenLabsAgentId) return;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.elevenlabs.io/v1/convai/agents/' + elevenLabsAgentId);
+  xhr.setRequestHeader('xi-api-key', elevenLabsApiKey);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        var vid = data?.conversation_config?.tts?.voice_id || data?.voice_id || '';
+        if (vid) {
+          elevenLabsVoiceId = vid;
+          localStorage.setItem('mentor_el_voice_id', vid);
+        }
+      } catch(e) {}
+    }
+  };
+  xhr.send();
+}
+
 var elAudio = null;
 
 function onMicClick() {
@@ -1609,24 +1633,7 @@ function saveSettings() {
   localStorage.setItem('mentor_el_api_key', newApiKey);
 
   // auto-fetch voice ID from agent config
-  if (newApiKey && newAgentId) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://api.elevenlabs.io/v1/convai/agents/' + newAgentId);
-    xhr.setRequestHeader('xi-api-key', newApiKey);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        try {
-          var data = JSON.parse(xhr.responseText);
-          var vid = data?.conversation_config?.tts?.voice_id || data?.voice_id || '';
-          if (vid) {
-            elevenLabsVoiceId = vid;
-            localStorage.setItem('mentor_el_voice_id', vid);
-          }
-        } catch(e) {}
-      }
-    };
-    xhr.send();
-  }
+  fetchVoiceId();
 
   if (provider === 'custom') {
     customBaseUrl = ($('custom-url-input')?.value || '').trim().replace(/\/+$/, '');
