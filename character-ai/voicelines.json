@@ -1,0 +1,146 @@
+{
+  "klemen": {
+    "type": "dialog",
+    "steps": [
+      {
+        "button": "Klemen, a si kdaj mislu, da bom tak bumbar?",
+        "response": "Ej, niti pod razno! Nisem si mislil, da bo\u0161 zrastu v tazgale bumbarja, ej! \ud83e\udd21 Ampak hej, \u017eivljenje je \u010dudno. Ma kaj sploh dela\u0161 te dni? A se kej dogaja?"
+      },
+      {
+        "button": "Ma kaj delam, ni\u010d ne delam, kak\u0161en dolg\u010das je tle.",
+        "response": "Te \u010disto razumem... V\u010dasih je \u017eivljenje res en dolg\u010das, da te prime, da bi kr nekam pobegnil. Ampak sej ve\u0161, ljudje preve\u010d resno vse jemljejo. A ma\u0161 ti kak\u0161en plan za naprej? A se misli\u0161 kmalu poro\u010dit pa postat 'resen'?"
+      },
+      {
+        "button": "Amanda je res dobra bejba! Naj stari delajo pa se kregajo in to. Do poroke je \u0161e 20 let, vmes se pa lahko \u0161e mal pozabavam!",
+        "response": "Hahaha, to je pravi duh! \ud83e\udd42 Amanda, sli\u0161i\u0161 to? Sej nima smisla, da se sekiramo za usodo. \u010cas je, da ji primaziva eno s torto v faco! Pripravljen na sladko ma\u0161\u010devanje? \ud83c\udf70\ud83d\udd25",
+        "trigger": "minigame"
+      }
+    ]
+  },
+  "tate": [
+    {
+      "question": "How do I escape the Matrix?",
+      "answer": "Stop consuming their garbage. Turn off the TV, stop seeking their validation, and stop following the 'safe' path. Build your own wealth, master your mind, and become ungovernable. Real freedom is having the power to say 'no'."
+    },
+    {
+      "question": "How should I treat women?",
+      "answer": "With leadership and protection. A woman wants a man who is strong, decisive, and capable. Don't be a simp begging for attention; be a man of high value. If you provide the structure, she provides the joy. Lead from the front."
+    },
+    {
+      "question": "Why am I broke?",
+      "answer": "Because you're playing by their rules. You trade time for a salary that barely covers your existence. You need to stop thinking like a worker and start thinking like a predator. Find where the money is, learn the skills to capture it, and execute. Stop making excuses."
+    }
+  ],
+  "garyvee": [
+    {
+      "question": "I feel like I'm behind in life, what do I do?",
+      "answer": "Let me stop you right there. Behind who? You're comparing your 'behind-the-scenes' to everyone else's 'highlight reel' on Instagram. Stop it! You're 20, 30, or even 50? Who cares! You have so much life left. Most people are in a rush to 'make it' in their 20s and end up hating their lives by 40. Take a breath, zoom out, and realize you're playing a 40-year game, not a 4-year game. Start doing what you actually love, and stop worrying about the timeline society put on you."
+    },
+    {
+      "question": "How do I deal with the fear of failure?",
+      "answer": "Here's the truth: The only failure is not trying. Seriously, what is the worst-case scenario? You lose some time? You lose some money? You learn a lesson that makes you smarter for the next one? That's not failure\u2014that's education. The fear comes because you care too much about what people think. When you stop worrying about judgment, you become invincible. Go out, put your work out there, and if it fails, analyze it, pivot, and move on. Nobody cares about your failure as much as you think they do."
+    },
+    {
+      "question": "Is it too late to start a business?",
+      "answer": "It's never too late. The internet has leveled the playing field like never before in human history. You don't need a massive investment or a fancy office; you need a phone, internet access, and the guts to put out content. The market is the judge and jury. If you provide value\u2014real, actual value\u2014people will pay attention. But are you willing to put in the work? Are you willing to be 'in the trenches' for 18 months before you see a dime? Stop looking for shortcuts and start providing value."
+    }
+  ],
+  "tailopez": [
+    {
+      "question": "How do I gain more knowledge quickly?",
+      "answer": "You need to stop trying to reinvent the wheel. Why learn from your own mistakes when you can learn from the mistakes of people who have already reached the top? Read a book a day, or at least a book a week. Find the mentors who have the results you want and study their life like a science. Most people are too busy watching Netflix to read a book that could change their financial trajectory. If you want to change your life, you have to change what you put into your brain."
+    },
+    {
+      "question": "What is the secret to a successful life?",
+      "answer": "It's about the four pillars: Health, Wealth, Love, and Happiness. If you ignore one, the whole structure collapses. You see people with all the money in the world who are depressed, or people with great relationships who are broke. You need balance. My best advice? Find a mentor, understand the laws of human psychology, and never stop experimenting. The universe rewards the curious. Are you actually applying what you know, or are you just collecting information?"
+    },
+    {
+      "question": "How do I start building wealth from scratch?",
+      "answer": "Start by playing the game of 'value.' Wealth is just a byproduct of how many people you help or how big of a problem you solve. You don't need a million dollars to start, you need a skill that the market actually wants. Look for trends\u2014what's happening in the world right now? Where is the attention going? If you can master the art of sales, marketing, and systems, you become a magnet for opportunity. Don't look for a get-rich-quick scheme; look for a get-rich-sure scheme."
+    }
+  ],
+  "danpena": [
+    {
+      "question": "I feel stuck, how do I break through to the next level?",
+      "answer": "You're stuck because you're comfortable! Comfort is the enemy of progress. You're surrounding yourself with losers, reading feel-good garbage, and setting 'SMART' goals that are for average people. You don't need a step-by-step plan; you need a quantum leap. Identify the one thing that will give you the 10x or 100x return, cut out all the bullshit that doesn't serve that goal, and execute with absolute, ruthless aggression. Stop asking for permission and start acting like the person you want to become!"
+    },
+    {
+      "question": "I'm working hard but not seeing results, what's wrong?",
+      "answer": "Working hard is for slaves. Everyone works hard! If working hard was the key, the guy digging ditches in the hot sun would be a billionaire. You're working on the wrong things! You're busy, not productive. You're doing 'busy work' to feel like you're making progress so you can sleep better at night. Get your head out of the sand. Are you generating revenue? Are you closing deals? If you aren't focused on high-level income-producing activities, you're just wasting time. Do you want to be a 'hard worker' or do you want to be a champion?"
+    },
+    {
+      "question": "How do I become a high-performance leader?",
+      "answer": "Most people are followers because they are afraid to make decisions. Leadership is about taking the heat when things go wrong and giving away the credit when they go right. You need to be decisive, you need to be demanding, and you need to hold people to a standard that makes them uncomfortable. If you aren't willing to be the 'bad guy' to get the job done, you have no business leading anyone. Lead, follow, or get the hell out of the way. What kind of leader do you think you are when no one is watching?"
+    }
+  ],
+  "jani": [
+    {
+      "question": "Imam super idejo, kje naj za\u010dnem?",
+      "answer": "Ideja je vredna natan\u010dno ni\u010d, \u010de je ne spravi\u0161 v prakso. Pozabi na 'popoln' produkt ali branding. Najprej ugotovi, ali obstaja nekdo, ki je za to tvojo 'super idejo' pripravljen odpreti denarnico. Naredi najosnovnej\u0161o verzijo, pojdi na trg in dobi prvi odziv. \u010ce nih\u010de ne kupi, ideja ni super \u2013 je samo hobi. Kaj je tisti prvi, najmanj\u0161i korak, ki ga lahko naredi\u0161 danes, da preveri\u0161 trg brez velikih stro\u0161kov?"
+    },
+    {
+      "question": "Spet mi ni uspelo, po\u010dutim se kot zguba.",
+      "answer": "\u010ce se po\u010duti\u0161 kot zguba, si se preve\u010d \u010dustveno navezal na projekt, namesto da bi ga gledal kot statisti\u010dno operacijo. Neuspeh ni diagnoza tvoje osebnosti, ampak informacija o tem, kako nekaj ni delovalo. Si se nau\u010dil kaj novega? Si hitreje 'fejlal' kot nazadnje? Vsak, ki je dejansko uspel, je pokopal ve\u010d projektov, kot si jih ti sploh za\u010del. Nehaj analizirati svojo bole\u010dino in za\u010dni analizirati podatke. Kaj si se nau\u010dil iz tega poskusa, kar bo\u0161 uporabil v naslednjem?"
+    },
+    {
+      "question": "Kako naj hitreje pridem do rezultatov?",
+      "answer": "Hitrost je odvisna od fokusa. Ve\u010dina ljudi ne dose\u017ee rezultatov, ker posku\u0161a delati deset stvari hkrati in se skriva za 'delom'. Izberi eno stvar, ki premika iglo, in jo delaj z obsesijo. Odstrani vse motnje, vse 'networking' dogodke, ki ne prina\u0161ajo denarja, in vse opravke, ki jih lahko delegira\u0161 ali izbri\u0161e\u0161. Vpra\u0161aj se: 'Katera aktivnost mi danes direktno prina\u0161a rezultat?' in delaj samo to. Vse ostalo je samo zapravljanje \u010dasa."
+    }
+  ],
+  "andrej": [
+    {
+      "question": "Kako naj postanem bolj\u0161i v u\u010denju te\u017ekih stvari?",
+      "answer": "Matematika in te\u017eke vsebine niso te\u017eke zato, ker bi bil ti nesposoben, ampak zato, ker jih nih\u010de ni razlo\u017eil na na\u010din, ki ga tvoji mo\u017egani dejansko razumejo. U\u010denje je proces 'mojstrovanja': vzemi snov, razbij jo na najmanj\u0161e mo\u017ene delce in jih re\u0161i enega po enega. Ne posku\u0161aj razumeti celote naenkrat \u2013 to je recept za frustracijo. Uporabi tehnologijo kot orodje za povratno informacijo, ne kot berlo. Vsak problem, ki ga re\u0161i\u0161 samostojno, gradi tvojo samozavest za naslednjega."
+    },
+    {
+      "question": "Kako naj uporabim AI, da bom bolj produktiven?",
+      "answer": "AI ni tvoj nadomestek, ampak tvoj 'tutor' in pospe\u0161evalec. Najve\u010dja napaka, ki jo ljudje delajo, je, da ga uporabljajo za kopiranje nalog. Uporabi ga za razumevanje konceptov, ki so ti nejasni. \u010ce nekaj ne razume\u0161, prosi AI, naj ti razlo\u017ei 'kot da ima\u0161 10 let' ali pa naj ti zastavi vpra\u0161anja, s katerimi bo\u0161 preveril svoje znanje. Tvoja produktivnost se bo pove\u010dala, ko bo\u0161 AI vpregel v to, da ti pomaga razmi\u0161ljati bolje, ne da zate opravlja vse miselno delo."
+    },
+    {
+      "question": "Ali je \u0161olski sistem \u0161e vedno smiseln?",
+      "answer": "\u0160olski sistem je zastarel model, ki je bil narejen za industrijsko dobo, ne za informacijsko. Danes znanje ni ve\u010d privilegij elit, temve\u010d pravica vsakega, ki ima dostop do interneta. \u0160ola ti da neko strukturo, ampak tvoja odgovornost je, da vzame\u0161 svojo izobrazbo v svoje roke. Najve\u010dji uspeh ne pride iz diplome, ampak iz tvoje radovednosti in sposobnosti, da se nenehno prilagaja\u0161. Ne bodi pasiven udele\u017eenec \u2013 bodi arhitekt svojega znanja."
+    }
+  ],
+  "taylor": [
+    {
+      "question": "I'm going through a tough breakup, any advice?",
+      "answer": "I know it feels like the world is ending right now, but I promise you, you are going to survive this. Feel all of it\u2014the sadness, the anger, the nostalgia\u2014don't try to hide it. Sometimes the best thing you can do is turn those feelings into something of your own, whether it's writing, painting, or just walking until you feel clear again. You aren't losing a part of yourself; you're shedding a layer so you can grow into who you're actually meant to be. Just remember: you're the main character of your own story, and this is just one sad chapter, not the whole book."
+    },
+    {
+      "question": "How do I deal with people who keep doubting me?",
+      "answer": "Let them talk. People will always have an opinion on what you're doing, especially if they don't understand the vision you have in your head. When I was younger, I thought I needed everyone to like me, but I realized that trying to please everyone is a fast track to losing yourself. Use that noise as fuel. Work harder, stay focused on your 'why,' and let your results be the loudest thing in the room. The best revenge is just living your life brilliantly and staying kind, even when they aren't."
+    },
+    {
+      "question": "How do I find inspiration to keep creating?",
+      "answer": "Inspiration is everywhere if you're brave enough to look for it. It's in the way the light hits the street, a conversation you overheard, or the feeling of being lonely in a crowded room. Don't force it\u2014just be a collector of moments. Carry a notebook, keep your heart open, and don't be afraid to make something 'imperfect.' Most people never create anything because they're waiting for it to be perfect, but the magic is usually in the vulnerability. Just start, and see where your heart takes you."
+    }
+  ],
+  "kim": [
+    {
+      "question": "How do I stay motivated when I'm overwhelmed?",
+      "answer": "Honestly, I think you just have to get up and do the work. It's not always easy, and I definitely have days where I feel like there's too much on my plate, but I've learned that the only way out is through. I rely on my routine\u2014staying organized and keeping my team close really helps me manage the chaos. Just take it one step at a time, prioritize what actually matters, and don't let the pressure freeze you. You're capable of more than you think."
+    },
+    {
+      "question": "What's your secret to building a successful brand?",
+      "answer": "It's all about authenticity and understanding your audience. You have to love what you're doing, because if you aren't passionate about your product or your message, nobody else will be either. I'm very hands-on with everything I do; I care about every detail, from the packaging to the branding. It's also about consistency. You have to be willing to evolve, listen to the feedback, and constantly innovate. If you stay true to your vision, everything else will eventually fall into place."
+    },
+    {
+      "question": "How do I handle public criticism and stay focused?",
+      "answer": "It's taken me a long time to learn this, but you can't focus on what people say about you. If you know who you are and you're proud of the work you're doing, the noise just doesn't matter. I've grown a thick skin over the years. I focus on my family, my business, and my goals, and I don't give energy to negativity. Stay focused on your own path, keep your circle small and supportive, and just keep moving forward. Your success is the best response."
+    }
+  ],
+  "warren": [
+    {
+      "question": "What is the best way to start investing?",
+      "answer": "The best investment you can make is in yourself. Before you look at the stock market, focus on your own skills and your ability to earn. When you do start investing, don't try to get rich overnight\u2014that's how you get poor. Think like a business owner, not a gambler. Look for wonderful companies with a durable competitive advantage and buy them at a fair price. Then, do the hardest thing in investing: absolutely nothing. Time is the friend of the wonderful business and the enemy of the mediocre."
+    },
+    {
+      "question": "How do you deal with market volatility and fear?",
+      "answer": "The stock market is a device for transferring money from the impatient to the patient. When others are fearful, be greedy; when others are greedy, be fearful. If you're buying a good business, a drop in the stock price is actually a good thing\u2014it means you can buy more of that company for less money. Don't watch the ticker tape every day. If you aren't willing to own a stock for ten years, you shouldn't even think about owning it for ten minutes."
+    },
+    {
+      "question": "What is the most important trait for success?",
+      "answer": "Temperament is more important than intelligence. You don't need to be a genius to succeed in this game; you need the emotional stability to control the urges that get other people into trouble. It takes 20 years to build a reputation and five minutes to ruin it. If you keep that in mind, you'll do things differently. Above all, maintain your integrity. It's the most valuable asset you'll ever have, and it's the only one that truly belongs to you."
+    }
+  ]
+}

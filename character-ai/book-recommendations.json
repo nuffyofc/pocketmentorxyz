@@ -1,0 +1,79 @@
+{
+  "tate": [
+    {"title": "Meditations", "author": "Marcus Aurelius"},
+    {"title": "The 48 Laws of Power", "author": "Robert Greene"},
+    {"title": "Can't Hurt Me", "author": "David Goggins"},
+    {"title": "The Art of War", "author": "Sun Tzu"},
+    {"title": "The Way of the Superior Man", "author": "David Deida"}
+  ],
+  "garyvee": [
+    {"title": "Crush It!", "author": "Gary Vaynerchuk"},
+    {"title": "Jab, Jab, Jab, Right Hook", "author": "Gary Vaynerchuk"},
+    {"title": "The Thank You Economy", "author": "Gary Vaynerchuk"},
+    {"title": "Shoe Dog", "author": "Phil Knight"},
+    {"title": "The Hard Thing About Hard Things", "author": "Ben Horowitz"}
+  ],
+  "danpena": [
+    {"title": "The 10X Rule", "author": "Grant Cardone"},
+    {"title": "Think and Grow Rich", "author": "Napoleon Hill"},
+    {"title": "How to Win Friends and Influence People", "author": "Dale Carnegie"},
+    {"title": "The Power of Positive Thinking", "author": "Norman Vincent Peale"},
+    {"title": "Awaken the Giant Within", "author": "Tony Robbins"}
+  ],
+  "tailopez": [
+    {"title": "Managing Oneself", "author": "Peter Drucker"},
+    {"title": "Thinking in Bets", "author": "Annie Duke"},
+    {"title": "How to Win Friends and Influence People", "author": "Dale Carnegie"},
+    {"title": "Civilization and Its Discontents", "author": "Sigmund Freud"},
+    {"title": "Evolutionary Psychology", "author": "David Buss"}
+  ],
+  "klemen": [
+    {"title": "Sapiens", "author": "Yuval Noah Harari"},
+    {"title": "The Doors of Perception", "author": "Aldous Huxley"},
+    {"title": "Man's Search for Meaning", "author": "Viktor Frankl"},
+    {"title": "The Power of Now", "author": "Eckhart Tolle"},
+    {"title": "Ishmael", "author": "Daniel Quinn"}
+  ],
+  "jani": [
+    {"title": "The E-Myth Revisited", "author": "Michael Gerber"},
+    {"title": "Traction", "author": "Gino Wickman"},
+    {"title": "Built to Sell", "author": "John Warrillow"},
+    {"title": "The 4-Hour Workweek", "author": "Tim Ferriss"},
+    {"title": "Atomic Habits", "author": "James Clear"}
+  ],
+  "rok": [
+    {"title": "Zero to One", "author": "Peter Thiel"},
+    {"title": "The Lean Startup", "author": "Eric Ries"},
+    {"title": "Hooked", "author": "Nir Eyal"},
+    {"title": "Make Something Wonderful", "author": "Steve Jobs"},
+    {"title": "The Mom Test", "author": "Rob Fitzpatrick"}
+  ],
+  "andrej": [
+    {"title": "A Mind for Numbers", "author": "Barbara Oakley"},
+    {"title": "The Art of Learning", "author": "Josh Waitzkin"},
+    {"title": "Superintelligence", "author": "Nick Bostrom"},
+    {"title": "The Structure of Scientific Revolutions", "author": "Thomas Kuhn"},
+    {"title": "Life 3.0", "author": "Max Tegmark"}
+  ],
+  "taylor": [
+    {"title": "The Catcher in the Rye", "author": "J.D. Salinger"},
+    {"title": "The Alchemist", "author": "Paulo Coelho"},
+    {"title": "Daring Greatly", "author": "Brené Brown"},
+    {"title": "On Writing", "author": "Stephen King"},
+    {"title": "The Bell Jar", "author": "Sylvia Plath"}
+  ],
+  "kim": [
+    {"title": "The Art of the Deal", "author": "Donald Trump"},
+    {"title": "The Obstacle Is the Way", "author": "Ryan Holiday"},
+    {"title": "Delivering Happiness", "author": "Tony Hsieh"},
+    {"title": "Girl Boss", "author": "Sophia Amoruso"},
+    {"title": "#Girlboss", "author": "Sophia Amoruso"}
+  ],
+  "warren": [
+    {"title": "The Intelligent Investor", "author": "Benjamin Graham"},
+    {"title": "Security Analysis", "author": "Benjamin Graham"},
+    {"title": "Common Stocks and Uncommon Profits", "author": "Philip Fisher"},
+    {"title": "The Essays of Warren Buffett", "author": "Warren Buffett / Lawrence Cunningham"},
+    {"title": "Poor Charlie's Almanack", "author": "Charlie Munger"}
+  ]
+}

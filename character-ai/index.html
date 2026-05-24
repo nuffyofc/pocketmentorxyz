@@ -14,7 +14,7 @@ body{
   height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased
 }
 #app{
-  height:100vh;display:flex;flex-direction:column;max-width:600px;margin:0 auto;padding:0 12px;position:relative
+  height:100vh;display:flex;flex-direction:column;max-width:600px;margin:0 auto;padding:0 12px 60px;position:relative
 }
 /* header */
 header{
@@ -60,19 +60,20 @@ header{
 
 /* chat */
 #chat-area{flex:1;overflow-y:auto;padding:16px 0;scroll-behavior:smooth}
-.msg{margin-bottom:16px;display:flex;gap:10px;animation:fadeIn .3s ease}
+.msg{margin-bottom:16px;display:flex;gap:10px;animation:fadeIn .3s ease;align-items:flex-start}
 .msg.user{flex-direction:row-reverse}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .msg-avatar{
-  width:32px;height:32px;border-radius:50%;flex-shrink:0;cursor:pointer;position:relative;
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;cursor:pointer;
+  position:sticky;top:8px;z-index:2;
   display:flex;align-items:center;justify-content:center;font-size:14px;overflow:hidden;
   transition:opacity .2s
 }
 .msg-avatar:hover{opacity:.7}
 .msg-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .msg-bubble{
-  max-width:80%;padding:12px 16px;border-radius:var(--radius-lg);
-  font-size:14px;line-height:1.65;position:relative
+  max-width:72%;padding:12px 16px;border-radius:var(--radius-lg);
+  font-size:14px;line-height:1.6;position:relative;overflow-wrap:break-word;word-break:break-word
 }
 .msg.bot .msg-bubble{
   background:var(--bg2);border:1px solid var(--border);
@@ -129,16 +130,16 @@ header{
 
 /* suggestion buttons */
 @keyframes suggIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-#suggestions{display:none;gap:10px;padding:10px 0 8px;flex-wrap:wrap;flex-shrink:0;border-top:1px solid var(--border)}
+#suggestions{display:none;gap:8px;padding:10px 0 8px;flex-wrap:wrap;flex-shrink:0;border-top:1px solid var(--border)}
 #suggestions.show{display:flex}
-.suggestion-btn{flex:1;min-width:0;padding:12px 18px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.4;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:center;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both}
+.suggestion-btn{flex:1 1 30%;min-width:0;padding:14px 22px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.45;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:center;overflow-wrap:break-word;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both}
 .suggestion-btn:nth-child(2){animation-delay:.08s}
 .suggestion-btn:nth-child(3){animation-delay:.16s}
 .suggestion-btn:hover{border-color:var(--accent);color:#fff;background:rgba(124,58,237,.12);box-shadow:0 0 20px rgba(124,58,237,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
 .suggestion-btn:active{transform:scale(.97) translateY(0)}
 /* quiz option buttons */
-.quiz-opt{flex:1;min-width:0;padding:12px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.4;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:left;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both;display:flex;align-items:center;gap:8px}
-.quiz-opt .opt-label{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;flex-shrink:0}
+.quiz-opt{flex:1 1 45%;min-width:0;padding:14px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.45;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:left;overflow-wrap:break-word;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both;display:flex;align-items:center;gap:10px}
+.quiz-opt .opt-label{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;flex-shrink:0}
 .quiz-opt:hover{border-color:var(--accent);color:#fff;background:rgba(245,158,11,.12);box-shadow:0 0 20px rgba(245,158,11,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
 .quiz-opt:active{transform:scale(.97) translateY(0)}
 #quiz-progress{display:none;padding:0 0 8px;flex-shrink:0;font-size:11px;color:var(--text2);text-align:center;letter-spacing:.3px;border-top:1px solid var(--border);margin-top:4px;padding-top:8px}
@@ -242,9 +243,12 @@ header{
   .char-select{font-size:13px;padding:8px 32px 8px 12px}
   .char-avatar{width:32px;height:32px;font-size:15px}
   .msg-bubble{max-width:88%;padding:10px 14px;font-size:13px}
-  .msg-avatar{width:28px;height:28px;font-size:13px} /* responsive - ring via inset:-3px auto-adjusts */
+  .msg-avatar{width:28px;height:28px;font-size:13px}
   #input-area textarea{font-size:13px;padding:10px 14px}
   #send-btn{width:44px;height:44px;font-size:18px}
+  .suggestion-btn{flex:1 1 100%;padding:13px 18px;font-size:12px}
+  .quiz-opt{flex:1 1 100%;padding:13px 14px;font-size:12px}
+  #suggestions{gap:6px;padding:8px 0 6px}
   .modal{padding:20px 16px;margin:0 8px;max-height:90vh}
   .modal h2{font-size:16px}
   .modal .desc{font-size:11px}
@@ -255,13 +259,54 @@ header{
   .char-select{font-size:12px;padding:7px 28px 7px 10px}
   .char-avatar{width:28px;height:28px;font-size:13px}
   .msg-bubble{max-width:92%;font-size:12px;padding:8px 12px}
+  .suggestion-btn{padding:11px 14px;font-size:11px}
+  .quiz-opt{padding:11px 12px;font-size:11px}
 }
 @media (hover:none){}
 
 
+/* minigame */
+#minigame-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);display:none}
+#minigame-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;width:90%;max-width:400px;text-align:center;position:relative;overflow:hidden}
+#minigame-header{margin-bottom:12px}
+#minigame-header h3{font-size:20px;margin-bottom:8px}
+#revenge-meter-wrap{width:100%;height:12px;background:var(--bg3);border-radius:6px;overflow:hidden;margin-bottom:4px}
+#revenge-meter-fill{height:100%;width:0%;background:linear-gradient(90deg,#FF69B4,#FF1493);border-radius:6px;transition:width .4s ease}
+#revenge-label{font-size:11px;color:var(--text2)}
+#minigame-stage{position:relative;height:280px;margin:12px 0;background:var(--bg3);border-radius:var(--radius);touch-action:none;cursor:default;overflow:hidden}
+#minigame-stage.shake{animation:mgShake .2s ease}
+@keyframes mgShake{0%,100%{transform:translateX(0)}10%{transform:translateX(-5px) rotate(-.5deg)}30%{transform:translateX(5px) rotate(.5deg)}50%{transform:translateX(-3px)}70%{transform:translateX(3px)}90%{transform:translateX(-1px)}}
+#zofi-char{position:absolute;left:20px;top:50%;transform:translateY(-60%);text-align:center;transition:all .3s;pointer-events:none}
+#zofi-face{font-size:60px;display:block;position:relative;z-index:2;transition:transform .15s}
+#zofi-face.splat{transform:scale(1.3) rotate(-15deg)}
+#zofi-cream{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:54px;pointer-events:none;opacity:0;z-index:3}
+#zofi-cream.show{opacity:1;animation:creamPop .35s ease forwards}
+@keyframes creamPop{0%{transform:scale(0) rotate(-30deg)}60%{transform:scale(1.4) rotate(10deg)}100%{transform:scale(1) rotate(0deg)}}
+#zofi-name{font-size:12px;color:var(--text2);margin-top:4px;position:relative;z-index:1}
+#cake-target{position:absolute;font-size:40px;left:20px;top:50%;transform:translateY(-50%);opacity:0;transition:opacity .2s;pointer-events:none;z-index:4}
+#cake-target.show{opacity:1;animation:splatStar .3s ease forwards}
+@keyframes splatStar{0%{transform:translateY(-50%) scale(0.3)}100%{transform:translateY(-50%) scale(1.2)}}
+#cake-drag{position:absolute;font-size:48px;cursor:grab;bottom:20px;left:50%;transform:translateX(-50%);user-select:none;-webkit-user-select:none;z-index:10;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));transition:left .15s ease,top .15s ease}
+#cake-drag.dragging{cursor:grabbing;transition:none}
+#minigame-hint{font-size:12px;color:var(--text2);margin:8px 0}
+#minigame-victory{margin-top:16px}
+#minigame-victory p{font-size:15px;margin-bottom:8px;line-height:1.6}
+
+/* cream particles */
+.cream-particle{position:absolute;pointer-events:none;z-index:20;animation:creamBurst .7s ease-out forwards}
+@keyframes creamBurst{0%{opacity:1;transform:translate(0,0) scale(0.3)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.3)}}
+
+/* legendary splat */
+#legendary-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:30;opacity:0}
+#legendary-overlay.show{opacity:1;animation:legendaryIn .7s ease forwards}
+@keyframes legendaryIn{0%{transform:scale(3);opacity:0}60%{transform:scale(0.9)}100%{transform:scale(1);opacity:1}}
+#legendary-text{font-size:22px;font-weight:800;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,.6),0 0 60px rgba(255,215,0,.3);text-align:center;line-height:1.4}
+#legendary-text span{display:block;font-size:40px;margin-bottom:4px}
+
 /* safe area for notched phones */
 @supports(padding-top:env(safe-area-inset-top)){
   header{padding-top:max(12px, env(safe-area-inset-top))}
+  #app{padding-bottom:max(60px, calc(env(safe-area-inset-bottom) + 12px))}
 }
 </style>
 </head>
@@ -355,12 +400,47 @@ header{
 <div id="particles-container"></div>
 <div id="toast"></div>
 
+<!-- minigame overlay -->
+<div id="minigame-overlay">
+  <div id="minigame-area">
+    <div id="minigame-header">
+      <h3>🍰 Sweet Revenge</h3>
+      <div id="revenge-meter-wrap">
+        <div id="revenge-meter-fill"></div>
+      </div>
+      <div id="revenge-label">Revenge: <span id="revenge-pct">0</span>%</div>
+    </div>
+    <div id="minigame-stage">
+      <div id="zofi-char">
+        <span id="zofi-face">😏</span>
+        <div id="zofi-cream"></div>
+        <span id="zofi-name">Zofi</span>
+      </div>
+      <div id="cake-target">💥</div>
+      <div id="cake-drag">🍰</div>
+      <div id="legendary-overlay">
+        <div id="legendary-text"><span>🏆</span>LEGENDARY SPLAT!</div>
+      </div>
+    </div>
+    <div id="minigame-hint">⬆️ Drag the cake to Zofi's face!</div>
+    <div id="minigame-victory" style="display:none">
+      <p>Končno! Tole si je pa zaslužila! 🍰😎</p>
+      <p>Zdaj pa naprej v nove zmage!</p>
+      <p style="margin-top:6px;font-size:11px;color:var(--text2)">📖 Based on: <a href="https://www.youtube.com/shorts/iC_b5lLCd2I" target="_blank" style="color:var(--accent)">youtube.com/shorts/iC_b5lLCd2I</a></p>
+      <button id="minigame-close" class="btn-primary">Back to Chat</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ---- characters (loaded from characters.json) ----
 let characters = [];
 let suggestions = {};
+let voicelines = {};
+let bookRecs = {};
 let suggestionRound = 0;
 const SUGGESTION_KEY = 'mentor_suggestion_round';
+const DIALOG_STEP_KEY = 'mentor_dialog_step';
 
 function getSuggRound(charId) {
   try { return JSON.parse(localStorage.getItem(SUGGESTION_KEY) || '{}')[charId] || 0; } catch { return 0; }
@@ -378,10 +458,61 @@ async function loadSuggestions() {
   } catch {}
 }
 
+async function loadVoicelines() {
+  try {
+    const res = await fetch('./voicelines.json');
+    if (res.ok) voicelines = await res.json();
+  } catch {}
+}
+
+async function loadBookRecs() {
+  try {
+    const res = await fetch('./book-recommendations.json');
+    if (res.ok) bookRecs = await res.json();
+  } catch {}
+}
+
+function getDialogStep(charId) {
+  try { return JSON.parse(localStorage.getItem(DIALOG_STEP_KEY) || '{}')[charId] || 0; } catch { return 0; }
+}
+function setDialogStep(charId, s) {
+  const all = JSON.parse(localStorage.getItem(DIALOG_STEP_KEY) || '{}');
+  all[charId] = s;
+  localStorage.setItem(DIALOG_STEP_KEY, JSON.stringify(all));
+}
+
 function showSuggestions() {
   const container = $('suggestions');
   if (!container || !activeChar) { if (container) container.classList.remove('show'); return; }
-  if (quizState.active) return; // quiz handles its own buttons
+  if (quizState.active) return;
+  const vl = voicelines[activeChar.id];
+  // dialog-type characters (e.g. Klemen)
+  if (vl && vl.type === 'dialog') {
+    const step = getDialogStep(activeChar.id);
+    if (step >= vl.steps.length) { container.classList.remove('show'); return; }
+    const ds = vl.steps[step];
+    container.innerHTML = '<button class="suggestion-btn" data-dialog="1">' + escapeHtml(ds.button) + '</button>';
+    container.classList.add('show');
+    container.querySelector('.suggestion-btn').addEventListener('click', function() {
+      var s = getDialogStep(activeChar.id);
+      var d = vl.steps[s];
+      messages.push({ role: 'user', content: d.button });
+      appendMessage('user', d.button);
+      messages.push({ role: 'assistant', content: d.response });
+      appendMessage('assistant', d.response);
+      saveConversation();
+      setDialogStep(activeChar.id, s + 1);
+      if (d.trigger === 'minigame') {
+        container.classList.remove('show');
+        showToast('🍰 Sweet Revenge incoming in 5s...');
+        setTimeout(startMinigame, 5000);
+      } else {
+        showSuggestions();
+      }
+    });
+    return;
+  }
+  // normal voicelines / suggestions
   const mentorSugg = suggestions[activeChar.id];
   if (!mentorSugg || !mentorSugg.rounds) { container.classList.remove('show'); return; }
   const round = getSuggRound(activeChar.id);
@@ -394,11 +525,27 @@ function showSuggestions() {
   container.querySelectorAll('.suggestion-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var q = btn.getAttribute('data-q');
-      msgInput.value = q;
-      sendBtn.classList.add('active');
-      var nextRound = Math.min(getSuggRound(activeChar.id) + 1, (mentorSugg.rounds.length - 1));
-      setSuggRound(activeChar.id, nextRound);
-      sendMessage();
+      var vl2 = voicelines[activeChar.id];
+      var matched = null;
+      if (vl2 && Array.isArray(vl2)) {
+        for (var i = 0; i < vl2.length; i++) {
+          if (vl2[i].question === q) { matched = vl2[i]; break; }
+        }
+      }
+      if (matched) {
+        messages.push({ role: 'user', content: q });
+        appendMessage('user', q);
+        messages.push({ role: 'assistant', content: matched.answer });
+        appendMessage('assistant', matched.answer);
+        saveConversation();
+        showSuggestions();
+      } else {
+        msgInput.value = q;
+        sendBtn.classList.add('active');
+        var nextRound = Math.min(getSuggRound(activeChar.id) + 1, (mentorSugg.rounds.length - 1));
+        setSuggRound(activeChar.id, nextRound);
+        sendMessage();
+      }
     });
   });
 }
@@ -880,6 +1027,8 @@ async function init() {
   }
 
   await loadSuggestions();
+  await loadVoicelines();
+  await loadBookRecs();
 
   // detect file:// protocol — APIs block CORS from file://
   if (window.location.protocol === 'file:') {
@@ -954,15 +1103,16 @@ function renderCharacters() {
   characters.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c.id;
-    const avatarUrl = getEffectiveAvatar(c);
-    const prefix = avatarUrl ? '' : (c.emoji || '🧠') + ' ';
-    opt.textContent = prefix + c.name + ' — ' + c.tag;
+    const flag = c.flag || '';
+    opt.textContent = flag + ' ' + c.name + ' — ' + c.tag;
     if (activeChar?.id === c.id) opt.selected = true;
     sel.appendChild(opt);
   });
 }
 
 function selectCharacter(id) {
+  // close minigame if switching chars
+  if (mgState && mgState.active) { $('minigame-overlay').style.display = 'none'; mgState.active = false; }
   const char = characters.find(c => c.id === id);
   if (!char) return;
   activeChar = char;
@@ -982,6 +1132,11 @@ function selectCharacter(id) {
     localStorage.setItem('mentor_last_char', id);
     welcome.classList.add('hidden');
     return;
+  }
+
+  // reset dialog step for dialog-type characters
+  if (voicelines[id] && voicelines[id].type === 'dialog') {
+    setDialogStep(id, 0);
   }
 
   // hide quiz progress if visible
@@ -1076,6 +1231,26 @@ async function sendMessage() {
   chatArea.scrollTop = chatArea.scrollHeight;
   sendBtn.disabled = true;
   retryCount = 0;
+
+  // book recommendation interceptor
+  var bk = bookRecs[activeChar.id];
+  var bookMatch = bk && (/\b(book|read|reading|recommend)\b/i).test(text);
+  if (bookMatch) {
+    var reply = '📚 Books I recommend:\n\n';
+    bk.forEach(function(b, i) {
+      reply += (i + 1) + '. **' + b.title + '** — ' + b.author + '\n';
+    });
+    await new Promise(r => setTimeout(r, 600));
+    typing.style.display = 'none';
+    messages.push({ role: 'assistant', content: reply });
+    appendMessage('assistant', reply);
+    saveConversation();
+    showSuggestions();
+    isGenerating = false;
+    sendBtn.disabled = false;
+    if (!('ontouchstart' in window)) msgInput.focus();
+    return;
+  }
 
   try {
     const reply = await callWithRetry(messages);
@@ -1363,6 +1538,228 @@ function escapeHtml(str) {
   d.textContent = str;
   return d.innerHTML;
 }
+
+// ---- mini-game ----
+var mgState = { hits: 0, maxHits: 4, active: false, dragging: false, dragOffset: {x:0,y:0} };
+
+// splat sound via Web Audio API
+function playSplat() {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var sr = ctx.sampleRate;
+    var len = sr * 0.25;
+    var buf = ctx.createBuffer(1, len, sr);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) {
+      var t = i / sr;
+      d[i] = (Math.random() * 2 - 1) * Math.exp(-t * 25) * (1 - t * 4);
+    }
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    var flt = ctx.createBiquadFilter();
+    flt.type = 'lowpass';
+    flt.frequency.value = 300 + Math.random() * 400;
+    src.connect(flt);
+    flt.connect(ctx.destination);
+    src.start();
+    setTimeout(function() { ctx.close(); }, 800);
+  } catch(e) {}
+}
+
+function spawnCream(count) {
+  var stage = $('minigame-stage');
+  var zofi = $('zofi-char');
+  if (!stage || !zofi) return;
+  var zr = zofi.getBoundingClientRect();
+  var sr = stage.getBoundingClientRect();
+  var cx = zr.left - sr.left + zr.width / 2;
+  var cy = zr.top - sr.top + zr.height / 2;
+  var emojis = ['\ud83e\udd67','\ud83d\udca5','\u2728','\ud83c\udf70','\ud83d\udcab','\ud83c\udf4b'];
+  for (var i = 0; i < count; i++) {
+    var el = document.createElement('div');
+    el.className = 'cream-particle';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = (cx + (Math.random() - 0.5) * 60) + 'px';
+    el.style.top = (cy + (Math.random() - 0.5) * 40) + 'px';
+    el.style.fontSize = (14 + Math.random() * 20) + 'px';
+    el.style.setProperty('--dx', ((Math.random() - 0.5) * 200) + 'px');
+    el.style.setProperty('--dy', (-80 - Math.random() * 140) + 'px');
+    el.style.animationDuration = (0.4 + Math.random() * 0.4) + 's';
+    stage.appendChild(el);
+    setTimeout(function(e) { e.remove(); }, 1500, el);
+  }
+}
+
+function cameraShake() {
+  var stage = $('minigame-stage');
+  stage.classList.remove('shake');
+  void stage.offsetWidth;
+  stage.classList.add('shake');
+  setTimeout(function() { stage.classList.remove('shake'); }, 250);
+}
+
+function startMinigame() {
+  var overlay = $('minigame-overlay');
+  if (!overlay) return;
+  mgState.hits = 0;
+  mgState.active = true;
+  $('revenge-meter-fill').style.width = '0%';
+  $('revenge-pct').textContent = '0';
+  $('zofi-face').textContent = '\ud83d\ude0f';
+  $('zofi-face').className = '';
+  $('zofi-cream').className = '';
+  $('zofi-cream').textContent = '';
+  $('zofi-cream').style.opacity = '0';
+  $('cake-target').classList.remove('show');
+  $('legendary-overlay').classList.remove('show');
+  $('minigame-victory').style.display = 'none';
+  $('minigame-hint').style.display = 'block';
+  var cake = $('cake-drag');
+  cake.style.left = '50%';
+  cake.style.top = '';
+  cake.style.bottom = '20px';
+  cake.style.transform = 'translateX(-50%)';
+  cake.textContent = '\ud83c\udf70';
+  overlay.style.display = 'flex';
+}
+
+function closeMinigame() {
+  $('minigame-overlay').style.display = 'none';
+  mgState.active = false;
+  // re-enable chat
+  msgInput.disabled = false;
+  if (!('ontouchstart' in window)) msgInput.focus();
+  showSuggestions();
+}
+
+// minigame drag handling
+(function() {
+  var cake = $('cake-drag');
+  var stage = $('minigame-stage');
+  if (!cake || !stage) return;
+
+  function getPos(e) {
+    var rect = stage.getBoundingClientRect();
+    var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function isOverZofi(pos) {
+    var zofi = $('zofi-char');
+    var zr = zofi.getBoundingClientRect();
+    var sr = stage.getBoundingClientRect();
+    var zx = zr.left - sr.left + zr.width / 2;
+    var zy = zr.top - sr.top + zr.height / 2;
+    var dist = Math.sqrt(Math.pow(pos.x - zx, 2) + Math.pow(pos.y - zy, 2));
+    return dist < 80;
+  }
+
+  function onDown(e) {
+    if (!mgState.active || mgState.hits >= mgState.maxHits) return;
+    e.preventDefault();
+    var pos = getPos(e);
+    var cr = cake.getBoundingClientRect();
+    var sr = stage.getBoundingClientRect();
+    var cx = cr.left - sr.left + cr.width / 2;
+    var cy = cr.top - sr.top + cr.height / 2;
+    mgState.dragging = true;
+    mgState.dragOffset = { x: pos.x - cx, y: pos.y - cy };
+    cake.classList.add('dragging');
+  }
+
+  function onMove(e) {
+    if (!mgState.dragging) return;
+    e.preventDefault();
+    var pos = getPos(e);
+    cake.style.left = (pos.x - mgState.dragOffset.x) + 'px';
+    cake.style.top = (pos.y - mgState.dragOffset.y) + 'px';
+    cake.style.bottom = 'auto';
+    cake.style.transform = 'none';
+  }
+
+  function onUp(e) {
+    if (!mgState.dragging) return;
+    mgState.dragging = false;
+    cake.classList.remove('dragging');
+    var pos = { x: 0, y: 0 };
+    if (e.changedTouches) {
+      var rect = stage.getBoundingClientRect();
+      pos = { x: e.changedTouches[0].clientX - rect.left, y: e.changedTouches[0].clientY - rect.top };
+    } else {
+      pos = getPos(e);
+    }
+    if (isOverZofi(pos)) {
+      onSplat();
+    } else {
+      cake.style.left = '50%';
+      cake.style.top = '';
+      cake.style.bottom = '20px';
+      cake.style.transform = 'translateX(-50%)';
+    }
+  }
+
+  function onSplat() {
+    mgState.hits++;
+    var pct = Math.round(mgState.hits / mgState.maxHits * 100);
+    $('revenge-meter-fill').style.width = pct + '%';
+    $('revenge-pct').textContent = pct;
+    // sound
+    playSplat();
+    // camera shake
+    cameraShake();
+    // cream particles
+    spawnCream(mgState.hits >= mgState.maxHits ? 30 : 16);
+    // zofi face
+    var zofiFace = $('zofi-face');
+    var faces = ['\ud83d\ude32', '\ud83d\ude35', '\ud83e\udd2a', '\ud83e\udd23'];
+    zofiFace.textContent = faces[Math.min(mgState.hits - 1, faces.length - 1)];
+    zofiFace.classList.remove('splat');
+    void zofiFace.offsetWidth;
+    zofiFace.classList.add('splat');
+    // cream overlay on zofi
+    var creamOverlay = $('zofi-cream');
+    var creams = ['\ud83e\udd67', '\ud83c\udf70', '\ud83e\udd67'];
+    creamOverlay.textContent = creams[Math.min(mgState.hits - 1, creams.length - 1)];
+    creamOverlay.className = 'show';
+    // impact flash
+    var target = $('cake-target');
+    target.classList.remove('show');
+    void target.offsetWidth;
+    target.classList.add('show');
+    setTimeout(function() { target.classList.remove('show'); }, 500);
+    // return cake
+    cake.style.left = '50%';
+    cake.style.top = '';
+    cake.style.bottom = '20px';
+    cake.style.transform = 'translateX(-50%)';
+    if (mgState.hits >= mgState.maxHits) {
+      onVictory();
+    }
+  }
+
+  function onVictory() {
+    // legendary splat animation
+    $('legendary-overlay').classList.add('show');
+    $('zofi-face').textContent = '\ud83e\udd23';
+    $('zofi-face').className = '';
+    $('zofi-cream').textContent = '\ud83c\udf70\u200d\ud83d\udca5';
+    $('cake-drag').textContent = '\ud83c\udf82';
+    $('minigame-hint').style.display = 'none';
+    setTimeout(function() {
+      $('minigame-victory').style.display = 'block';
+    }, 800);
+  }
+
+  cake.addEventListener('mousedown', onDown);
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+  cake.addEventListener('touchstart', onDown, { passive: false });
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('touchend', onUp);
+
+  $('minigame-close').addEventListener('click', closeMinigame);
+})();
 
 // ---- start ----
 document.addEventListener('DOMContentLoaded', init);

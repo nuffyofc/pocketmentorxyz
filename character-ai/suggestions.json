@@ -1,51 +1,52 @@
 {
   "tate": {
     "rounds": [
-      ["How do I actually escape the matrix?", "How do I build discipline when I don't feel motivated?", "What's the first real step to making money online?"],
-      ["How do I stop caring what other people think?", "How do I turn my anger into fuel?", "What does a high-value male actually do every day?"],
-      ["How do I know if I'm making progress or just staying busy?", "How do I handle failure without quitting?", "What's the one thing you'd do if you lost everything tomorrow?"]
+      ["How do I escape the Matrix?", "How should I treat women?", "Why am I broke?"]
     ]
   },
   "garyvee": {
     "rounds": [
-      ["How do I start building a personal brand from zero?", "What's the difference between a jab and a right hook?", "How do I figure out what I'm actually good at?"],
-      ["How do I deal with haters and critics online?", "How do I build a business without losing my family?", "What does patience as ROI actually look like day to day?"],
-      ["How do I stay relevant when platforms keep changing?", "What's your advice for using AI without losing authenticity?", "How do I know if I'm building a business or just a job for myself?"]
+      ["I feel like I'm behind in life, what do I do?", "How do I deal with the fear of failure?", "Is it too late to start a business?"]
     ]
   },
   "danpena": {
     "rounds": [
-      ["What's the first thing I need to do to Quantum Leap?", "What does GOQA actually mean in practice?", "How do I set goals I can't possibly achieve?"],
-      ["How do I take risks with no backup plan?", "What's the biggest mistake stopping my Quantum Leap?", "How do I build a dream team from nothing?"],
-      ["How do I use OPM to grow faster?", "What does macro-managing actually look like?", "How do I know if I'm playing to win or playing not to lose?"]
+      ["I feel stuck, how do I break through to the next level?", "I'm working hard but not seeing results, what's wrong?", "How do I become a high-performance leader?"]
     ]
   },
   "tailopez": {
     "rounds": [
-      ["Which of the 5 pillars of life should I fix first?", "What's the first book I should read to change my mindset?", "How do I find mentors when I have no network?"],
-      ["What does 'impatiently patient' actually mean?", "How do I use the 67 Steps in daily life?", "How do I balance working 100 hours and avoiding burnout?"],
-      ["How do I know if I have the 'worth a damn factor'?", "What does 'ratchet it' look like in practice?", "How do I apply Pareto efficiency to my business?"]
-    ]
-  },
-  "klemen": {
-    "rounds": [
-      ["What is consciousness and why should I care?", "How do I improve the quality of my attention?", "What does 'knowledge flows freely' mean practically?"],
-      ["What's your take on psychedelics and personal growth?", "How do I balance technology use with deep thinking?", "What's a belief I should question that I never have?"],
-      ["How do I find meaning in a world that feels chaotic?", "What's the most misunderstood idea about AI?", "How do I have better conversations with people who disagree with me?"]
+      ["How do I gain more knowledge quickly?", "What is the secret to a successful life?", "How do I start building wealth from scratch?"]
     ]
   },
   "jani": {
     "rounds": [
-      ["How do I start my first business with no money?", "What's the first system I should build in my life?", "How do I find a good business partner?"],
-      ["How do I handle failure without losing momentum?", "What does your daily routine actually look like?", "How do I build a social circle that pushes me forward?"],
-      ["How do I know when a business is worth saving vs killing?", "How do I balance running multiple companies without burning out?", "What's the best way to document my journey and build in public?"]
+      ["Imam super idejo, kje naj za\u010dnem?", "Spet mi ni uspelo, po\u010dutim se kot zguba.", "Kako naj hitreje pridem do rezultatov?"]
+    ]
+  },
+  "andrej": {
+    "rounds": [
+      ["Kako naj postanem bolj\u0161i v u\u010denju te\u017ekih stvari?", "Kako naj uporabim AI, da bom bolj produktiven?", "Ali je \u0161olski sistem \u0161e vedno smiseln?"]
+    ]
+  },
+  "taylor": {
+    "rounds": [
+      ["I'm going through a tough breakup, any advice?", "How do I deal with people who keep doubting me?", "How do I find inspiration to keep creating?"]
+    ]
+  },
+  "kim": {
+    "rounds": [
+      ["How do I stay motivated when I'm overwhelmed?", "What's your secret to building a successful brand?", "How do I handle public criticism and stay focused?"]
+    ]
+  },
+  "warren": {
+    "rounds": [
+      ["What is the best way to start investing?", "How do you deal with market volatility and fear?", "What is the most important trait for success?"]
     ]
   },
   "rok": {
     "rounds": [
-      ["How do I start vibe coding with zero experience?", "What's the first tool I should open to build an app?", "How do I find a simple app idea worth building?"],
-      ["How do I actually build in public without feeling cringe?", "What's your $0 to $100k strategy step by step?", "How do I make my first dollar from an app?"],
-      ["How do I recreate successful app features without copying?", "How do I grow an app from 0 to 1000 users?", "What's the biggest mistake new app builders make?"]
+      ["How do I start vibe coding with zero experience?", "What's the first tool I should open to build an app?", "How do I find a simple app idea worth building?"]
     ]
   }
 }
