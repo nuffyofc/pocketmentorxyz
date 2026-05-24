@@ -1,8 +1,8 @@
 {
-  "rewrites": [
-    {
-      "source": "/characters.json",
-      "destination": "/character-ai/characters.json"
-    }
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "routes": [
+    { "src": "/api/env", "dest": "/api/env.js" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }

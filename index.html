@@ -1,815 +1,877 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mentor AI — Stop Being Average</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Mentor — AI companion that talks in your style</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#050505;
-  --card:#101014;
-  --soft:#17171d;
-  --border:rgba(255,255,255,.08);
-  --text:#f8f8fb;
-  --muted:#9d9dad;
-  --purple:#8b5cf6;
-  --purple2:#a78bfa;
-  --orange:#ff8a00;
-  --green:#22c55e;
-  --radius:22px;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
+:root{--bg:#0A0A0F;--bg2:#12121A;--bg3:#1A1A26;--border:rgba(255,255,255,.06);--text:#F1F1F7;--text2:#8888A0;--radius:12px;--radius-lg:20px;}
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter, sans-serif;
-  overflow-x:hidden;
+  background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;
+  height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased
 }
-
-.container{
-  width:100%;
-  max-width:1200px;
-  margin:auto;
-  padding:0 24px;
+#app{
+  height:100vh;display:flex;flex-direction:column;max-width:600px;margin:0 auto;padding:0 12px;position:relative
 }
-
+/* header */
 header{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  z-index:100;
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  background:rgba(5,5,5,.7);
-  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 4px;flex-shrink:0;border-bottom:1px solid var(--border)
 }
-
-header .container{
-  height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.logo{font-weight:800;font-size:18px;display:flex;align-items:center;gap:6px}
+.logo span{opacity:.5;font-weight:400;font-size:12px}
+.header-actions{display:flex;gap:8px}
+.icon-btn{
+  background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+  width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;font-size:16px
 }
+.icon-btn:hover{border-color:var(--accent);color:#fff}
 
-.logo{
-  font-size:24px;
-  font-weight:900;
-  letter-spacing:-1px;
+/* character selection */
+#char-selector{padding:12px 0;flex-shrink:0}
+.char-select-row{display:flex;gap:8px;align-items:center}
+.char-select{
+  flex:1;appearance:none;-webkit-appearance:none;
+  background:var(--bg2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238880A0'%3E%3Cpath d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:14px;font-weight:600;
+  padding:10px 36px 10px 14px;cursor:pointer;outline:none;transition:border .2s
 }
-
-.logo span{
-  color:var(--purple2);
+.char-select:focus{border-color:var(--accent)}
+.char-select option{background:var(--bg3);color:var(--text);font-weight:400}
+.char-avatar-sm{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;overflow:hidden;
+  background:var(--bg2);border:1px solid var(--border)
 }
-
-nav{
-  display:flex;
-  gap:28px;
-  align-items:center;
+.char-avatar-sm img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.char-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+  position:relative;overflow:hidden
 }
+.char-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 
-nav a{
-  text-decoration:none;
-  color:var(--muted);
-  font-size:14px;
-  font-weight:600;
-  transition:.2s;
+/* chat */
+#chat-area{flex:1;overflow-y:auto;padding:16px 0;scroll-behavior:smooth}
+.msg{margin-bottom:16px;display:flex;gap:10px;animation:fadeIn .3s ease}
+.msg.user{flex-direction:row-reverse}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg-avatar{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:2px;overflow:hidden
 }
-
-nav a:hover{
-  color:#fff;
+.msg-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.msg-bubble{
+  max-width:80%;padding:12px 16px;border-radius:var(--radius-lg);
+  font-size:14px;line-height:1.65;position:relative
 }
-
-.btn{
-  border:none;
-  cursor:pointer;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  transition:.25s;
-  font-weight:700;
+.msg.bot .msg-bubble{
+  background:var(--bg2);border:1px solid var(--border);
+  border-top-left-radius:4px
 }
-
-.btn-primary{
-  background:linear-gradient(135deg,var(--purple),var(--purple2));
-  color:#fff;
-  padding:16px 32px;
-  border-radius:16px;
-  box-shadow:0 10px 40px rgba(139,92,246,.35);
+.msg.user .msg-bubble{
+  background:rgba(from var(--accent) r g b / .12);
+  border:1px solid rgba(from var(--accent) r g b / .2);
+  border-top-right-radius:4px;color:var(--text)
 }
+.msg-time{font-size:9px;color:var(--text2);margin-top:4px;opacity:.5}
+.msg.user .msg-time{text-align:right}
 
-.btn-primary:hover{
-  transform:translateY(-2px) scale(1.02);
+/* typing indicator */
+#typing{
+  display:none;align-items:center;gap:10px;padding:4px 0 16px;animation:fadeIn .3s ease
 }
+#typing .dots{display:flex;gap:4px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);border-top-left-radius:4px}
+#typing .dots span{width:8px;height:8px;border-radius:50%;background:var(--text2);animation:bounce 1.4s infinite}
+#typing .dots span:nth-child(2){animation-delay:.2s}
+#typing .dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 
-.hero{
-  padding:150px 0 100px;
-  position:relative;
-  overflow:hidden;
+/* input area */
+#input-area{
+  display:flex;gap:8px;padding:12px 0;flex-shrink:0;
+  border-top:1px solid var(--border);background:var(--bg)
 }
-
-.glow{
-  position:absolute;
-  width:700px;
-  height:700px;
-  background:radial-gradient(circle,rgba(139,92,246,.18),transparent 70%);
-  top:-300px;
-  right:-200px;
-  pointer-events:none;
+#input-area textarea{
+  flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:14px;
+  padding:12px 16px;resize:none;outline:none;transition:border .2s;max-height:120px;line-height:1.5
 }
-
-.hero-grid{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:60px;
-  align-items:center;
+#input-area textarea:focus{border-color:var(--accent)}
+#input-area textarea::placeholder{color:var(--text2);opacity:.5}
+#send-btn{
+  width:48px;height:48px;border-radius:var(--radius);border:none;
+  background:var(--accent);color:#fff;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .2s;opacity:.6
 }
+#send-btn.active{opacity:1}
+#send-btn.active:hover{filter:brightness(1.2);transform:scale(1.05)}
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 18px;
-  border-radius:999px;
-  background:rgba(139,92,246,.12);
-  border:1px solid rgba(139,92,246,.25);
-  color:var(--purple2);
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:28px;
+/* settings modal */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  z-index:100;align-items:center;justify-content:center;padding:24px
 }
-
-.hero h1{
-  font-size:72px;
-  line-height:.95;
-  letter-spacing:-4px;
-  margin-bottom:24px;
-  font-weight:900;
+.modal-overlay.show{display:flex}
+.modal{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:28px;width:100%;max-width:440px;max-height:80vh;overflow-y:auto
 }
-
-.hero h1 span{
-  color:var(--purple2);
+.modal h2{font-size:18px;font-weight:700;margin-bottom:4px}
+.modal .desc{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+.modal label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;margin-top:16px}
+.modal label:first-of-type{margin-top:0}
+.modal input,.modal select{
+  width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:13px;
+  padding:10px 14px;outline:none;transition:border .2s
 }
-
-.hero p{
-  font-size:20px;
-  color:var(--muted);
-  line-height:1.7;
-  max-width:620px;
-  margin-bottom:36px;
+.modal input:focus,.modal select:focus{border-color:var(--accent)}
+.modal .hint{font-size:10px;color:var(--text2);margin-top:4px;line-height:1.5}
+.modal .hint a{color:var(--accent)}
+.modal .btn-row{display:flex;gap:8px;margin-top:20px}
+.modal .btn-row button{
+  flex:1;padding:10px;border-radius:8px;border:none;font-weight:600;font-size:13px;cursor:pointer;transition:all .2s;font-family:inherit
 }
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{filter:brightness(1.15)}
+.btn-ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border)!important}
+.btn-ghost:hover{border-color:var(--text2)!important}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.status-dot.online{background:#34D399;box-shadow:0 0 6px rgba(52,211,153,.4)}
+.status-dot.offline{background:var(--text2)}
 
-.hero-actions{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
+/* welcome */
+#welcome{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;text-align:center;padding:20px
 }
+#welcome.hidden{display:none}
+#welcome .big-emoji{font-size:56px;margin-bottom:16px}
+#welcome h2{font-size:22px;font-weight:800;margin-bottom:8px}
+#welcome p{color:var(--text2);font-size:14px;max-width:320px;line-height:1.7;margin-bottom:24px}
+#welcome .start-hint{font-size:12px;color:var(--text2);opacity:.5}
 
-.hero-stats{
-  display:flex;
-  gap:28px;
-  margin-top:40px;
-  flex-wrap:wrap;
+/* toast */
+#toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:var(--bg3);border:1px solid var(--border);color:var(--text2);
+  font-size:12px;padding:10px 18px;border-radius:8px;
+  opacity:0;pointer-events:none;transition:all .3s;max-width:90vw;
+  white-space:normal;word-break:break-word;
+  z-index:200;font-family:Inter,system-ui,sans-serif;line-height:1.5
 }
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.err{border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.1);color:#FCA5A5}
 
-.hero-stat strong{
-  display:block;
-  font-size:28px;
+/* clear button */
+#clear-btn{display:none}
+
+/* ---- responsive ---- */
+@media (max-width:480px){
+  #app{padding:0 8px}
+  .logo{font-size:15px}
+  .logo span{font-size:10px}
+  .icon-btn{width:32px;height:32px;font-size:14px}
+  .char-select{font-size:13px;padding:8px 32px 8px 12px}
+  .char-avatar{width:32px;height:32px;font-size:15px}
+  .msg-bubble{max-width:88%;padding:10px 14px;font-size:13px}
+  .msg-avatar{width:28px;height:28px;font-size:13px}
+  #input-area textarea{font-size:13px;padding:10px 14px}
+  #send-btn{width:44px;height:44px;font-size:18px}
+  .modal{padding:20px 16px;margin:0 8px;max-height:90vh}
+  .modal h2{font-size:16px}
+  .modal .desc{font-size:11px}
+  .modal input,.modal select{font-size:12px;padding:8px 12px}
+  .modal label{font-size:10px}
 }
-
-.hero-stat span{
-  color:var(--muted);
-  font-size:14px;
+@media (max-width:380px){
+  .char-select{font-size:12px;padding:7px 28px 7px 10px}
+  .char-avatar{width:28px;height:28px;font-size:13px}
+  .msg-bubble{max-width:92%;font-size:12px;padding:8px 12px}
 }
-
-.preview{
-  background:linear-gradient(180deg,#15151d,#0e0e13);
-  border:1px solid var(--border);
-  border-radius:28px;
-  overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,.45);
-}
-
-.preview-top{
-  padding:18px 22px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.live{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:#fff;
-  font-size:13px;
-  font-weight:700;
-}
-
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 18px var(--green);
-}
-
-.preview-body{
-  padding:26px;
-}
-
-.chat{
-  background:#1b1b23;
-  border:1px solid rgba(255,255,255,.05);
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:18px;
-}
-
-.chat small{
-  display:block;
-  margin-bottom:10px;
-  color:var(--orange);
-  font-weight:700;
-}
-
-.chat p{
-  font-size:15px;
-  line-height:1.8;
-  color:#ececf4;
-}
-
-.input-box{
-  background:#111117;
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:18px;
-}
-
-.input-box label{
-  display:block;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:12px;
-}
-
-.input-row{
-  display:flex;
-  gap:12px;
-}
-
-.input-row input{
-  flex:1;
-  background:#1a1a22;
-  border:none;
-  outline:none;
-  color:#fff;
-  padding:16px;
-  border-radius:14px;
-  font-size:15px;
-}
-
-.section{
-  padding:110px 0;
-}
-
-.section-title{
-  font-size:52px;
-  line-height:1;
-  letter-spacing:-2px;
-  margin-bottom:16px;
-  font-weight:900;
-  text-align:center;
-}
-
-.section-desc{
-  text-align:center;
-  color:var(--muted);
-  max-width:720px;
-  margin:0 auto 60px;
-  font-size:18px;
-  line-height:1.7;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:24px;
-}
-
-.card{
-  background:linear-gradient(180deg,#121218,#0d0d12);
-  border:1px solid var(--border);
-  border-radius:26px;
-  padding:30px;
-  position:relative;
-  overflow:hidden;
-  transition:.3s;
-}
-
-.card:hover{
-  transform:translateY(-8px);
-  border-color:rgba(139,92,246,.3);
-  box-shadow:0 30px 60px rgba(0,0,0,.35);
-}
-
-.mentor-img{
-  width:100%;
-  aspect-ratio:1 / 1;
-  object-fit:cover;
-  border-radius:16px;
-  margin-bottom:20px;
-  background:var(--soft);
-  border:1px solid rgba(255,255,255,0.03);
-}
-
-.card h3{
-  font-size:28px;
-  margin-bottom:8px;
-}
-
-.card .type{
-  color:var(--purple2);
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:18px;
-}
-
-.card p{
-  color:var(--muted);
-  line-height:1.8;
-  margin-bottom:22px;
-}
-
-.power{
-  display:inline-flex;
-  padding:8px 14px;
-  border-radius:999px;
-  background:rgba(139,92,246,.12);
-  border:1px solid rgba(139,92,246,.25);
-  color:var(--purple2);
-  font-size:12px;
-  font-weight:800;
-}
-
-.quote-section{
-  background:linear-gradient(180deg,#0d0d12,#070709);
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-}
-
-.quote-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:24px;
-}
-
-.quote{
-  background:#111117;
-  border:1px solid var(--border);
-  padding:34px;
-  border-radius:24px;
-  font-size:28px;
-  line-height:1.3;
-  font-weight:800;
-  letter-spacing:-1px;
-}
-
-.quote span{
-  color:var(--purple2);
-}
-
-.social-proof{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:20px;
-}
-
-.proof{
-  background:#111117;
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:28px;
-}
-
-.proof strong{
-  display:block;
-  font-size:42px;
-  margin-bottom:10px;
-}
-
-.proof p{
-  color:var(--muted);
-  line-height:1.7;
-}
-
-.cta{
-  text-align:center;
-  padding:140px 0;
-}
-
-.cta h2{
-  font-size:76px;
-  line-height:.95;
-  letter-spacing:-4px;
-  margin-bottom:22px;
-}
-
-.cta p{
-  color:var(--muted);
-  font-size:20px;
-  max-width:720px;
-  margin:0 auto 40px;
-  line-height:1.8;
-}
-
-footer{
-  border-top:1px solid var(--border);
-  padding:40px 0;
-}
-
-.footer-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-.footer-row p{
-  color:var(--muted);
-}
-
-@media(max-width:1024px){
-  .hero-grid,
-  .cards,
-  .quote-grid,
-  .social-proof{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .hero h1,
-  .cta h2{
-    font-size:56px;
-  }
-}
-
-@media(max-width:768px){
-  nav{
-    display:none;
-  }
-
-  .hero-grid,
-  .cards,
-  .quote-grid,
-  .social-proof{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    padding-top:120px;
-  }
-
-  .hero h1,
-  .cta h2,
-  .section-title{
-    font-size:42px;
-  }
-
-  .hero p,
-  .section-desc,
-  .cta p{
-    font-size:17px;
-  }
-
-  .input-row{
-    flex-direction:column;
-  }
+@media (hover:none){}
+/* safe area for notched phones */
+@supports(padding-top:env(safe-area-inset-top)){
+  header{padding-top:max(12px, env(safe-area-inset-top))}
 }
 </style>
 </head>
 <body>
+<div id="app">
+  <header>
+    <div class="logo">🧠 Mentor <span>alpha</span></div>
+    <div class="header-actions">
+      <button class="icon-btn" id="clear-btn" title="Clear chat" style="display:none">🗑</button>
+      <button class="icon-btn" id="settings-btn" title="Settings">⚙</button>
+    </div>
+  </header>
 
-<header>
-  <div class="container">
-    <div class="logo">🧠 Mentor <span>AI</span></div>
-
-    <nav>
-      <a href="#mentors">Mentors</a>
-      <a href="#quotes">Quotes</a>
-      <a href="#proof">Proof</a>
-      <a href="character-ai/" class="btn btn-primary">Try Out App</a>
-    </nav>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="glow"></div>
-
-  <div class="container">
-    <div class="hero-grid">
-
-      <div>
-        <div class="badge">🔥 12,482 people got mentored today</div>
-
-        <h1>
-          Stop being <span>average.</span><br>
-          Talk to mentors that roast your excuses.
-        </h1>
-
-        <p>
-          Andrew Tate. Gary Vee. Dan Peña. Tai Lopez.
-          The internet’s most intense personalities — rebuilt as AI mentors designed to push you harder than your friends ever will.
-        </p>
-
-        <div class="hero-actions">
-          <a href="character-ai/" class="btn btn-primary">Try Out App</a>
-          <a href="#mentors" class="btn btn-primary" style="background:#1a1a22;box-shadow:none;border:1px solid var(--border)">Choose Your Mentor</a>
-        </div>
-
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <strong>5M+</strong>
-            <span>Conversations</span>
-          </div>
-
-          <div class="hero-stat">
-            <strong>92%</strong>
-            <span>Return Daily</span>
-          </div>
-
-          <div class="hero-stat">
-            <strong>24/7</strong>
-            <span>No Excuses</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="preview">
-        <div class="preview-top">
-          <div class="live">
-            <div class="dot"></div>
-            328 conversations happening right now
-          </div>
-
-          <div style="color:var(--muted);font-size:13px">
-            Mentor AI
-          </div>
-        </div>
-
-        <div class="preview-body">
-          <div class="chat">
-            <small>🥋 Andrew Tate AI</small>
-            <p>
-              You don't have a motivation problem. You have a discipline problem.
-              The average person wastes 5 hours a day scrolling nonsense and wonders why life never changes.
-              Stop waiting to feel ready.
-            </p>
-          </div>
-
-          <div class="chat">
-            <small>🙋 You</small>
-            <p>
-              I want to build something online but I keep procrastinating.
-            </p>
-          </div>
-
-          <div class="chat">
-            <small>🦁 Dan Peña AI</small>
-            <p>
-              GOOD. NOW WE KNOW THE PROBLEM.
-              YOU KEEP NEGOTIATING WITH WEAKNESS.
-              WINNERS EXECUTE.
-            </p>
-          </div>
-
-          <div class="input-box">
-            <label>Type your biggest excuse</label>
-
-            <div class="input-row">
-              <input type="text" placeholder="I don't have time..." />
-              <a href="character-ai/" class="btn btn-primary">Get Roasted</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
+  <div id="char-selector">
+    <div class="char-select-row">
+      <select id="char-select" class="char-select"><option value="">Select a mentor...</option></select>
+      <button class="icon-btn" id="avatar-btn" title="Change avatar">✎</button>
     </div>
   </div>
-</section>
 
-<section class="section" id="mentors">
-  <div class="container">
-    <h2 class="section-title">
-      Choose your fighter.
-    </h2>
-
-    <p class="section-desc">
-      Every mentor has a completely different personality, philosophy, energy, and communication style.
-      Pick the one that hits hardest.
-    </p>
-
-    <div class="cards">
-
-      <div class="card">
-        <img src="character-ai/avatars/tate.jpg" alt="Tate" class="mentor-img" />
-        <h3>🥋 Tate</h3>
-        <div class="type">Discipline + Aggression</div>
-
-        <p>
-          Calls out weakness instantly.
-          Pushes discipline, money, masculinity, confidence, and execution.
-        </p>
-
-        <div class="power">MENTAL WARFARE</div>
-      </div>
-
-      <div class="card">
-        <img src="character-ai/avatars/garyvee.jpg" alt="Gary Vee" class="mentor-img" />
-        <h3>🍷 Gary Vee</h3>
-        <div class="type">Motivation + Consistency</div>
-
-        <p>
-          High-energy encouragement with brutally honest business advice.
-          Feels like a hype coach that never sleeps.
-        </p>
-
-        <div class="power">PURE ENERGY</div>
-      </div>
-
-      <div class="card">
-        <img src="character-ai/avatars/danpena.jpg" alt="Dan Peña" class="mentor-img" />
-        <h3>🦁 Dan Peña</h3>
-        <div class="type">Fear + Action</div>
-
-        <p>
-          Ruthless. Loud. Intense.
-          Built to destroy excuses and force action.
-        </p>
-
-        <div class="power">MAX INTENSITY</div>
-      </div>
-
-      <div class="card">
-        <img src="character-ai/avatars/tai.jpg" alt="Tai Lopez" class="mentor-img" />
-        <h3>📚 Tai Lopez</h3>
-        <div class="type">Wealth + Lifestyle</div>
-
-        <p>
-          Big-picture strategy, billionaire lessons, psychology, networking, and leverage.
-        </p>
-
-        <div class="power">STATUS MODE</div>
-      </div>
-
-      <div class="card">
-        <img src="character-ai/avatars/klemen.jpg" alt="Klemen" class="mentor-img" />
-        <h3>🧠 Klemen</h3>
-        <div class="type">Deep Thinking</div>
-
-        <p>
-          Philosophy, consciousness, technology, creativity, and human potential.
-        </p>
-
-        <div class="power">HIGH IQ MODE</div>
-      </div>
-
-      <div class="card">
-        <img src="character-ai/avatars/jani.jpg" alt="Jani" class="mentor-img" />
-        <h3>💼 Jani</h3>
-        <div class="type">Real Entrepreneurship</div>
-
-        <p>
-          Practical business building without fake guru nonsense.
-          Real systems. Real execution.
-        </p>
-
-        <div class="power">BUILDER MODE</div>
-      </div>
-
+  <div id="chat-area">
+    <div id="welcome">
+      <div class="big-emoji">👋</div>
+      <h2>Pick a mentor above</h2>
+      <p>Choose a character to start a conversation. Each has a unique personality and style.</p>
+      <div class="start-hint">or open ⚙ to connect your own AI model</div>
     </div>
   </div>
-</section>
 
-<section class="section quote-section" id="quotes">
-  <div class="container">
+  <div id="typing">
+    <div class="dots"><span></span><span></span><span></span></div>
+  </div>
 
-    <h2 class="section-title">
-      Screenshots people actually share.
-    </h2>
+  <div id="input-area">
+    <textarea id="msg-input" rows="1" placeholder="Type a message..." disabled></textarea>
+    <button id="send-btn">➤</button>
+  </div>
+</div>
 
-    <p class="section-desc">
-      This isn't productivity advice.
-      It's psychological warfare against your excuses.
-    </p>
+<input type="file" id="avatar-input" accept="image/*" style="display:none">
 
-    <div class="quote-grid">
+<!-- settings modal -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <h2>⚙ Settings</h2>
+    <p class="desc">Connect a free AI model. All providers below offer free tiers — no credit card required.</p>
 
-      <div class="quote">
-        “You're not tired.<br>
-        <span>You're distracted.</span>”
-      </div>
+    <label>Provider</label>
+    <select id="provider-select">
+      <option value="openrouter">OpenRouter — 25+ free models</option>
+      <option value="groq">Groq — fastest infererence (Llama, Mixtral)</option>
+      <option value="google">Google Gemini — 1M context, 60 req/min free</option>
+      <option value="openai">OpenAI — ChatGPT models (paid tier)</option>
+      <option value="custom">Custom (OpenAI-compatible)</option>
+    </select>
+    <div class="hint" id="provider-hint">Free key at <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai/keys</a></div>
 
-      <div class="quote">
-        “Your future is being destroyed by <span>comfort.</span>”
-      </div>
+    <label>API Key</label>
+    <input type="password" id="api-key-input" placeholder="sk-or-v1-..." autocomplete="off">
 
-      <div class="quote">
-        “Average people need motivation.<br>
-        <span>Winners need standards.</span>”
-      </div>
+    <label>Model</label>
+    <select id="model-select"></select>
+    <div class="hint" id="model-hint">Free models are rate-limited. Switch provider for more options.</div>
 
+    <div class="custom-field" style="display:none">
+      <label>Custom Base URL</label>
+      <input type="url" id="custom-url-input" placeholder="https://your-api.example.com/v1">
+    </div>
+    <div class="custom-field" style="display:none">
+      <label>Custom Model Name</label>
+      <input type="text" id="custom-model-input" placeholder="gpt-4o-mini, claude-3, etc.">
     </div>
 
-  </div>
-</section>
+    <label>Theme</label>
+    <select id="theme-select">
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
+    </select>
 
-<section class="section" id="proof">
-  <div class="container">
-
-    <h2 class="section-title">
-      Built for obsession.
-    </h2>
-
-    <p class="section-desc">
-      People don't just try Mentor AI.
-      They come back every single day.
-    </p>
-
-    <div class="social-proof">
-
-      <div class="proof">
-        <strong>2.4h</strong>
-        <p>Average daily usage per active user.</p>
-      </div>
-
-      <div class="proof">
-        <strong>5M+</strong>
-        <p>Mentor conversations generated.</p>
-      </div>
-
-      <div class="proof">
-        <strong>87%</strong>
-        <p>Users share responses with friends.</p>
-      </div>
-
-      <div class="proof">
-        <strong>24/7</strong>
-        <p>Your mentors never sleep.</p>
-      </div>
-
+    <div class="btn-row">
+      <button class="btn-ghost" onclick="document.getElementById('settings-modal').classList.remove('show')">Cancel</button>
+      <button class="btn-primary" onclick="saveSettings()">Save</button>
     </div>
-
   </div>
-</section>
+</div>
 
-<section class="cta">
-  <div class="container">
+<div id="toast"></div>
 
-    <h2>
-      Your excuses are waiting.<br>
-      So are your mentors.
-    </h2>
+<script>
+// ---- characters (loaded from characters.json) ----
+let characters = [];
 
-    <p>
-      No sign up.
-      No corporate HR tone.
-      No fake positivity.
-      Just intense conversations that force you to think bigger and move faster.
-    </p>
+// ---- providers ----
+const PROVIDERS = {
+  openrouter: {
+    baseUrl: 'https://openrouter.ai/api/v1',
+    keyPlaceholder: 'sk-or-v1-...',
+    hint: 'Free key at <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai/keys</a>',
+    models: [
+      {id:'meta-llama/llama-3.3-70b-instruct:free', lbl:'Llama 3.3 70B (free, best overall) — recommended'},
+      {id:'qwen/qwen3-coder:free', lbl:'Qwen3 Coder (free, coding)'},
+      {id:'qwen/qwen3-next-80b-a3b-instruct:free', lbl:'Qwen3 Next 80B (free, strong)'},
+      {id:'google/gemma-4-26b-a4b-it:free', lbl:'Gemma 4 26B (free, Google)'},
+      {id:'google/gemma-4-31b-it:free', lbl:'Gemma 4 31B (free, Google)'},
+      {id:'deepseek/deepseek-v4-flash:free', lbl:'DeepSeek V4 Flash (free, fast)'},
+      {id:'nousresearch/hermes-3-llama-3.1-405b:free', lbl:'Hermes 3 405B (free, huge)'},
+      {id:'minimax/minimax-m2.5:free', lbl:'MiniMax M2.5 (free)'},
+      {id:'nvidia/nemotron-3-super-120b-a12b:free', lbl:'Nemotron 120B (free, NVIDIA)'},
+      {id:'meta-llama/llama-3.2-3b-instruct:free', lbl:'Llama 3.2 3B (free, tiny & fast)'},
+      {id:'openai/gpt-3.5-turbo', lbl:'GPT-3.5 Turbo (paid)'},
+      {id:'anthropic/claude-3-haiku', lbl:'Claude 3 Haiku (paid)'},
+      {id:'openai/gpt-4o-mini', lbl:'GPT-4o Mini (paid)'}
+    ]
+  },
+  groq: {
+    baseUrl: 'https://api.groq.com/openai/v1',
+    keyPlaceholder: 'gsk_...',
+    hint: 'Free key at <a href="https://console.groq.com/keys" target="_blank" style="color:var(--accent)">console.groq.com/keys</a> — no credit card',
+    models: [
+      {id:'llama-3.3-70b-versatile', lbl:'Llama 3.3 70B (free, best) — recommended'},
+      {id:'llama3-70b-8192', lbl:'Llama 3 70B (free, 8k ctx)'},
+      {id:'llama3-8b-8192', lbl:'Llama 3 8B (free, fast)'},
+      {id:'mixtral-8x7b-32768', lbl:'Mixtral 8x7B (free, 32k ctx)'},
+      {id:'gemma2-9b-it', lbl:'Gemma 2 9B (free)'}
+    ]
+  },
+  google: {
+    baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai',
+    keyPlaceholder: 'AIza...',
+    hint: 'Free key at <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com/apikey</a>',
+    models: [
+      {id:'gemini-2.0-flash', lbl:'Gemini 2.0 Flash (free, 1M ctx)'},
+      {id:'gemini-2.0-flash-lite', lbl:'Gemini 2.0 Flash Lite (free)'},
+      {id:'gemini-1.5-flash', lbl:'Gemini 1.5 Flash (free, 1M ctx)'},
+      {id:'gemini-1.5-pro', lbl:'Gemini 1.5 Pro (free limited)'}
+    ]
+  },
+  openai: {
+    baseUrl: 'https://api.openai.com/v1',
+    keyPlaceholder: 'sk-proj-...',
+    hint: 'Paid. Get key at <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent)">platform.openai.com</a> ($5 free credit)',
+    models: [
+      {id:'gpt-4o', lbl:'GPT-4o (paid)'},
+      {id:'gpt-4o-mini', lbl:'GPT-4o Mini (paid, cheap)'},
+      {id:'gpt-3.5-turbo', lbl:'GPT-3.5 Turbo (paid)'}
+    ]
+  },
+  custom: {
+    baseUrl: '',
+    keyPlaceholder: 'sk-...',
+    hint: 'Enter any OpenAI-compatible endpoint URL below',
+    models: [
+      {id:'custom-model', lbl:'Custom (enter model name below)'}
+    ]
+  }
+};
 
-    <a href="character-ai/" class="btn btn-primary" style="font-size:20px;padding:20px 44px">
-      Try Out App
-    </a>
+// ---- state ----
+let activeChar = null;
+let messages = [];
+let isGenerating = false;
+let apiKey = localStorage.getItem('mentor_api_key') || '';
+let provider = localStorage.getItem('mentor_provider') || 'groq';
+let model = localStorage.getItem('mentor_model') || 'llama-3.3-70b-versatile';
+let customBaseUrl = localStorage.getItem('mentor_custom_url') || '';
+let customModelName = localStorage.getItem('mentor_custom_model') || '';
+let theme = localStorage.getItem('mentor_theme') || 'dark';
+const CONV_KEY = 'mentor_conversations';
+const AVATAR_KEY = 'mentor_avatars';
 
-  </div>
-</section>
+function loadAvatars() {
+  try { return JSON.parse(localStorage.getItem(AVATAR_KEY) || '{}'); } catch { return {}; }
+}
+function saveAvatar(charId, dataUrl) {
+  const all = loadAvatars();
+  if (dataUrl) all[charId] = dataUrl;
+  else delete all[charId];
+  localStorage.setItem(AVATAR_KEY, JSON.stringify(all));
+}
+function getAvatar(charId) {
+  const all = loadAvatars();
+  return all[charId] || null;
+}
 
-<footer>
-  <div class="container">
+// ---- DOM refs ----
+const $ = id => document.getElementById(id);
+const chatArea = $('chat-area');
+const welcome = $('welcome');
+const msgInput = $('msg-input');
+const sendBtn = $('send-btn');
+const typing = $('typing');
+const toast = $('toast');
 
-    <div class="footer-row">
-      <div class="logo">🧠 Mentor <span>AI</span></div>
+// ---- init ----
+async function init() {
+  // load env vars from server.py or Vercel serverless function
+  try {
+    const env = window.__ENV__ || 
+      await (await fetch('/api/env').catch(() => null))?.json() ||
+      await (await fetch('/__env').catch(() => null))?.json();
+    if (env) {
+      if (env.API_KEY && !localStorage.getItem('mentor_api_key')) apiKey = env.API_KEY;
+      if (env.PROVIDER) provider = env.PROVIDER;
+      if (env.MODEL) model = env.MODEL;
+      if (env.THEME) theme = env.THEME;
+    }
+  } catch {}
 
-      <p>
-        The internet's most dangerous self-improvement app.
-      </p>
-    </div>
+  // load characters from characters.json
+  try {
+    const res = await fetch('/characters.json');
+    if (res.ok) characters = await res.json();
+  } catch { console.warn('Could not load characters.json, using fallback'); }
+  if (!characters || characters.length === 0) {
+    characters = [{id:'sage',name:'Mentor',tag:'AI Companion',emoji:'🧠',avatar:'',color:'#7C3AED',greeting:'Hello. How can I help you?',prompt:'You are a helpful AI mentor. Be concise and supportive.'}];
+  }
 
-  </div>
-</footer>
+  // detect file:// protocol — APIs block CORS from file://
+  if (window.location.protocol === 'file:') {
+    const el = document.createElement('div');
+    el.style.cssText = 'background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#FCA5A5;padding:10px 14px;border-radius:8px;font-size:11px;line-height:1.6;margin-bottom:4px;flex-shrink:0';
+    el.innerHTML = '⚠️ <strong>file:// detected.</strong> CORS blocks API calls from local files. Run a local server: open terminal in this folder and run <code style="background:rgba(0,0,0,.3);padding:1px 6px;border-radius:3px">npx serve .</code> or <code style="background:rgba(0,0,0,.3);padding:1px 6px;border-radius:3px">python -m http.server 8000</code>';
+    document.getElementById('app').insertBefore(el, document.getElementById('char-selector'));
+  }
 
+  // migrate stale saved model — check it exists in current provider's list
+  const provCfg = PROVIDERS[provider];
+  if (provCfg) {
+    const validIds = provCfg.models.map(m => m.id);
+    if (!validIds.includes(model)) {
+      console.warn(`Model "${model}" not found for provider "${provider}", falling back to "${validIds[0]}"`);
+      model = validIds[0];
+      localStorage.setItem('mentor_model', model);
+    }
+  }
+
+  applyTheme();
+  renderCharacters();
+  loadConversation();
+
+  // settings
+  $('api-key-input').value = apiKey;
+  $('provider-select').value = provider;
+  $('theme-select').value = theme;
+  updateModelList(provider);
+  $('model-select').value = model;
+  $('provider-select').addEventListener('change', onProviderChange);
+
+  // event listeners
+  $('char-select').addEventListener('change', () => {
+    const val = $('char-select').value;
+    if (val) selectCharacter(val);
+  });
+  $('avatar-btn').addEventListener('click', editAvatar);
+  sendBtn.addEventListener('click', sendMessage);
+  msgInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  msgInput.addEventListener('input', () => {
+    msgInput.style.height = 'auto';
+    msgInput.style.height = Math.min(msgInput.scrollHeight, 120) + 'px';
+    sendBtn.classList.toggle('active', msgInput.value.trim().length > 0);
+  });
+  $('settings-btn').addEventListener('click', () => $('settings-modal').classList.add('show'));
+  $('clear-btn').addEventListener('click', clearConversation);
+
+  // if a character is selected but no messages, show welcome
+  if (!activeChar) {
+    msgInput.disabled = true;
+  }
+}
+
+function getEffectiveAvatar(char) {
+  const uploaded = getAvatar(char.id);
+  if (uploaded) return uploaded;
+  if (char.avatar) return char.avatar;
+  return null;
+}
+
+function renderCharacters() {
+  const sel = $('char-select');
+  sel.innerHTML = '<option value="">Select a mentor...</option>';
+  characters.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    const avatarUrl = getEffectiveAvatar(c);
+    const prefix = avatarUrl ? '' : (c.emoji || '🧠') + ' ';
+    opt.textContent = prefix + c.name + ' — ' + c.tag;
+    if (activeChar?.id === c.id) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function selectCharacter(id) {
+  const char = characters.find(c => c.id === id);
+  if (!char) return;
+  activeChar = char;
+  document.documentElement.style.setProperty('--accent', char.color);
+
+  // update dropdown
+  $('char-select').value = id;
+  renderCharacters();
+
+  // load or start conversation
+  const saved = getConversation(id);
+  if (saved && saved.length > 0) {
+    messages = saved;
+  } else {
+    const g = Array.isArray(char.greeting) ? char.greeting[Math.floor(Math.random() * char.greeting.length)] : char.greeting;
+    messages = [{ role: 'assistant', content: g }];
+    saveConversation();
+  }
+
+  localStorage.setItem('mentor_last_char', id);
+  welcome.classList.add('hidden');
+  msgInput.disabled = false;
+  msgInput.focus();
+  renderMessages();
+  $('clear-btn').style.display = 'flex';
+}
+
+function renderMessages() {
+  const existing = chatArea.querySelectorAll('.msg, #welcome, #typing');
+  existing.forEach(el => { if (el.id !== 'welcome' && el.id !== 'typing') el.remove(); });
+
+  messages.forEach(msg => appendMessage(msg.role, msg.content, false));
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function appendMessage(role, content, animate = true) {
+  // remove welcome
+  welcome.classList.add('hidden');
+
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  if (!animate) div.style.animation = 'none';
+
+  if (role === 'assistant') {
+    const char = activeChar || characters[0];
+    const avatarUrl = getEffectiveAvatar(char);
+    const avatarHtml = avatarUrl
+      ? `<img src="${escapeHtml(avatarUrl)}" alt="${char.name}">`
+      : (char.emoji || '🧠');
+    div.innerHTML = `
+      <div class="msg-avatar" style="background:${char.color}22">${avatarHtml}</div>
+      <div class="msg-bubble">${escapeHtml(content)}<div class="msg-time">${char.name}</div></div>`;
+  } else {
+    div.innerHTML = `
+      <div class="msg-bubble">${escapeHtml(content)}<div class="msg-time">you</div></div>`;
+  }
+
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+let lastRequestTime = 0;
+let retryCount = 0;
+
+async function sendMessage() {
+  const text = msgInput.value.trim();
+  if (!text || isGenerating || !activeChar) return;
+  msgInput.value = '';
+  msgInput.style.height = 'auto';
+  sendBtn.classList.remove('active');
+
+  // client-side throttle: max 1 req per 3s
+  const sinceLast = Date.now() - lastRequestTime;
+  if (sinceLast < 3000 && lastRequestTime > 0) {
+    showToast(`⏳ Wait ${Math.ceil((3000 - sinceLast)/1000)}s between requests (rate limit safety)`);
+    return;
+  }
+
+  messages.push({ role: 'user', content: text });
+  appendMessage('user', text);
+  saveConversation();
+
+  isGenerating = true;
+  typing.style.display = 'flex';
+  chatArea.scrollTop = chatArea.scrollHeight;
+  sendBtn.disabled = true;
+  retryCount = 0;
+
+  try {
+    const reply = await callWithRetry(messages);
+    lastRequestTime = Date.now();
+    messages.push({ role: 'assistant', content: reply });
+    typing.style.display = 'none';
+    appendMessage('assistant', reply);
+    saveConversation();
+  } catch (err) {
+    typing.style.display = 'none';
+    console.error('Mentor API error:', err);
+    showToast('❌ ' + err.message);
+  } finally {
+    isGenerating = false;
+    sendBtn.disabled = false;
+    msgInput.focus();
+  }
+}
+
+async function callWithRetry(conversation, attempt = 1) {
+  const maxAttempts = 3;
+  try {
+    return await callAPI(conversation);
+  } catch (err) {
+    // retry on 429 with exponential backoff
+    if (err.message?.includes('429') || err.message?.includes('Rate limited')) {
+      if (attempt < maxAttempts) {
+        const wait = Math.min(attempt * 4000, 10000);
+        showToast(`⏳ Rate limited — retrying in ${wait/1000}s (attempt ${attempt}/${maxAttempts})`);
+        await new Promise(r => setTimeout(r, wait));
+        return callWithRetry(conversation, attempt + 1);
+      }
+      throw new Error(`Still rate limited after ${maxAttempts} retries. Free OpenRouter limit: ~20 req/min. Switch to Groq (14,400/day free) in ⚙ settings for higher limits.`);
+    }
+    throw err;
+  }
+}
+
+async function callAPI(conversation) {
+  if (!apiKey) throw new Error('No API key. Open ⚙ settings to set one.');
+
+  const cfg = PROVIDERS[provider] || PROVIDERS.openrouter;
+  const baseUrl = provider === 'custom' ? customBaseUrl : cfg.baseUrl;
+  if (!baseUrl) throw new Error('Set a custom base URL in ⚙ settings.');
+
+  const actualModel = provider === 'custom' ? (customModelName || 'custom-model') : model;
+
+  const systemMsg = {
+    role: 'system',
+    content: activeChar.prompt + `\n\nYou are ${activeChar.name}, ${activeChar.tag}. Respond as this character. Never break character.`
+  };
+
+  const body = {
+    model: actualModel,
+    messages: [systemMsg, ...conversation.slice(-10)],
+    temperature: 0.8,
+    max_tokens: 500
+  };
+
+  const headers = {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  };
+
+  if (provider === 'openrouter') {
+    headers['HTTP-Referer'] = window.location.href;
+    headers['X-Title'] = 'Mentor AI';
+  }
+
+  let res;
+  try {
+    res = await fetch(`${baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body)
+    });
+  } catch (netErr) {
+    console.error('Network error details:', netErr);
+    if (netErr.message?.includes('Failed to fetch') || netErr.message?.includes('NetworkError')) {
+      throw new Error('Network error: file:// blocks CORS. Run via local server (python -m http.server 9876) or deploy to a live URL.');
+    }
+    throw new Error(`Network error: ${netErr.message}`);
+  }
+
+  if (!res.ok) {
+    let msg = `HTTP ${res.status}`;
+    try {
+      const errData = await res.json();
+      msg = errData.error?.message || JSON.stringify(errData).slice(0, 200) || msg;
+    } catch {}
+    if (res.status === 401) throw new Error(`Invalid API key (401). Check ⚙ settings. Get a free key at openrouter.ai/keys`);
+    if (res.status === 404) throw new Error(`Model not found (404). "${actualModel}" is deprecated. Open ⚙ settings and pick a model from the list.`);
+    if (res.status === 429) throw new Error(`Rate limited (429) by ${provider}. Free models: ~20 req/min.`);
+    if (res.status === 402) throw new Error(`Insufficient credits (402). Add funds or use a :free model.`);
+    throw new Error(`${provider}: ${msg}`);
+  }
+
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error('Invalid JSON response from API.');
+  }
+
+  const reply = data.choices?.[0]?.message?.content;
+  if (!reply) {
+    console.warn('Unexpected response:', data);
+    if (data.error) throw new Error(`API error: ${data.error.message || JSON.stringify(data.error)}`);
+    throw new Error('Empty response from model.');
+  }
+  return reply;
+}
+
+// ---- persistence ----
+function getConversation(charId) {
+  try {
+    const all = JSON.parse(localStorage.getItem(CONV_KEY) || '{}');
+    return all[charId] || null;
+  } catch { return null; }
+}
+
+function saveConversation() {
+  if (!activeChar) return;
+  try {
+    const all = JSON.parse(localStorage.getItem(CONV_KEY) || '{}');
+    all[activeChar.id] = messages;
+    localStorage.setItem(CONV_KEY, JSON.stringify(all));
+  } catch {}
+}
+
+function loadConversation() {
+  // try to restore last active character
+  const lastId = localStorage.getItem('mentor_last_char');
+  if (lastId) {
+    const char = characters.find(c => c.id === lastId);
+    if (char) {
+      selectCharacter(char.id);
+      return;
+    }
+  }
+  // default to first character
+  // don't auto-select — let user pick
+}
+
+function clearConversation() {
+  if (!activeChar) return;
+  if (!confirm(`Clear chat with ${activeChar.name}?`)) return;
+  const g = Array.isArray(activeChar.greeting) ? activeChar.greeting[Math.floor(Math.random() * activeChar.greeting.length)] : activeChar.greeting;
+  messages = [{ role: 'assistant', content: g }];
+  saveConversation();
+  document.querySelectorAll('.msg').forEach(el => el.remove());
+  appendMessage('assistant', g);
+  showToast('Chat cleared');
+}
+
+// ---- avatar editing ----
+let editingCharId = null;
+const avatarInput = document.getElementById('avatar-input');
+
+function editAvatar() {
+  if (!activeChar) { showToast('Select a mentor first'); return; }
+  const charId = activeChar.id;
+  editingCharId = charId;
+  // offer two options: upload or URL
+  const choice = confirm('OK = upload an image\nCancel = paste an image URL');
+  if (choice) {
+    avatarInput.value = '';
+    avatarInput.click();
+  } else {
+    const url = prompt('Paste image URL:', '');
+    if (url && url.trim()) {
+      setAvatar(charId, url.trim());
+    }
+  }
+}
+
+avatarInput.addEventListener('change', () => {
+  const file = avatarInput.files?.[0];
+  if (!file || !editingCharId) return;
+  if (file.size > 2 * 1024 * 1024) {
+    showToast('❌ Image too large. Max 2MB.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    setAvatar(editingCharId, e.target.result);
+    editingCharId = null;
+  };
+  reader.onerror = () => {
+    showToast('❌ Failed to read file.');
+    editingCharId = null;
+  };
+  reader.readAsDataURL(file);
+});
+
+function setAvatar(charId, dataUrl) {
+  saveAvatar(charId, dataUrl);
+  renderCharacters();
+  // re-render chat messages if this character is active
+  if (activeChar && activeChar.id === charId) {
+    renderMessages();
+  }
+  // update welcome emoji too
+  showToast('✅ Avatar updated');
+}
+
+// ---- settings ----
+function updateModelList(prov) {
+  const sel = $('model-select');
+  const cfg = PROVIDERS[prov];
+  if (!cfg) return;
+  sel.innerHTML = cfg.models.map(m => `<option value="${m.id}">${m.lbl}</option>`).join('');
+  $('api-key-input').placeholder = cfg.keyPlaceholder;
+  $('provider-hint').innerHTML = cfg.hint;
+  // show custom url/model inputs if custom provider
+  const isCustom = prov === 'custom';
+  document.querySelectorAll('.custom-field').forEach(el => el.style.display = isCustom ? 'block' : 'none');
+}
+
+function onProviderChange() {
+  const p = $('provider-select').value;
+  updateModelList(p);
+  // set default model for provider
+  const cfg = PROVIDERS[p];
+  if (cfg && cfg.models.length > 0) $('model-select').value = cfg.models[0].id;
+  if (p === 'custom' && customBaseUrl) $('custom-url-input').value = customBaseUrl;
+  if (p === 'custom' && customModelName) $('custom-model-input').value = customModelName;
+}
+
+function saveSettings() {
+  const newKey = $('api-key-input').value.trim();
+  const newProv = $('provider-select').value;
+  const newModel = $('model-select').value;
+  const newTheme = $('theme-select').value;
+
+  apiKey = newKey;
+  provider = newProv;
+  model = newModel;
+  theme = newTheme;
+
+  if (provider === 'custom') {
+    customBaseUrl = ($('custom-url-input')?.value || '').trim().replace(/\/+$/, '');
+    customModelName = ($('custom-model-input')?.value || '').trim();
+    localStorage.setItem('mentor_custom_url', customBaseUrl);
+    localStorage.setItem('mentor_custom_model', customModelName);
+  }
+
+  localStorage.setItem('mentor_api_key', apiKey);
+  localStorage.setItem('mentor_provider', provider);
+  localStorage.setItem('mentor_model', model);
+  localStorage.setItem('mentor_theme', theme);
+  applyTheme();
+  $('settings-modal').classList.remove('show');
+  showToast('Settings saved');
+}
+
+function applyTheme() {
+  if (theme === 'light') {
+    document.documentElement.style.setProperty('--bg', '#F8F8FC');
+    document.documentElement.style.setProperty('--bg2', '#FFFFFF');
+    document.documentElement.style.setProperty('--bg3', '#F0F0F5');
+    document.documentElement.style.setProperty('--border', 'rgba(0,0,0,.08)');
+    document.documentElement.style.setProperty('--text', '#1A1A2E');
+    document.documentElement.style.setProperty('--text2', '#6B6B80');
+  } else {
+    document.documentElement.style.setProperty('--bg', '#0A0A0F');
+    document.documentElement.style.setProperty('--bg2', '#12121A');
+    document.documentElement.style.setProperty('--bg3', '#1A1A26');
+    document.documentElement.style.setProperty('--border', 'rgba(255,255,255,.06)');
+    document.documentElement.style.setProperty('--text', '#F1F1F7');
+    document.documentElement.style.setProperty('--text2', '#8888A0');
+  }
+}
+
+// ---- utils ----
+function showToast(msg) {
+  toast.textContent = msg; toast.classList.add('show');
+  const isErr = msg.includes('❌');
+  toast.className = isErr ? 'err show' : 'show';
+  const duration = isErr ? 7000 : 2500;
+  setTimeout(() => { toast.classList.remove('show'); toast.className = ''; }, duration);
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ---- start ----
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
