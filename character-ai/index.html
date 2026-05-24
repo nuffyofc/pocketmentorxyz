@@ -493,7 +493,7 @@ function setDialogStep(charId, s) {
   localStorage.setItem(DIALOG_STEP_KEY, JSON.stringify(all));
 }
 
-function showSuggestions() {
+function showSuggestions(questions) {
   const container = $('suggestions');
   if (!container || !activeChar) { if (container) container.classList.remove('show'); return; }
   if (quizState.active) return;
@@ -524,13 +524,34 @@ function showSuggestions() {
     });
     return;
   }
-  // normal voicelines / suggestions
+  // dynamic AI-generated suggestions
+  if (questions && questions.length === 3) {
+    dynamicSugg = questions;
+    container.innerHTML = questions.map(function(q) {
+      return '<button class="suggestion-btn" data-dynamic="1">' + escapeHtml(q) + '</button>';
+    }).join('');
+    container.classList.add('show');
+    container.querySelectorAll('.suggestion-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var idx = Array.from(container.children).indexOf(btn);
+        var qText = dynamicSugg[idx];
+        if (qText) {
+          container.classList.remove('show');
+          msgInput.value = qText;
+          sendBtn.classList.add('active');
+          sendMessage();
+        }
+      });
+    });
+    return;
+  }
+  // fallback: static suggestions
   const mentorSugg = suggestions[activeChar.id];
   if (!mentorSugg || !mentorSugg.rounds) { container.classList.remove('show'); return; }
   const round = getSuggRound(activeChar.id);
-  const questions = mentorSugg.rounds[round];
-  if (!questions) { container.classList.remove('show'); return; }
-  container.innerHTML = questions.map(function(q) {
+  const sq = mentorSugg.rounds[round];
+  if (!sq) { container.classList.remove('show'); return; }
+  container.innerHTML = sq.map(function(q) {
     return '<button class="suggestion-btn" data-q="' + q.replace(/"/g, '&quot;') + '">' + q + '</button>';
   }).join('');
   container.classList.add('show');
@@ -1138,6 +1159,7 @@ function selectCharacter(id) {
   const char = characters.find(c => c.id === id);
   if (!char) return;
   activeChar = char;
+  dynamicSugg = null;
   document.documentElement.style.setProperty('--accent', char.color);
 
   // update dropdown
@@ -1281,7 +1303,9 @@ async function sendMessage() {
     typing.style.display = 'none';
     appendMessage('assistant', reply);
     saveConversation();
-    showSuggestions();
+    // generate dynamic suggestions from the conversation
+    var sugg = await generateSuggestions(messages);
+    showSuggestions(sugg);
   } catch (err) {
     typing.style.display = 'none';
     console.error('Mentor API error:', err);
@@ -1519,6 +1543,44 @@ function fetchVoiceId() {
     }
   };
   xhr.send();
+}
+
+var dynamicSugg = null;
+
+async function generateSuggestions(conversation) {
+  if (!apiKey || !activeChar) return null;
+  var cfg = PROVIDERS[provider] || PROVIDERS.openrouter;
+  var baseUrl = provider === 'custom' ? customBaseUrl : cfg.baseUrl;
+  if (!baseUrl) return null;
+  var actualModel = provider === 'custom' ? (customModelName || 'custom-model') : model;
+  try {
+    var res = await fetch(baseUrl + '/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + apiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: actualModel,
+        messages: [
+          { role: 'system', content: 'You are a conversation assistant. Based on the chat with ' + activeChar.name + ', generate 3 short follow-up questions the user could ask next. Return ONLY a JSON array of 3 strings, no other text. Example: ["Question 1?", "Question 2?", "Question 3?"]' },
+          { role: 'user', content: 'Conversation:\n' + conversation.map(function(m) { return m.role + ': ' + m.content.slice(0, 200); }).slice(-6).join('\n') + '\n\nGenerate 3 follow-up questions as JSON array.' }
+        ],
+        temperature: 0.7,
+        max_tokens: 120
+      })
+    });
+    if (!res.ok) return null;
+    var data = await res.json();
+    var text = data.choices?.[0]?.message?.content || '';
+    // extract JSON array from response
+    var match = text.match(/\[[\s\S]*?\]/);
+    if (match) {
+      var parsed = JSON.parse(match[0]);
+      if (Array.isArray(parsed) && parsed.length === 3) return parsed;
+    }
+    return null;
+  } catch(e) { return null; }
 }
 
 var elAudio = null;
