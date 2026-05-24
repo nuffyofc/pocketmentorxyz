@@ -3,23 +3,25 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mentor AI — Stop Being Average</title>
+<meta name="theme-color" content="#0f0f14" />
+<title>Mentor AI — Your AI Mentor Squad</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#050505;
-  --card:#101014;
-  --soft:#17171d;
-  --border:rgba(255,255,255,.08);
-  --text:#f8f8fb;
-  --muted:#9d9dad;
+  --bg:#0b0b12;
+  --card:#141420;
+  --card2:#191927;
+  --text:#f5f7ff;
+  --muted:#9ea3b5;
+  --line:rgba(255,255,255,.08);
   --purple:#8b5cf6;
   --purple2:#a78bfa;
-  --orange:#ff8a00;
-  --green:#22c55e;
+  --green:#34d399;
+  --pink:#ec4899;
+  --blue:#3b82f6;
   --radius:22px;
 }
 
@@ -96,9 +98,9 @@
   flex:1;
   min-width:200px;
   padding:14px 20px;
-  border:1px solid var(--border);
+  border:1px solid var(--line);
   border-radius:var(--radius);
-  background:var(--soft);
+  background:var(--card);
   color:var(--text);
   font-size:16px;
 }
@@ -106,7 +108,7 @@
   color:var(--muted);
 }
 .waitlist-section button{
-  background:linear-gradient(135deg, var(--purple), var(--purple2));
+  background:linear-gradient(135deg, var(--purple), var(--pink));
   color:white;
   border:none;
   padding:14px 28px;
@@ -131,108 +133,73 @@
   </form>
 </div>
 
+<div class="glow"></div>
+
 <header>
   <div class="container">
-    <div class="logo">🧠 Mentor <span>AI</span></div>
-
     <nav>
-      <a href="#mentors">Mentors</a>
-      <a href="#quotes">Quotes</a>
-      <a href="#proof">Proof</a>
-      <a href="character-ai/" class="btn btn-primary">Try Out App</a>
+      <div class="logo">🧠 Mentor <span>AI</span></div>
+
+      <div class="nav-links">
+        <a href="#mentors">Mentors</a>
+        <a href="#features">Features</a>
+        <a href="#stats">Stats</a>
+        <a href="#cta" class="btn btn-primary">Start Chatting</a>
+      </div>
     </nav>
   </div>
 </header>
 
 <section class="hero">
-  <div class="glow"></div>
-
   <div class="container">
     <div class="hero-grid">
 
       <div>
-        <div class="badge">🔥 12,482 people got mentored today</div>
+        <div class="badge">⚡ 5M+ AI conversations</div>
 
         <h1>
-          Stop being <span>average.</span><br>
-          Talk to mentors that roast your excuses.
+          Your <span>AI mentor squad</span>
+          is online.
         </h1>
 
         <p>
-          Andrew Tate. Gary Vee. Dan Peña. Tai Lopez.
-          The internet’s most intense personalities — rebuilt as AI mentors designed to push you harder than your friends ever will.
+          Talk to realistic AI mentors inspired by entrepreneurs, creators, thinkers, and internet personalities. Get advice, motivation, strategy, and late-night life coaching that actually hits.
         </p>
 
         <div class="hero-actions">
-          <a href="character-ai/" class="btn btn-primary">Try Out App</a>
-          <a href="#mentors" class="btn btn-primary" style="background:#1a1a22;box-shadow:none;border:1px solid var(--border)">Choose Your Mentor</a>
-        </div>
-
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <strong>5M+</strong>
-            <span>Conversations</span>
-          </div>
-
-          <div class="hero-stat">
-            <strong>92%</strong>
-            <span>Return Daily</span>
-          </div>
-
-          <div class="hero-stat">
-            <strong>24/7</strong>
-            <span>No Excuses</span>
-          </div>
+          <a href="#" class="btn btn-primary">Start Free</a>
+          <a href="#mentors" class="btn btn-secondary">Meet Mentors</a>
         </div>
       </div>
 
-      <div class="preview">
-        <div class="preview-top">
-          <div class="live">
-            <div class="dot"></div>
-            328 conversations happening right now
-          </div>
+      <div class="hero-card">
 
-          <div style="color:var(--muted);font-size:13px">
-            Mentor AI
+        <div class="chat-top">
+          <strong>Live Mentor Chat</strong>
+          <div class="live">● Online</div>
+        </div>
+
+        <div class="msg">
+          <div class="avatar ai">T</div>
+          <div class="bubble">
+            Stop overthinking. You don't need another productivity video. You need action. What's one thing you've been avoiding for 30 days?
           </div>
         </div>
 
-        <div class="preview-body">
-          <div class="chat">
-            <small>🥋 Andrew Tate AI</small>
-            <p>
-              You don't have a motivation problem. You have a discipline problem.
-              The average person wastes 5 hours a day scrolling nonsense and wonders why life never changes.
-              Stop waiting to feel ready.
-            </p>
-          </div>
-
-          <div class="chat">
-            <small>🙋 You</small>
-            <p>
-              I want to build something online but I keep procrastinating.
-            </p>
-          </div>
-
-          <div class="chat">
-            <small>🦁 Dan Peña AI</small>
-            <p>
-              GOOD. NOW WE KNOW THE PROBLEM.
-              YOU KEEP NEGOTIATING WITH WEAKNESS.
-              WINNERS EXECUTE.
-            </p>
-          </div>
-
-          <div class="input-box">
-            <label>Type your biggest excuse</label>
-
-            <div class="input-row">
-              <input type="text" placeholder="I don't have time..." />
-              <a href="character-ai/" class="btn btn-primary">Get Roasted</a>
-            </div>
+        <div class="msg">
+          <div class="avatar user">U</div>
+          <div class="bubble">
+            Starting my side project because I don't think I'm ready yet.
           </div>
         </div>
+
+        <div class="msg">
+          <div class="avatar ai">T</div>
+          <div class="bubble">
+            Nobody is ready. The internet rewards people who ship. Start ugly. Fix later. That's how winners move.
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -241,117 +208,113 @@
 
 <section class="section" id="mentors">
   <div class="container">
-    <h2 class="section-title">
-      Choose your fighter.
-    </h2>
 
-    <p class="section-desc">
-      Every mentor has a completely different personality, philosophy, energy, and communication style.
-      Pick the one that hits hardest.
-    </p>
+    <div class="section-top">
+      <div class="kicker">Choose Your Vibe</div>
+      <h2>Mentors with actual personality</h2>
+      <p>Different voices. Different energy. Different advice.</p>
+    </div>
 
-    <div class="cards">
+    <div class="grid mentors">
 
       <div class="card">
-        <h3>🥋 Tate</h3>
-        <div class="type">Discipline + Aggression</div>
-
+        <div class="card-icon">🥋</div>
+        <h3>The Hustler</h3>
+        <div class="card-tag">Aggressive · Discipline</div>
         <p>
-          Calls out weakness instantly.
-          Pushes discipline, money, masculinity, confidence, and execution.
+          Calls you out, pushes you harder, and helps you stop making excuses. Built for ambition, money, and momentum.
         </p>
-
-        <div class="power">MENTAL WARFARE</div>
+        <div class="style-pill">Direct Energy</div>
       </div>
 
       <div class="card">
-        <h3>🍷 Gary Vee</h3>
-        <div class="type">Motivation + Consistency</div>
-
+        <div class="card-icon">🚀</div>
+        <h3>The Builder</h3>
+        <div class="card-tag">Startup · Creator</div>
         <p>
-          High-energy encouragement with brutally honest business advice.
-          Feels like a hype coach that never sleeps.
+          Startup advice, creator strategy, social growth, and building things online without burning out.
         </p>
-
-        <div class="power">PURE ENERGY</div>
+        <div class="style-pill">Founder Mode</div>
       </div>
 
       <div class="card">
-        <h3>🦁 Dan Peña</h3>
-        <div class="type">Fear + Action</div>
-
+        <div class="card-icon">🧠</div>
+        <h3>The Philosopher</h3>
+        <div class="card-tag">Deep · Reflective</div>
         <p>
-          Ruthless. Loud. Intense.
-          Built to destroy excuses and force action.
+          Conversations about consciousness, purpose, identity, technology, and becoming your best self.
         </p>
-
-        <div class="power">MAX INTENSITY</div>
+        <div class="style-pill">Deep Talks</div>
       </div>
 
       <div class="card">
-        <h3>📚 Tai Lopez</h3>
-        <div class="type">Wealth + Lifestyle</div>
-
+        <div class="card-icon">💸</div>
+        <h3>The Money Coach</h3>
+        <div class="card-tag">Business · Wealth</div>
         <p>
-          Big-picture strategy, billionaire lessons, psychology, networking, and leverage.
+          Learn sales, leverage, money psychology, business models, and how to think bigger.
         </p>
-
-        <div class="power">STATUS MODE</div>
+        <div class="style-pill">Money Mindset</div>
       </div>
 
       <div class="card">
-        <h3>🧠 Klemen</h3>
-        <div class="type">Deep Thinking</div>
-
+        <div class="card-icon">🎯</div>
+        <h3>The Life Coach</h3>
+        <div class="card-tag">Balance · Growth</div>
         <p>
-          Philosophy, consciousness, technology, creativity, and human potential.
+          Better habits, confidence, relationships, focus, and figuring out your next move.
         </p>
-
-        <div class="power">HIGH IQ MODE</div>
+        <div class="style-pill">Level Up</div>
       </div>
 
       <div class="card">
-        <h3>💼 Jani</h3>
-        <div class="type">Real Entrepreneurship</div>
-
+        <div class="card-icon">🔥</div>
+        <h3>The Motivator</h3>
+        <div class="card-tag">Energy · Action</div>
         <p>
-          Practical business building without fake guru nonsense.
-          Real systems. Real execution.
+          Instant motivation when you're stuck, tired, procrastinating, or doubting yourself.
         </p>
-
-        <div class="power">BUILDER MODE</div>
+        <div class="style-pill">No Excuses</div>
       </div>
 
     </div>
+
   </div>
 </section>
 
-<section class="section quote-section" id="quotes">
+<section class="section" id="features">
   <div class="container">
 
-    <h2 class="section-title">
-      Screenshots people actually share.
-    </h2>
+    <div class="section-top">
+      <div class="kicker">Built Different</div>
+      <h2>Professional. Fast. Addictive.</h2>
+      <p>Everything Gen Z expects from a modern AI product.</p>
+    </div>
 
-    <p class="section-desc">
-      This isn't productivity advice.
-      It's psychological warfare against your excuses.
-    </p>
+    <div class="grid features">
 
-    <div class="quote-grid">
-
-      <div class="quote">
-        “You're not tired.<br>
-        <span>You're distracted.</span>”
+      <div class="card feature">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Responses</h3>
+        <p>
+          Ultra-fast AI replies that feel like real texting.
+        </p>
       </div>
 
-      <div class="quote">
-        “Your future is being destroyed by <span>comfort.</span>”
+      <div class="card feature">
+        <div class="feature-icon">🎭</div>
+        <h3>Realistic Personalities</h3>
+        <p>
+          Each mentor speaks differently and remembers your conversations.
+        </p>
       </div>
 
-      <div class="quote">
-        “Average people need motivation.<br>
-        <span>Winners need standards.</span>”
+      <div class="card feature">
+        <div class="feature-icon">🔒</div>
+        <h3>No Sign-Up</h3>
+        <p>
+          Open the app and start talking instantly.
+        </p>
       </div>
 
     </div>
@@ -359,38 +322,35 @@
   </div>
 </section>
 
-<section class="section" id="proof">
+<section class="section" id="stats">
   <div class="container">
 
-    <h2 class="section-title">
-      Built for obsession.
-    </h2>
+    <div class="section-top">
+      <div class="kicker">The Numbers</div>
+      <h2>People are obsessed.</h2>
+      <p>Built for modern internet culture and self-improvement.</p>
+    </div>
 
-    <p class="section-desc">
-      People don't just try Mentor AI.
-      They come back every single day.
-    </p>
+    <div class="stats">
 
-    <div class="social-proof">
-
-      <div class="proof">
-        <strong>2.4h</strong>
-        <p>Average daily usage per active user.</p>
+      <div class="stat">
+        <h3>5M+</h3>
+        <p>Messages sent</p>
       </div>
 
-      <div class="proof">
-        <strong>5M+</strong>
-        <p>Mentor conversations generated.</p>
+      <div class="stat">
+        <h3>24/7</h3>
+        <p>Mentors online</p>
       </div>
 
-      <div class="proof">
-        <strong>87%</strong>
-        <p>Users share responses with friends.</p>
+      <div class="stat">
+        <h3>100%</h3>
+        <p>AI powered</p>
       </div>
 
-      <div class="proof">
-        <strong>24/7</strong>
-        <p>Your mentors never sleep.</p>
+      <div class="stat">
+        <h3>∞</h3>
+        <p>Conversations</p>
       </div>
 
     </div>
@@ -398,52 +358,55 @@
   </div>
 </section>
 
-  <section class="cta">
-    <div class="container">
+<section class="cta" id="cta">
+  <div class="container">
 
+    <div class="cta-box">
       <h2>
-        Your excuses are waiting.<br>
-        So are your mentors.
+        Your mentor is waiting.
       </h2>
 
       <p>
-        No sign up.
-        No corporate HR tone.
-        No fake positivity.
-        Just intense conversations that force you to think bigger and move faster.
+        No sign up. No awkward onboarding. Just open the app and talk.
       </p>
 
-      <a href="character-ai/" class="btn btn-primary" style="font-size:20px;padding:20px 44px">
-        Try Out App
+      <a href="#" class="btn btn-primary">
+        Start Chatting Free
       </a>
-
     </div>
-  </section>
 
-  <!-- Waiting List Section at Bottom -->
-  <section class="waitlist-section">
-    <div class="container">
-      <h3>🚀 Join the Waiting List</h3>
-      <p>Get early access to exclusive features, influencer collaborations, and direct input on future mentor additions.</p>
-      <form action="https://formspree.io/f/mgridwyz" method="POST" class="input-group">
-        <input type="email" name="email" placeholder="your@email.com" required>
-        <button type="submit">Join Waiting List</button>
-      </form>
-      <p style="margin-top:16px;font-size:14px;color:var(--muted);">
-        We'll notify you when early access opens. No spam, ever.
-      </p>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
+<!-- Waiting List Section at Bottom -->
+<section class="waitlist-section">
+  <div class="container">
+    <h3>🚀 Join the Waiting List</h3>
+    <p>Get early access to exclusive features, influencer collaborations, and direct input on future mentor additions.</p>
+    <form action="https://formspree.io/f/mgridwyz" method="POST" class="input-group">
+      <input type="email" name="email" placeholder="your@email.com" required>
+      <button type="submit">Join Waiting List</button>
+    </form>
+    <p style="margin-top:16px;font-size:14px;color:var(--muted);">
+      We'll notify you when early access opens. No spam, ever.
+    </p>
+  </div>
+</section>
+
+<footer>
   <div class="container">
 
-    <div class="footer-row">
-      <div class="logo">🧠 Mentor <span>AI</span></div>
-
+    <div class="footer-inner">
       <p>
-        The internet's most dangerous self-improvement app.
+        © 2026 Mentor AI — AI-generated fictional mentor personalities.
       </p>
+
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Support</a>
+        <a href="#">Discord</a>
+      </div>
     </div>
 
   </div>
