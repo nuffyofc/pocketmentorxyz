@@ -9,7 +9,7 @@ from http.server import HTTPServer,SimpleHTTPRequestHandler
 from pathlib import Path
 
 DIR = Path(__file__).parent
-ENV_FILE = DIR / '.env'
+ENV_FILE = DIR / 'character-ai' / '.env'
 
 def load_env():
     env = {}
