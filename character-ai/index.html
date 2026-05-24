@@ -388,9 +388,13 @@ header{
       <input type="text" id="custom-model-input" placeholder="gpt-4o-mini, claude-3, etc.">
     </div>
 
+    <label>ElevenLabs API Key</label>
+    <input type="password" id="el-api-key" placeholder="sk_..." autocomplete="off" style="font-family:monospace;font-size:11px">
+    <div class="hint">Required for Jani voice TTS. Create an API key at <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io</a> with <strong>Text to Speech</strong> access.</div>
+
     <label>ElevenLabs Agent ID</label>
     <input type="text" id="el-agent-id" placeholder="agent_..." style="font-family:monospace;font-size:11px">
-    <div class="hint">Required for voice chat with Jani. Steps: (1) Create agent at <a href="https://elevenlabs.io/app/conversational-ai" target="_blank">elevenlabs.io</a>, (2) Set voice to Jani, (3) Go to <strong>Advanced</strong> tab → disable Authentication, (4) Click <strong>Publish</strong> (draft agents won't work), (5) Copy the agent ID here.</div>
+    <div class="hint">Agent ID for Jani's voice. The voice ID is auto-fetched from the agent on save.</div>
 
     <label>Theme</label>
     <select id="theme-select">
@@ -981,6 +985,8 @@ let customBaseUrl = localStorage.getItem('mentor_custom_url') || '';
 let customModelName = localStorage.getItem('mentor_custom_model') || '';
 let theme = localStorage.getItem('mentor_theme') || 'dark';
 let elevenLabsAgentId = localStorage.getItem('mentor_el_agent_id') || '';
+let elevenLabsApiKey = localStorage.getItem('mentor_el_api_key') || '';
+let elevenLabsVoiceId = localStorage.getItem('mentor_el_voice_id') || '';
 const CONV_KEY = 'mentor_conversations';
 const AVATAR_KEY = 'mentor_avatars';
 
@@ -1067,6 +1073,7 @@ async function init() {
   $('provider-select').value = provider;
   $('theme-select').value = theme;
   $('el-agent-id').value = elevenLabsAgentId;
+  $('el-api-key').value = elevenLabsApiKey;
   updateModelList(provider);
   $('model-select').value = model;
   $('provider-select').addEventListener('change', onProviderChange);
@@ -1090,13 +1097,6 @@ async function init() {
   $('clear-btn').addEventListener('click', clearConversation);
   $('link-btn').addEventListener('click', onHeartClick);
   $('mic-btn').addEventListener('click', onMicClick);
-  // show toast if widget fails to load agent config
-  var elWidget = $('elevenlabs-widget');
-  if (elWidget) {
-    elWidget.addEventListener('error', function(e) {
-      showToast('❌ ElevenLabs agent not found. Make sure it is published and authentication is disabled.');
-    });
-  }
   chatArea.addEventListener('click', function(e) {
     var avatar = e.target.closest('.msg-avatar');
     if (avatar) { openMentorLinkedIn(); return; }
@@ -1497,6 +1497,8 @@ function onProviderChange() {
   if (p === 'custom' && customModelName) $('custom-model-input').value = customModelName;
 }
 
+var elAudio = null;
+
 function onMicClick() {
   var btn = $('mic-btn');
   if (!activeChar) {
@@ -1504,27 +1506,88 @@ function onMicClick() {
     return;
   }
   if (activeChar.id !== 'jani') {
-    showToast('Voice chat coming soon for other mentors');
+    showToast('Voice coming soon for other mentors');
     return;
   }
-  if (!elevenLabsAgentId) {
-    showToast('Set ElevenLabs Agent ID in Settings');
+  if (!elevenLabsApiKey || !elevenLabsAgentId) {
+    showToast('Set ElevenLabs API Key and Agent ID in Settings');
     return;
   }
-  // click the widget's floating button (it handles expand + call)
-  var widget = $('elevenlabs-widget');
-  if (!widget) return;
-  var shadow = widget.shadowRoot;
-  if (!shadow) { showToast('Widget not ready yet'); return; }
-  var wBtn = shadow.querySelector('button');
-  if (wBtn) {
-    wBtn.click();
-    btn.innerHTML = '\ud83d\udd34';
-    btn.style.color = '#ef4444';
-    btn.style.background = 'rgba(239,68,68,.15)';
-  } else {
-    showToast('No widget button found');
+  if (!elevenLabsVoiceId) {
+    showToast('Voice ID not loaded. Save Settings to fetch it from the agent.');
+    return;
   }
+
+  // toggle stop if currently playing
+  if (elAudio && !elAudio.paused) {
+    elAudio.pause();
+    elAudio = null;
+    btn.innerHTML = '\ud83c\udfa4';
+    btn.style.color = 'var(--text2)';
+    btn.style.background = 'var(--bg2)';
+    return;
+  }
+
+  // find last assistant message
+  var lastMsg = null;
+  for (var i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role === 'assistant') {
+      lastMsg = messages[i].content;
+      break;
+    }
+  }
+  if (!lastMsg) {
+    showToast('No message to speak');
+    return;
+  }
+
+  var text = lastMsg;
+  // strip emoji and special chars for cleaner speech
+  text = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+
+  btn.innerHTML = '\u23F3';
+  btn.style.color = '#fbbf24';
+  btn.style.background = 'rgba(251,191,36,.15)';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.elevenlabs.io/v1/text-to-speech/' + elevenLabsVoiceId);
+  xhr.setRequestHeader('xi-api-key', elevenLabsApiKey);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.responseType = 'blob';
+
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      var blob = xhr.response;
+      var url = URL.createObjectURL(blob);
+      elAudio = new Audio(url);
+      elAudio.onended = function() {
+        btn.innerHTML = '\ud83c\udfa4';
+        btn.style.color = 'var(--text2)';
+        btn.style.background = 'var(--bg2)';
+        elAudio = null;
+      };
+      elAudio.play();
+      btn.innerHTML = '\ud83d\udd34';
+      btn.style.color = '#ef4444';
+      btn.style.background = 'rgba(239,68,68,.15)';
+    } else {
+      showToast('\u274c TTS failed (HTTP ' + xhr.status + ')');
+      btn.innerHTML = '\ud83c\udfa4';
+      btn.style.color = 'var(--text2)';
+      btn.style.background = 'var(--bg2)';
+    }
+  };
+  xhr.onerror = function() {
+    showToast('\u274c Network error during TTS');
+    btn.innerHTML = '\ud83c\udfa4';
+    btn.style.color = 'var(--text2)';
+    btn.style.background = 'var(--bg2)';
+  };
+
+  xhr.send(JSON.stringify({
+    text: text,
+    model_id: 'eleven_multilingual_v2'
+  }));
 }
 
 function saveSettings() {
@@ -1539,8 +1602,31 @@ function saveSettings() {
   theme = newTheme;
 
   var newAgentId = ($('el-agent-id')?.value || '').trim();
+  var newApiKey = ($('el-api-key')?.value || '').trim();
   elevenLabsAgentId = newAgentId;
+  elevenLabsApiKey = newApiKey;
   localStorage.setItem('mentor_el_agent_id', newAgentId);
+  localStorage.setItem('mentor_el_api_key', newApiKey);
+
+  // auto-fetch voice ID from agent config
+  if (newApiKey && newAgentId) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.elevenlabs.io/v1/convai/agents/' + newAgentId);
+    xhr.setRequestHeader('xi-api-key', newApiKey);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          var vid = data?.conversation_config?.tts?.voice_id || data?.voice_id || '';
+          if (vid) {
+            elevenLabsVoiceId = vid;
+            localStorage.setItem('mentor_el_voice_id', vid);
+          }
+        } catch(e) {}
+      }
+    };
+    xhr.send();
+  }
 
   if (provider === 'custom') {
     customBaseUrl = ($('custom-url-input')?.value || '').trim().replace(/\/+$/, '');
@@ -1555,7 +1641,7 @@ function saveSettings() {
   localStorage.setItem('mentor_theme', theme);
   applyTheme();
   $('settings-modal').classList.remove('show');
-  showToast('Settings saved');
+  showToast('Settings saved' + (elevenLabsVoiceId ? ' - voice ID loaded' : ''));
 }
 
 function applyTheme() {
@@ -1813,14 +1899,10 @@ function closeMinigame() {
   $('minigame-close').addEventListener('click', closeMinigame);
 })();
 
-// ---- hide elevenlabs trigger button after load ----
 // ---- start ----
 document.addEventListener('DOMContentLoaded', init);
 </script>
 
-<!-- ElevenLabs Conversational AI widget -->
-<elevenlabs-convai id="elevenlabs-widget" agent-id="agent_1201kschz9e8jeavwrv2sqgv0ef1" start-call-text="🎤 Jani" end-call-text="🔴 End" allow-events="true" server-location="us"></elevenlabs-convai>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 
 <｜｜DSML｜｜parameter name="newString" end="true" />
 
