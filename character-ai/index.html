@@ -302,6 +302,8 @@ header{
 @keyframes legendaryIn{0%{transform:scale(3);opacity:0}60%{transform:scale(0.9)}100%{transform:scale(1);opacity:1}}
 #legendary-text{font-size:22px;font-weight:800;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,.6),0 0 60px rgba(255,215,0,.3);text-align:center;line-height:1.4}
 #legendary-text span{display:block;font-size:40px;margin-bottom:4px}
+#minigame-close:hover{transform:translateY(-2px) !important;box-shadow:0 6px 24px rgba(255,20,147,.5) !important;filter:brightness(1.1)}
+#minigame-close:active{transform:translateY(0) !important;box-shadow:0 2px 8px rgba(255,20,147,.3) !important}
 
 /* safe area for notched phones */
 @supports(padding-top:env(safe-area-inset-top)){
@@ -427,7 +429,7 @@ header{
       <p>Končno! Tole si je pa zaslužila! 🍰😎</p>
       <p>Zdaj pa naprej v nove zmage!</p>
       <p style="margin-top:6px;font-size:11px;color:var(--text2)">📖 Based on: <a href="https://www.youtube.com/shorts/iC_b5lLCd2I" target="_blank" style="color:var(--accent)">youtube.com/shorts/iC_b5lLCd2I</a></p>
-      <button id="minigame-close" class="btn-primary">Back to Chat</button>
+      <button id="minigame-close" class="btn-primary" style="margin-top:12px;padding:14px 32px;border-radius:100px;background:linear-gradient(135deg,#FF69B4,#FF1493);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(255,20,147,.3);font-family:inherit;letter-spacing:.3px">🎉 Back to Chat 🎉</button>
     </div>
   </div>
 </div>
