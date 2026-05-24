@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Mentor — AI companion that talks in your style</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://unpkg.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0A0A0F;--bg2:#12121A;--bg3:#1A1A26;--border:rgba(255,255,255,.06);--text:#F1F1F7;--text2:#8888A0;--radius:12px;--radius-lg:20px;}
@@ -347,6 +348,7 @@ header{
 
   <div id="input-area">
     <textarea id="msg-input" rows="1" placeholder="Type a message..." disabled></textarea>
+    <button id="mic-btn" title="Voice input" class="icon-btn" style="width:48px;height:48px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s">🎤</button>
     <button id="link-btn" title="❤️">❤️</button>
     <button id="send-btn">➤</button>
   </div>
@@ -385,6 +387,10 @@ header{
       <label>Custom Model Name</label>
       <input type="text" id="custom-model-input" placeholder="gpt-4o-mini, claude-3, etc.">
     </div>
+
+    <label>ElevenLabs Agent ID</label>
+    <input type="text" id="el-agent-id" placeholder="agent_..." style="font-family:monospace;font-size:11px">
+    <div class="hint">Required for voice chat with Jani. Steps: (1) Create agent at <a href="https://elevenlabs.io/app/conversational-ai" target="_blank">elevenlabs.io</a>, (2) Set voice to Jani, (3) Go to <strong>Advanced</strong> tab → disable Authentication, (4) Click <strong>Publish</strong> (draft agents won't work), (5) Copy the agent ID here.</div>
 
     <label>Theme</label>
     <select id="theme-select">
@@ -974,6 +980,7 @@ let model = localStorage.getItem('mentor_model') || 'llama-3.3-70b-versatile';
 let customBaseUrl = localStorage.getItem('mentor_custom_url') || '';
 let customModelName = localStorage.getItem('mentor_custom_model') || '';
 let theme = localStorage.getItem('mentor_theme') || 'dark';
+let elevenLabsAgentId = localStorage.getItem('mentor_el_agent_id') || '';
 const CONV_KEY = 'mentor_conversations';
 const AVATAR_KEY = 'mentor_avatars';
 
@@ -1059,6 +1066,7 @@ async function init() {
   $('api-key-input').value = apiKey;
   $('provider-select').value = provider;
   $('theme-select').value = theme;
+  $('el-agent-id').value = elevenLabsAgentId;
   updateModelList(provider);
   $('model-select').value = model;
   $('provider-select').addEventListener('change', onProviderChange);
@@ -1081,6 +1089,14 @@ async function init() {
   $('settings-btn').addEventListener('click', () => $('settings-modal').classList.add('show'));
   $('clear-btn').addEventListener('click', clearConversation);
   $('link-btn').addEventListener('click', onHeartClick);
+  $('mic-btn').addEventListener('click', onMicClick);
+  // show toast if widget fails to load agent config
+  var elWidget = $('elevenlabs-widget');
+  if (elWidget) {
+    elWidget.addEventListener('error', function(e) {
+      showToast('❌ ElevenLabs agent not found. Make sure it is published and authentication is disabled.');
+    });
+  }
   chatArea.addEventListener('click', function(e) {
     var avatar = e.target.closest('.msg-avatar');
     if (avatar) { openMentorLinkedIn(); return; }
@@ -1481,6 +1497,33 @@ function onProviderChange() {
   if (p === 'custom' && customModelName) $('custom-model-input').value = customModelName;
 }
 
+function onMicClick() {
+  var btn = $('mic-btn');
+  if (!activeChar) {
+    showToast('Select a mentor first');
+    return;
+  }
+  if (activeChar.id !== 'jani') {
+    showToast('Voice chat coming soon for other mentors');
+    return;
+  }
+  if (!elevenLabsAgentId) {
+    showToast('Set ElevenLabs Agent ID in Settings');
+    return;
+  }
+  // use ElevenLabs widget's built-in expand to open
+  var widget = $('elevenlabs-widget');
+  if (!widget) return;
+  // The widget exposes a shadow DOM button — try to find and click it
+  var shadow = widget.shadowRoot;
+  if (shadow) {
+    var btnEl = shadow.querySelector('button');
+    if (btnEl) { btnEl.click(); return; }
+  }
+  // fallback: dispatch click on widget itself
+  widget.click();
+}
+
 function saveSettings() {
   const newKey = $('api-key-input').value.trim();
   const newProv = $('provider-select').value;
@@ -1491,6 +1534,10 @@ function saveSettings() {
   provider = newProv;
   model = newModel;
   theme = newTheme;
+
+  var newAgentId = ($('el-agent-id')?.value || '').trim();
+  elevenLabsAgentId = newAgentId;
+  localStorage.setItem('mentor_el_agent_id', newAgentId);
 
   if (provider === 'custom') {
     customBaseUrl = ($('custom-url-input')?.value || '').trim().replace(/\/+$/, '');
@@ -1766,5 +1813,13 @@ function closeMinigame() {
 // ---- start ----
 document.addEventListener('DOMContentLoaded', init);
 </script>
+
+<!-- ElevenLabs Conversational AI widget -->
+<elevenlabs-convai id="elevenlabs-widget" agent-id="agent_1201kschz9eje8avwrv2sqgv0ef1" start-call-text="🎤 Jani" end-call-text="🔴 End"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
+<style>
+  /* position the widget's floating button in the bottom-right corner */
+  elevenlabs-convai { --convai-z-index: 9999; }
+</style>
 </body>
 </html>
