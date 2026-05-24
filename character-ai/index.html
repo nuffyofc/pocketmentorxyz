@@ -1511,17 +1511,20 @@ function onMicClick() {
     showToast('Set ElevenLabs Agent ID in Settings');
     return;
   }
-  // use ElevenLabs widget's built-in expand to open
+  // click the widget's floating button (it handles expand + call)
   var widget = $('elevenlabs-widget');
   if (!widget) return;
-  // The widget exposes a shadow DOM button — try to find and click it
   var shadow = widget.shadowRoot;
-  if (shadow) {
-    var btnEl = shadow.querySelector('button');
-    if (btnEl) { btnEl.click(); return; }
+  if (!shadow) { showToast('Widget not ready yet'); return; }
+  var wBtn = shadow.querySelector('button');
+  if (wBtn) {
+    wBtn.click();
+    btn.innerHTML = '\ud83d\udd34';
+    btn.style.color = '#ef4444';
+    btn.style.background = 'rgba(239,68,68,.15)';
+  } else {
+    showToast('No widget button found');
   }
-  // fallback: dispatch click on widget itself
-  widget.click();
 }
 
 function saveSettings() {
@@ -1810,16 +1813,17 @@ function closeMinigame() {
   $('minigame-close').addEventListener('click', closeMinigame);
 })();
 
+// ---- hide elevenlabs trigger button after load ----
 // ---- start ----
 document.addEventListener('DOMContentLoaded', init);
 </script>
 
 <!-- ElevenLabs Conversational AI widget -->
-<elevenlabs-convai id="elevenlabs-widget" agent-id="agent_1201kschz9eje8avwrv2sqgv0ef1" start-call-text="🎤 Jani" end-call-text="🔴 End"></elevenlabs-convai>
+<elevenlabs-convai id="elevenlabs-widget" agent-id="agent_1201kschz9e8jeavwrv2sqgv0ef1" start-call-text="🎤 Jani" end-call-text="🔴 End" allow-events="true" server-location="us"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
-<style>
-  /* position the widget's floating button in the bottom-right corner */
-  elevenlabs-convai { --convai-z-index: 9999; }
-</style>
+
+<｜｜DSML｜｜parameter name="newString" end="true" />
+
+
 </body>
 </html>
