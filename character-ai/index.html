@@ -319,7 +319,6 @@ header{
     <div class="logo">🧠 Mentor <span>alpha</span></div>
     <div class="header-actions">
       <button class="icon-btn" id="clear-btn" title="Clear chat" style="display:none">🗑</button>
-      <button class="icon-btn" id="settings-btn" title="Settings">⚙</button>
     </div>
   </header>
 
@@ -335,7 +334,6 @@ header{
       <div class="big-emoji">👋</div>
       <h2>Pick a mentor above</h2>
       <p>Choose a character to start a conversation. Each has a unique personality and style.</p>
-      <div class="start-hint">or open ⚙ to connect your own AI model</div>
     </div>
   </div>
 
@@ -355,59 +353,6 @@ header{
 </div>
 
 <input type="file" id="avatar-input" accept="image/*" style="display:none">
-
-<!-- settings modal -->
-<div class="modal-overlay" id="settings-modal">
-  <div class="modal">
-    <h2>⚙ Settings</h2>
-    <p class="desc">Connect a free AI model. All providers below offer free tiers — no credit card required.</p>
-
-    <label>Provider</label>
-    <select id="provider-select">
-      <option value="openrouter">OpenRouter — 25+ free models</option>
-      <option value="groq">Groq — fastest infererence (Llama, Mixtral)</option>
-      <option value="google">Google Gemini — 1M context, 60 req/min free</option>
-      <option value="openai">OpenAI — ChatGPT models (paid tier)</option>
-      <option value="custom">Custom (OpenAI-compatible)</option>
-    </select>
-    <div class="hint" id="provider-hint">Free key at <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai/keys</a></div>
-
-    <label>API Key</label>
-    <input type="password" id="api-key-input" placeholder="sk-or-v1-..." autocomplete="off">
-
-    <label>Model</label>
-    <select id="model-select"></select>
-    <div class="hint" id="model-hint">Free models are rate-limited. Switch provider for more options.</div>
-
-    <div class="custom-field" style="display:none">
-      <label>Custom Base URL</label>
-      <input type="url" id="custom-url-input" placeholder="https://your-api.example.com/v1">
-    </div>
-    <div class="custom-field" style="display:none">
-      <label>Custom Model Name</label>
-      <input type="text" id="custom-model-input" placeholder="gpt-4o-mini, claude-3, etc.">
-    </div>
-
-    <label>ElevenLabs API Key</label>
-    <input type="password" id="el-api-key" placeholder="sk_..." autocomplete="off" style="font-family:monospace;font-size:11px">
-    <div class="hint">Required for Jani voice TTS. Create an API key at <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io</a> with <strong>Text to Speech</strong> access.</div>
-
-    <label>ElevenLabs Agent ID</label>
-    <input type="text" id="el-agent-id" placeholder="agent_..." style="font-family:monospace;font-size:11px">
-    <div class="hint">Agent ID for Jani's voice. The voice ID is auto-fetched from the agent on save.</div>
-
-    <label>Theme</label>
-    <select id="theme-select">
-      <option value="dark">Dark</option>
-      <option value="light">Light</option>
-    </select>
-
-    <div class="btn-row">
-      <button class="btn-ghost" onclick="document.getElementById('settings-modal').classList.remove('show')">Cancel</button>
-      <button class="btn-primary" onclick="saveSettings()">Save</button>
-    </div>
-  </div>
-</div>
 
 <div id="particles-container"></div>
 <div id="toast"></div>
@@ -999,15 +944,15 @@ const PROVIDERS = {
 let activeChar = null;
 let messages = [];
 let isGenerating = false;
-let apiKey = localStorage.getItem('mentor_api_key') || '';
-let provider = localStorage.getItem('mentor_provider') || 'groq';
-let model = localStorage.getItem('mentor_model') || 'llama-3.3-70b-versatile';
-let customBaseUrl = localStorage.getItem('mentor_custom_url') || '';
-let customModelName = localStorage.getItem('mentor_custom_model') || '';
-let theme = localStorage.getItem('mentor_theme') || 'dark';
-let elevenLabsAgentId = localStorage.getItem('mentor_el_agent_id') || 'agent_1201kschz9e8jeavwrv2sqgv0ef1';
-let elevenLabsApiKey = localStorage.getItem('mentor_el_api_key') || 'sk_7f871978c771ab38a3e29f809742d51dcc90a8e395f58832';
-let elevenLabsVoiceId = localStorage.getItem('mentor_el_voice_id') || 'bamEsOP2cNfZeSU50trY';
+let apiKey = '';
+let provider = 'groq';
+let model = 'llama-3.3-70b-versatile';
+let customBaseUrl = '';
+let customModelName = '';
+let theme = 'dark';
+let elevenLabsAgentId = 'agent_1201kschz9e8jeavwrv2sqgv0ef1';
+let elevenLabsApiKey = 'sk_7f871978c771ab38a3e29f809742d51dcc90a8e395f58832';
+let elevenLabsVoiceId = 'bamEsOP2cNfZeSU50trY';
 const CONV_KEY = 'mentor_conversations';
 const AVATAR_KEY = 'mentor_avatars';
 
@@ -1037,21 +982,24 @@ const toast = $('toast');
 // ---- init ----
 async function init() {
   // load env vars from server.py or Vercel serverless function
+  async function fetchJson(url) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      return await res.json();
+    } catch { return null; }
+  }
   try {
-    const env = window.__ENV__ || 
-      await (await fetch('./api/env').catch(() => null))?.json() ||
-      await (await fetch('./__env').catch(() => null))?.json();
+    const env = window.__ENV__ ||
+      await fetchJson('./api/env') ||
+      await fetchJson('./__env');
     if (env) {
-      if (env.API_KEY && !localStorage.getItem('mentor_api_key')) apiKey = env.API_KEY;
+      if (env.API_KEY) apiKey = env.API_KEY;
       if (env.PROVIDER) provider = env.PROVIDER;
       if (env.MODEL) model = env.MODEL;
       if (env.THEME) theme = env.THEME;
     }
   } catch {}
-  // hardcoded fallback for GitHub Pages (no server-side env injection)
-  if (!apiKey) apiKey = 'et5YCZ0vUr60xsRp4KNk9F2ZYF3bydGWDgRuVJx1LHPPBmYEG0PA_ksg'.split('').reverse().join('');
-  provider = 'groq';
-  model = 'llama-3.3-70b-versatile';
 
   // load characters from characters.json
   try {
@@ -1074,34 +1022,19 @@ async function init() {
     document.getElementById('app').insertBefore(el, document.getElementById('char-selector'));
   }
 
-  // migrate stale saved model — check it exists in current provider's list
+  // fall back to provider's default model if env-configured model is invalid
   const provCfg = PROVIDERS[provider];
   if (provCfg) {
     const validIds = provCfg.models.map(m => m.id);
     if (!validIds.includes(model)) {
       console.warn(`Model "${model}" not found for provider "${provider}", falling back to "${validIds[0]}"`);
       model = validIds[0];
-      localStorage.setItem('mentor_model', model);
     }
   }
 
   applyTheme();
   renderCharacters();
   loadConversation();
-
-  // settings
-  $('api-key-input').value = apiKey;
-  $('provider-select').value = provider;
-  $('theme-select').value = theme;
-  $('el-agent-id').value = elevenLabsAgentId;
-  $('el-api-key').value = elevenLabsApiKey;
-  // pre-populate voice ID if empty by fetching agent config
-  if (elevenLabsApiKey && elevenLabsAgentId && !elevenLabsVoiceId) {
-    fetchVoiceId();
-  }
-  updateModelList(provider);
-  $('model-select').value = model;
-  $('provider-select').addEventListener('change', onProviderChange);
 
   // event listeners
   $('char-select').addEventListener('change', () => {
@@ -1118,7 +1051,6 @@ async function init() {
     msgInput.style.height = Math.min(msgInput.scrollHeight, 120) + 'px';
     sendBtn.classList.toggle('active', msgInput.value.trim().length > 0);
   });
-  $('settings-btn').addEventListener('click', () => $('settings-modal').classList.add('show'));
   $('clear-btn').addEventListener('click', clearConversation);
   $('link-btn').addEventListener('click', onHeartClick);
   $('mic-btn').addEventListener('click', onMicClick);
@@ -1331,18 +1263,18 @@ async function callWithRetry(conversation, attempt = 1) {
         await new Promise(r => setTimeout(r, wait));
         return callWithRetry(conversation, attempt + 1);
       }
-      throw new Error(`Still rate limited after ${maxAttempts} retries. Free OpenRouter limit: ~20 req/min. Switch to Groq (14,400/day free) in ⚙ settings for higher limits.`);
+      throw new Error(`Still rate limited after ${maxAttempts} retries. Free OpenRouter limit: ~20 req/min. Configure a different provider in .env for higher limits.`);
     }
     throw err;
   }
 }
 
 async function callAPI(conversation) {
-  if (!apiKey) throw new Error('No API key. Open ⚙ settings to set one.');
+  if (!apiKey) throw new Error('No API key configured. Set API_KEY in .env.');
 
   const cfg = PROVIDERS[provider] || PROVIDERS.openrouter;
   const baseUrl = provider === 'custom' ? customBaseUrl : cfg.baseUrl;
-  if (!baseUrl) throw new Error('Set a custom base URL in ⚙ settings.');
+  if (!baseUrl) throw new Error('Set a custom base URL via CUSTOM_BASE_URL in .env.');
 
   const actualModel = provider === 'custom' ? (customModelName || 'custom-model') : model;
 
@@ -1389,8 +1321,8 @@ async function callAPI(conversation) {
       const errData = await res.json();
       msg = errData.error?.message || JSON.stringify(errData).slice(0, 200) || msg;
     } catch {}
-    if (res.status === 401) throw new Error(`Invalid API key (401). Check ⚙ settings. Get a free key at openrouter.ai/keys`);
-    if (res.status === 404) throw new Error(`Model not found (404). "${actualModel}" is deprecated. Open ⚙ settings and pick a model from the list.`);
+    if (res.status === 401) throw new Error(`Invalid API key (401). Check API_KEY in .env. Get a free key at openrouter.ai/keys`);
+    if (res.status === 404) throw new Error(`Model not found (404). "${actualModel}" is deprecated. Set a valid MODEL in .env.`);
     if (res.status === 429) throw new Error(`Rate limited (429) by ${provider}. Free models: ~20 req/min.`);
     if (res.status === 402) throw new Error(`Insufficient credits (402). Add funds or use a :free model.`);
     throw new Error(`${provider}: ${msg}`);
@@ -1502,49 +1434,6 @@ function setAvatar(charId, dataUrl) {
   showToast('✅ Avatar updated');
 }
 
-// ---- settings ----
-function updateModelList(prov) {
-  const sel = $('model-select');
-  const cfg = PROVIDERS[prov];
-  if (!cfg) return;
-  sel.innerHTML = cfg.models.map(m => `<option value="${m.id}">${m.lbl}</option>`).join('');
-  $('api-key-input').placeholder = cfg.keyPlaceholder;
-  $('provider-hint').innerHTML = cfg.hint;
-  // show custom url/model inputs if custom provider
-  const isCustom = prov === 'custom';
-  document.querySelectorAll('.custom-field').forEach(el => el.style.display = isCustom ? 'block' : 'none');
-}
-
-function onProviderChange() {
-  const p = $('provider-select').value;
-  updateModelList(p);
-  // set default model for provider
-  const cfg = PROVIDERS[p];
-  if (cfg && cfg.models.length > 0) $('model-select').value = cfg.models[0].id;
-  if (p === 'custom' && customBaseUrl) $('custom-url-input').value = customBaseUrl;
-  if (p === 'custom' && customModelName) $('custom-model-input').value = customModelName;
-}
-
-function fetchVoiceId() {
-  if (!elevenLabsApiKey || !elevenLabsAgentId) return;
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.elevenlabs.io/v1/convai/agents/' + elevenLabsAgentId);
-  xhr.setRequestHeader('xi-api-key', elevenLabsApiKey);
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      try {
-        var data = JSON.parse(xhr.responseText);
-        var vid = data?.conversation_config?.tts?.voice_id || data?.voice_id || '';
-        if (vid) {
-          elevenLabsVoiceId = vid;
-          localStorage.setItem('mentor_el_voice_id', vid);
-        }
-      } catch(e) {}
-    }
-  };
-  xhr.send();
-}
-
 var dynamicSugg = null;
 
 async function generateSuggestions(conversation) {
@@ -1595,12 +1484,8 @@ function onMicClick() {
     showToast('Voice coming soon for other mentors');
     return;
   }
-  if (!elevenLabsApiKey || !elevenLabsAgentId) {
-    showToast('Set ElevenLabs API Key and Agent ID in Settings');
-    return;
-  }
-  if (!elevenLabsVoiceId) {
-    showToast('Voice ID not loaded. Save Settings to fetch it from the agent.');
+  if (!elevenLabsApiKey || !elevenLabsAgentId || !elevenLabsVoiceId) {
+    showToast('Voice is not configured');
     return;
   }
 
@@ -1674,43 +1559,6 @@ function onMicClick() {
     text: text,
     model_id: 'eleven_multilingual_v2'
   }));
-}
-
-function saveSettings() {
-  const newKey = $('api-key-input').value.trim();
-  const newProv = $('provider-select').value;
-  const newModel = $('model-select').value;
-  const newTheme = $('theme-select').value;
-
-  apiKey = newKey;
-  provider = newProv;
-  model = newModel;
-  theme = newTheme;
-
-  var newAgentId = ($('el-agent-id')?.value || '').trim();
-  var newApiKey = ($('el-api-key')?.value || '').trim();
-  elevenLabsAgentId = newAgentId;
-  elevenLabsApiKey = newApiKey;
-  localStorage.setItem('mentor_el_agent_id', newAgentId);
-  localStorage.setItem('mentor_el_api_key', newApiKey);
-
-  // auto-fetch voice ID from agent config
-  fetchVoiceId();
-
-  if (provider === 'custom') {
-    customBaseUrl = ($('custom-url-input')?.value || '').trim().replace(/\/+$/, '');
-    customModelName = ($('custom-model-input')?.value || '').trim();
-    localStorage.setItem('mentor_custom_url', customBaseUrl);
-    localStorage.setItem('mentor_custom_model', customModelName);
-  }
-
-  localStorage.setItem('mentor_api_key', apiKey);
-  localStorage.setItem('mentor_provider', provider);
-  localStorage.setItem('mentor_model', model);
-  localStorage.setItem('mentor_theme', theme);
-  applyTheme();
-  $('settings-modal').classList.remove('show');
-  showToast('Settings saved' + (elevenLabsVoiceId ? ' - voice ID loaded' : ''));
 }
 
 function applyTheme() {
