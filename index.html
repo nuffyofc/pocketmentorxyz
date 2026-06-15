@@ -12,15 +12,52 @@
 :root{
   --bg:#050505;
   --card:#101014;
+  --card2:#1b1b23;
+  --card3:#111117;
+  --input-bg:#1a1a22;
   --soft:#17171d;
   --border:rgba(255,255,255,.08);
   --text:#f8f8fb;
+  --text-soft:#ececf4;
   --muted:#9d9dad;
   --purple:#8b5cf6;
   --purple2:#a78bfa;
   --orange:#ff8a00;
   --green:#22c55e;
   --radius:22px;
+  --preview-g1:#15151d;
+  --preview-g2:#0e0e13;
+  --card-g1:#121218;
+  --card-g2:#0d0d12;
+  --quote-g1:#0d0d12;
+  --quote-g2:#070709;
+}
+
+[data-theme="light"]{
+  --bg:#FAF1EA;
+  --card:#FFFFFF;
+  --card2:#FBEFE8;
+  --card3:#FFFFFF;
+  --input-bg:#F3E3D8;
+  --soft:#F5E6DC;
+  --border:rgba(90,60,45,.12);
+  --text:#2E2019;
+  --text-soft:#4A3429;
+  --muted:#9C8275;
+  --purple:#C8755A;
+  --purple2:#D99B81;
+  --orange:#D9772E;
+  --green:#22c55e;
+  --preview-g1:#FFF8F3;
+  --preview-g2:#F7E9DF;
+  --card-g1:#FFFFFF;
+  --card-g2:#FBF0E8;
+  --quote-g1:#F7E9DF;
+  --quote-g2:#FBF1EB;
+}
+
+[data-theme="light"] header{
+  background:rgba(250,241,234,.75);
 }
 
 *{
@@ -34,6 +71,7 @@ body{
   color:var(--text);
   font-family:Inter, sans-serif;
   overflow-x:hidden;
+  transition:background .3s ease, color .3s ease;
 }
 
 .container{
@@ -88,6 +126,27 @@ nav a{
 
 nav a:hover{
   color:#fff;
+}
+
+.theme-toggle{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  font-size:17px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.2s;
+  flex-shrink:0;
+}
+
+.theme-toggle:hover{
+  border-color:var(--purple2);
+  transform:translateY(-1px);
 }
 
 .btn{
@@ -194,7 +253,7 @@ nav a:hover{
 }
 
 .preview{
-  background:linear-gradient(180deg,#15151d,#0e0e13);
+  background:linear-gradient(180deg,var(--preview-g1),var(--preview-g2));
   border:1px solid var(--border);
   border-radius:28px;
   overflow:hidden;
@@ -213,7 +272,7 @@ nav a:hover{
   display:flex;
   align-items:center;
   gap:10px;
-  color:#fff;
+  color:var(--text);
   font-size:13px;
   font-weight:700;
 }
@@ -231,8 +290,8 @@ nav a:hover{
 }
 
 .chat{
-  background:#1b1b23;
-  border:1px solid rgba(255,255,255,.05);
+  background:var(--card2);
+  border:1px solid var(--border);
   border-radius:20px;
   padding:20px;
   margin-bottom:18px;
@@ -248,11 +307,11 @@ nav a:hover{
 .chat p{
   font-size:15px;
   line-height:1.8;
-  color:#ececf4;
+  color:var(--text-soft);
 }
 
 .input-box{
-  background:#111117;
+  background:var(--card3);
   border:1px solid var(--border);
   border-radius:20px;
   padding:18px;
@@ -272,10 +331,10 @@ nav a:hover{
 
 .input-row input{
   flex:1;
-  background:#1a1a22;
+  background:var(--input-bg);
   border:none;
   outline:none;
-  color:#fff;
+  color:var(--text);
   padding:16px;
   border-radius:14px;
   font-size:15px;
@@ -310,7 +369,7 @@ nav a:hover{
 }
 
 .card{
-  background:linear-gradient(180deg,#121218,#0d0d12);
+  background:linear-gradient(180deg,var(--card-g1),var(--card-g2));
   border:1px solid var(--border);
   border-radius:26px;
   padding:30px;
@@ -355,7 +414,7 @@ nav a:hover{
 }
 
 .quote-section{
-  background:linear-gradient(180deg,#0d0d12,#070709);
+  background:linear-gradient(180deg,var(--quote-g1),var(--quote-g2));
   border-top:1px solid var(--border);
   border-bottom:1px solid var(--border);
 }
@@ -367,7 +426,7 @@ nav a:hover{
 }
 
 .quote{
-  background:#111117;
+  background:var(--card3);
   border:1px solid var(--border);
   padding:34px;
   border-radius:24px;
@@ -388,7 +447,7 @@ nav a:hover{
 }
 
 .proof{
-  background:#111117;
+  background:var(--card3);
   border:1px solid var(--border);
   border-radius:22px;
   padding:28px;
@@ -502,6 +561,8 @@ footer{
       <a href="#proof">Proof</a>
       <a href="character-ai/" class="btn btn-primary">Try Out App</a>
     </nav>
+
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">🌙</button>
   </div>
 </header>
 
@@ -526,7 +587,7 @@ footer{
 
         <div class="hero-actions">
           <a href="character-ai/" class="btn btn-primary">Try Out App</a>
-          <a href="#mentors" class="btn btn-primary" style="background:#1a1a22;box-shadow:none;border:1px solid var(--border)">Choose Your Mentor</a>
+          <a href="#mentors" class="btn btn-primary" style="background:var(--input-bg);color:var(--text);box-shadow:none;border:1px solid var(--border)">Choose Your Mentor</a>
         </div>
 
         <div class="hero-stats">
@@ -795,5 +856,27 @@ footer{
   </div>
 </footer>
 
+<script>
+(function() {
+  var KEY = 'mentor_theme';
+  var btn = document.getElementById('theme-toggle');
+  function apply(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      btn.textContent = '☀️';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      btn.textContent = '🌙';
+    }
+  }
+  var saved = localStorage.getItem(KEY) || 'dark';
+  apply(saved);
+  btn.addEventListener('click', function() {
+    var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    localStorage.setItem(KEY, next);
+    apply(next);
+  });
+})();
+</script>
 </body>
 </html>

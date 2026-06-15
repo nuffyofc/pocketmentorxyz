@@ -30,7 +30,7 @@ header{
   width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
   cursor:pointer;transition:all .2s;font-size:16px
 }
-.icon-btn:hover{border-color:var(--accent);color:#fff}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* character selection */
 #char-selector{padding:12px 0;flex-shrink:0}
@@ -136,12 +136,12 @@ header{
 .suggestion-btn{flex:1 1 30%;min-width:0;padding:14px 22px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.45;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:center;overflow-wrap:break-word;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both}
 .suggestion-btn:nth-child(2){animation-delay:.08s}
 .suggestion-btn:nth-child(3){animation-delay:.16s}
-.suggestion-btn:hover{border-color:var(--accent);color:#fff;background:rgba(124,58,237,.12);box-shadow:0 0 20px rgba(124,58,237,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
+.suggestion-btn:hover{border-color:var(--accent);color:var(--text);background:rgba(124,58,237,.12);box-shadow:0 0 20px rgba(124,58,237,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
 .suggestion-btn:active{transform:scale(.97) translateY(0)}
 /* quiz option buttons */
 .quiz-opt{flex:1 1 45%;min-width:0;padding:14px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;line-height:1.45;cursor:pointer;transition:all .25s ease;font-family:inherit;text-align:left;overflow-wrap:break-word;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,.2);animation:suggIn .35s ease both;display:flex;align-items:center;gap:10px}
 .quiz-opt .opt-label{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;flex-shrink:0}
-.quiz-opt:hover{border-color:var(--accent);color:#fff;background:rgba(245,158,11,.12);box-shadow:0 0 20px rgba(245,158,11,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
+.quiz-opt:hover{border-color:var(--accent);color:var(--text);background:rgba(245,158,11,.12);box-shadow:0 0 20px rgba(245,158,11,.15),0 4px 12px rgba(0,0,0,.3);transform:translateY(-1px)}
 .quiz-opt:active{transform:scale(.97) translateY(0)}
 #quiz-progress{display:none;padding:0 0 8px;flex-shrink:0;font-size:11px;color:var(--text2);text-align:center;letter-spacing:.3px;border-top:1px solid var(--border);margin-top:4px;padding-top:8px}
 #quiz-progress span{font-weight:600;color:var(--accent)}
@@ -318,6 +318,7 @@ header{
   <header>
     <div class="logo">🧠 Mentor <span>alpha</span></div>
     <div class="header-actions">
+      <button class="icon-btn" id="theme-toggle" title="Toggle theme">🌙</button>
       <button class="icon-btn" id="clear-btn" title="Clear chat" style="display:none">🗑</button>
     </div>
   </header>
@@ -955,6 +956,7 @@ let elevenLabsApiKey = 'sk_7f871978c771ab38a3e29f809742d51dcc90a8e395f58832';
 let elevenLabsVoiceId = 'bamEsOP2cNfZeSU50trY';
 const CONV_KEY = 'mentor_conversations';
 const AVATAR_KEY = 'mentor_avatars';
+const THEME_KEY = 'mentor_theme';
 
 function loadAvatars() {
   try { return JSON.parse(localStorage.getItem(AVATAR_KEY) || '{}'); } catch { return {}; }
@@ -1032,11 +1034,18 @@ async function init() {
     }
   }
 
+  // user's saved theme choice overrides env default
+  try {
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme === 'light' || savedTheme === 'dark') theme = savedTheme;
+  } catch {}
+
   applyTheme();
   renderCharacters();
   loadConversation();
 
   // event listeners
+  $('theme-toggle').addEventListener('click', toggleTheme);
   $('char-select').addEventListener('change', () => {
     const val = $('char-select').value;
     if (val) selectCharacter(val);
@@ -1563,12 +1572,12 @@ function onMicClick() {
 
 function applyTheme() {
   if (theme === 'light') {
-    document.documentElement.style.setProperty('--bg', '#F8F8FC');
+    document.documentElement.style.setProperty('--bg', '#FBF1EB');
     document.documentElement.style.setProperty('--bg2', '#FFFFFF');
-    document.documentElement.style.setProperty('--bg3', '#F0F0F5');
-    document.documentElement.style.setProperty('--border', 'rgba(0,0,0,.08)');
-    document.documentElement.style.setProperty('--text', '#1A1A2E');
-    document.documentElement.style.setProperty('--text2', '#6B6B80');
+    document.documentElement.style.setProperty('--bg3', '#F5E6DC');
+    document.documentElement.style.setProperty('--border', 'rgba(120,75,55,.12)');
+    document.documentElement.style.setProperty('--text', '#3A2A22');
+    document.documentElement.style.setProperty('--text2', '#9A7D6E');
   } else {
     document.documentElement.style.setProperty('--bg', '#0A0A0F');
     document.documentElement.style.setProperty('--bg2', '#12121A');
@@ -1577,6 +1586,14 @@ function applyTheme() {
     document.documentElement.style.setProperty('--text', '#F1F1F7');
     document.documentElement.style.setProperty('--text2', '#8888A0');
   }
+  const btn = $('theme-toggle');
+  if (btn) btn.textContent = theme === 'light' ? '☀️' : '🌙';
+}
+
+function toggleTheme() {
+  theme = theme === 'light' ? 'dark' : 'light';
+  localStorage.setItem(THEME_KEY, theme);
+  applyTheme();
 }
 
 // ---- utils ----
