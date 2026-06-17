@@ -1,6 +1,6 @@
 # 🧠 Mentor AI
 
-**→ https://character-ai-xi.vercel.app**
+**→ https://github.com/nuffyofc/pocketmentorxyz**
 
 Chat with AI-powered mentors that talk in your style. Pick a character — Andrew Tate, Gary Vee, Dan Pena, Tai Lopez — and get advice, motivation, or just a conversation in their voice.
 
@@ -14,20 +14,6 @@ Chat with AI-powered mentors that talk in your style. Pick a character — Andre
 4. **No account needed** — your chats and settings are saved in your browser (localStorage)
 
 Characters are defined in `characters.json` — anyone can edit them without touching code.
-
----
-
-## Tech Stack
-
-| Layer | Choice |
-|-------|--------|
-| Frontend | Vanilla HTML / CSS / JS (single file, zero deps) |
-| AI API | **Groq** (default, 14,400 req/day free) |
-| Fallback APIs | OpenRouter / Google Gemini / OpenAI / Custom |
-| Local dev | Python `server.py` (injects `.env` vars) |
-| Production | Vercel + serverless function (`api/env.js`) |
-| Config | `characters.json` — edit characters externally |
-| Persistence | localStorage (conversations, settings, avatars) |
 
 ---
 
@@ -54,9 +40,9 @@ python server.py
 
 ## How to deploy on Vercel
 
-1. Push this repo to GitHub
+1. Push this repo to GitHub: https://github.com/nuffyofc/pocketmentorxyz
 2. Go to https://vercel.com → Import Git Repository
-3. Set **Root Directory** to `character-ai`
+3. Leave **Root Directory** as the repo root (it serves the landing page, `character-ai/`, and `api/` via `vercel.json`)
 4. Add these environment variables:
 
 | Name | Value |
