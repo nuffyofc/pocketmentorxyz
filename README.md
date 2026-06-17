@@ -1,6 +1,6 @@
 # 🧠 Mentor AI
 
-**→ https://github.com/nuffyofc/pocketmentorxyz**
+**→ [https://github.com/nuffyofc/pocketmentorxyz](https://pocketmentorxyz.vercel.app/)**
 
 Chat with AI-powered mentors that talk in your style. Pick a character — Andrew Tate, Gary Vee, Dan Pena, Tai Lopez — and get advice, motivation, or just a conversation in their voice.
 
