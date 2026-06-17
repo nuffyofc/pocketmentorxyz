@@ -221,10 +221,13 @@ header{
 
 /* avatar ring */
 .msg-avatar .heart-ring{
-  position:absolute;inset:-5px;width:calc(100% + 10px);height:calc(100% + 10px);
+  position:absolute;inset:-6px;width:calc(100% + 12px);height:calc(100% + 12px);
   pointer-events:none
 }
-.msg-avatar .heart-ring-fill{transition:stroke-dashoffset .4s ease}
+.msg-avatar .heart-ring-fill{
+  transition:stroke-dashoffset .4s ease;
+  filter:drop-shadow(0 0 4px rgba(255,23,68,.85));
+}
 
 /* avatar squeeze */
 @keyframes squeeze{
@@ -972,6 +975,18 @@ function getAvatar(charId) {
   return all[charId] || null;
 }
 
+// One-time cleanup: drop stale custom avatars for klemen/jani saved before
+// their characters.json images were fixed, so the correct default shows.
+(function resetStaleAvatars() {
+  const FLAG = 'mentor_avatar_reset_klemen_jani_v1';
+  if (localStorage.getItem(FLAG)) return;
+  const all = loadAvatars();
+  delete all.klemen;
+  delete all.jani;
+  localStorage.setItem(AVATAR_KEY, JSON.stringify(all));
+  localStorage.setItem(FLAG, '1');
+})();
+
 // ---- DOM refs ----
 const $ = id => document.getElementById(id);
 const chatArea = $('chat-area');
@@ -1174,8 +1189,9 @@ function appendMessage(role, content, animate = true) {
       <div class="msg-avatar" style="background:${char.color}22" data-char-id="${char.id}">
         ${avatarHtml}
         <svg class="heart-ring" viewBox="0 0 44 44">
-          <circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,105,180,0.12)" stroke-width="4.5"/>
-          <circle cx="22" cy="22" r="19" fill="none" stroke="#FF69B4" stroke-width="4.5"
+          <circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,23,68,0.25)" stroke-width="6"/>
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#FF1744" stroke-width="6"
+            stroke-linecap="round"
             stroke-dasharray="113.1" stroke-dashoffset="${ringOffset}"
             transform="rotate(-90 22 22)" class="heart-ring-fill"/>
         </svg>
@@ -1289,7 +1305,7 @@ async function callAPI(conversation) {
 
   const systemMsg = {
     role: 'system',
-    content: activeChar.prompt + `\n\nYou are ${activeChar.name}, ${activeChar.tag}. Respond as this character. Never break character.\n\nFormat rules: Use relevant emojis in every response. Keep paragraphs short — 1-3 sentences max. Be punchy and direct. No long-winded explanations.`
+    content: activeChar.prompt + `\n\nYou are ${activeChar.name}, ${activeChar.tag}. Respond as this character. Never break character.\n\nFormat rules: Use relevant emojis in every response. Keep paragraphs short — 1-3 sentences max. Be punchy and direct. No long-winded explanations. Never use markdown formatting — no asterisks, no bold (**text**), no bullet dashes, no headers (#). Plain text only.`
   };
 
   const body = {
