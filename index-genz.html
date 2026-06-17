@@ -6,58 +6,65 @@
 <title>Mentor AI — Stop Being Average</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#050505;
-  --card:#101014;
-  --card2:#1b1b23;
-  --card3:#111117;
-  --input-bg:#1a1a22;
-  --soft:#17171d;
-  --border:rgba(255,255,255,.08);
+  --bg:#07060d;
+  --card:#13111c;
+  --card2:#1b1828;
+  --card3:#15131f;
+  --input-bg:#1c1a28;
+  --soft:#181522;
+  --border:rgba(255,255,255,.09);
   --text:#f8f8fb;
   --text-soft:#ececf4;
-  --muted:#9d9dad;
+  --muted:#a6a3c2;
   --purple:#8b5cf6;
-  --purple2:#a78bfa;
+  --purple2:#c084fc;
+  --pink:#ff3ea5;
+  --lime:#c6ff00;
+  --cyan:#22d3ee;
   --orange:#ff8a00;
   --green:#22c55e;
   --radius:22px;
-  --preview-g1:#15151d;
-  --preview-g2:#0e0e13;
-  --card-g1:#121218;
-  --card-g2:#0d0d12;
-  --quote-g1:#0d0d12;
-  --quote-g2:#070709;
+  --preview-g1:#1a1726;
+  --preview-g2:#0e0c16;
+  --card-g1:#171425;
+  --card-g2:#0f0d18;
+  --quote-g1:#130f1f;
+  --quote-g2:#070611;
+  --heading-font:'Space Grotesk',Inter,sans-serif;
 }
 
 [data-theme="light"]{
-  --bg:#FAF1EA;
+  --bg:#FFF6FB;
   --card:#FFFFFF;
-  --card2:#FBEFE8;
+  --card2:#FFEFF8;
   --card3:#FFFFFF;
-  --input-bg:#F3E3D8;
-  --soft:#F5E6DC;
-  --border:rgba(90,60,45,.12);
-  --text:#2E2019;
-  --text-soft:#4A3429;
-  --muted:#9C8275;
-  --purple:#C8755A;
-  --purple2:#D99B81;
-  --orange:#D9772E;
-  --green:#22c55e;
-  --preview-g1:#FFF8F3;
-  --preview-g2:#F7E9DF;
+  --input-bg:#FCE4F1;
+  --soft:#FDEAF4;
+  --border:rgba(140,20,90,.12);
+  --text:#241023;
+  --text-soft:#3c1d39;
+  --muted:#9a7d96;
+  --purple:#A6309C;
+  --purple2:#D946C5;
+  --pink:#FF3EA5;
+  --lime:#16A34A;
+  --cyan:#0EA5C7;
+  --orange:#E8590C;
+  --green:#16A34A;
+  --preview-g1:#FFFFFF;
+  --preview-g2:#FFF0F8;
   --card-g1:#FFFFFF;
-  --card-g2:#FBF0E8;
-  --quote-g1:#F7E9DF;
-  --quote-g2:#FBF1EB;
+  --card-g2:#FFF1F9;
+  --quote-g1:#FFF0F8;
+  --quote-g2:#FFF8FC;
 }
 
 [data-theme="light"] header{
-  background:rgba(250,241,234,.75);
+  background:rgba(255,246,251,.78);
 }
 
 *{
@@ -89,7 +96,7 @@ header{
   z-index:100;
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
-  background:rgba(5,5,5,.7);
+  background:rgba(7,6,13,.7);
   border-bottom:1px solid var(--border);
 }
 
@@ -101,13 +108,17 @@ header .container{
 }
 
 .logo{
+  font-family:var(--heading-font);
   font-size:24px;
-  font-weight:900;
+  font-weight:700;
   letter-spacing:-1px;
 }
 
 .logo span{
-  color:var(--purple2);
+  background:linear-gradient(135deg,var(--pink),var(--purple2),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 nav{
@@ -120,7 +131,7 @@ nav a{
   text-decoration:none;
   color:var(--muted);
   font-size:14px;
-  font-weight:600;
+  font-weight:700;
   transition:.2s;
 }
 
@@ -145,8 +156,8 @@ nav a:hover{
 }
 
 .theme-toggle:hover{
-  border-color:var(--purple2);
-  transform:translateY(-1px);
+  border-color:var(--pink);
+  transform:translateY(-1px) rotate(-8deg);
 }
 
 .btn{
@@ -156,20 +167,21 @@ nav a:hover{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  transition:.25s;
-  font-weight:700;
+  transition:.25s cubic-bezier(.34,1.56,.64,1);
+  font-weight:800;
 }
 
 .btn-primary{
-  background:linear-gradient(135deg,var(--purple),var(--purple2));
+  background:linear-gradient(135deg,var(--pink),var(--purple),var(--cyan));
   color:#fff;
   padding:16px 32px;
   border-radius:16px;
-  box-shadow:0 10px 40px color-mix(in srgb, var(--purple) 35%, transparent);
+  box-shadow:0 10px 40px color-mix(in srgb, var(--pink) 40%, transparent);
 }
 
 .btn-primary:hover{
-  transform:translateY(-2px) scale(1.02);
+  transform:translateY(-3px) scale(1.04) rotate(-1deg);
+  box-shadow:0 14px 50px color-mix(in srgb, var(--pink) 55%, transparent);
 }
 
 .hero{
@@ -182,14 +194,33 @@ nav a:hover{
   position:absolute;
   width:800px;
   height:800px;
-  background:radial-gradient(circle,color-mix(in srgb, var(--purple) 38%, transparent),color-mix(in srgb, var(--purple) 12%, transparent) 45%,transparent 70%);
+  background:radial-gradient(circle,color-mix(in srgb, var(--pink) 35%, transparent),color-mix(in srgb, var(--purple) 18%, transparent) 45%,transparent 70%);
   top:-300px;
   right:-200px;
   pointer-events:none;
   filter:blur(10px);
+  animation:floatGlow 9s ease-in-out infinite;
 }
 
-[data-theme="light"] .glow{
+.glow2{
+  position:absolute;
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle,color-mix(in srgb, var(--cyan) 28%, transparent),transparent 70%);
+  bottom:-260px;
+  left:-180px;
+  pointer-events:none;
+  filter:blur(10px);
+  animation:floatGlow 11s ease-in-out infinite reverse;
+}
+
+@keyframes floatGlow{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(-30px,30px) scale(1.08);}
+}
+
+[data-theme="light"] .glow,
+[data-theme="light"] .glow2{
   display:none;
 }
 
@@ -206,24 +237,29 @@ nav a:hover{
   gap:10px;
   padding:10px 18px;
   border-radius:999px;
-  background:color-mix(in srgb, var(--purple) 12%, transparent);
-  border:1px solid color-mix(in srgb, var(--purple) 25%, transparent);
+  background:linear-gradient(135deg,color-mix(in srgb, var(--pink) 18%, transparent),color-mix(in srgb, var(--cyan) 18%, transparent));
+  border:1px solid color-mix(in srgb, var(--pink) 35%, transparent);
   color:var(--purple2);
   font-size:13px;
-  font-weight:700;
+  font-weight:800;
   margin-bottom:28px;
+  transform:rotate(-1.5deg);
 }
 
 .hero h1{
-  font-size:72px;
-  line-height:.95;
-  letter-spacing:-4px;
+  font-family:var(--heading-font);
+  font-size:74px;
+  line-height:.96;
+  letter-spacing:-3px;
   margin-bottom:24px;
-  font-weight:900;
+  font-weight:700;
 }
 
 .hero h1 span{
-  color:var(--purple2);
+  background:linear-gradient(135deg,var(--pink),var(--purple2),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 .hero p{
@@ -249,12 +285,18 @@ nav a:hover{
 
 .hero-stat strong{
   display:block;
-  font-size:28px;
+  font-family:var(--heading-font);
+  font-size:30px;
+  background:linear-gradient(135deg,var(--pink),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 .hero-stat span{
   color:var(--muted);
   font-size:14px;
+  font-weight:600;
 }
 
 .preview{
@@ -263,6 +305,12 @@ nav a:hover{
   border-radius:28px;
   overflow:hidden;
   box-shadow:0 30px 80px rgba(0,0,0,.45);
+  transform:rotate(1deg);
+  transition:transform .4s ease;
+}
+
+.preview:hover{
+  transform:rotate(0deg) translateY(-4px);
 }
 
 .preview-top{
@@ -279,15 +327,21 @@ nav a:hover{
   gap:10px;
   color:var(--text);
   font-size:13px;
-  font-weight:700;
+  font-weight:800;
 }
 
 .dot{
   width:10px;
   height:10px;
   border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 18px var(--green);
+  background:var(--lime);
+  box-shadow:0 0 18px var(--lime);
+  animation:pulseDot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseDot{
+  0%,100%{opacity:1;}
+  50%{opacity:.4;}
 }
 
 .preview-body{
@@ -307,8 +361,8 @@ nav a:hover{
   align-items:center;
   gap:8px;
   margin-bottom:10px;
-  color:var(--orange);
-  font-weight:700;
+  color:var(--pink);
+  font-weight:800;
 }
 
 .chat small img{
@@ -336,6 +390,7 @@ nav a:hover{
   font-size:13px;
   color:var(--muted);
   margin-bottom:12px;
+  font-weight:600;
 }
 
 .input-row{
@@ -359,11 +414,12 @@ nav a:hover{
 }
 
 .section-title{
-  font-size:52px;
+  font-family:var(--heading-font);
+  font-size:54px;
   line-height:1;
   letter-spacing:-2px;
   margin-bottom:16px;
-  font-weight:900;
+  font-weight:700;
   text-align:center;
 }
 
@@ -389,13 +445,27 @@ nav a:hover{
   padding:30px;
   position:relative;
   overflow:hidden;
-  transition:.3s;
+  transition:.3s cubic-bezier(.34,1.56,.64,1);
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,color-mix(in srgb, var(--pink) 8%, transparent),transparent 60%);
+  opacity:0;
+  transition:opacity .3s;
+  pointer-events:none;
 }
 
 .card:hover{
-  transform:translateY(-8px);
-  border-color:color-mix(in srgb, var(--purple) 30%, transparent);
-  box-shadow:0 30px 60px rgba(0,0,0,.35);
+  transform:translateY(-10px) rotate(-.5deg);
+  border-color:color-mix(in srgb, var(--pink) 40%, transparent);
+  box-shadow:0 30px 60px rgba(0,0,0,.4);
+}
+
+.card:hover::before{
+  opacity:1;
 }
 
 .card .avatar{
@@ -417,15 +487,19 @@ nav a:hover{
 }
 
 .card h3{
+  font-family:var(--heading-font);
   font-size:28px;
   margin-bottom:8px;
+  font-weight:700;
 }
 
 .card .type{
-  color:var(--purple2);
+  color:var(--pink);
   font-size:13px;
-  font-weight:700;
+  font-weight:800;
   margin-bottom:18px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
 }
 
 .card p{
@@ -438,8 +512,8 @@ nav a:hover{
   display:inline-flex;
   padding:8px 14px;
   border-radius:999px;
-  background:color-mix(in srgb, var(--purple) 12%, transparent);
-  border:1px solid color-mix(in srgb, var(--purple) 25%, transparent);
+  background:linear-gradient(135deg,color-mix(in srgb, var(--pink) 16%, transparent),color-mix(in srgb, var(--cyan) 16%, transparent));
+  border:1px solid color-mix(in srgb, var(--pink) 30%, transparent);
   color:var(--purple2);
   font-size:12px;
   font-weight:800;
@@ -462,14 +536,24 @@ nav a:hover{
   border:1px solid var(--border);
   padding:34px;
   border-radius:24px;
+  font-family:var(--heading-font);
   font-size:28px;
   line-height:1.3;
-  font-weight:800;
+  font-weight:700;
   letter-spacing:-1px;
+  transition:.3s;
+}
+
+.quote:hover{
+  transform:translateY(-4px);
+  border-color:color-mix(in srgb, var(--cyan) 35%, transparent);
 }
 
 .quote span{
-  color:var(--purple2);
+  background:linear-gradient(135deg,var(--pink),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 .social-proof{
@@ -489,8 +573,13 @@ nav a:hover{
 
 .proof strong{
   display:block;
+  font-family:var(--heading-font);
   font-size:42px;
   margin-bottom:10px;
+  background:linear-gradient(135deg,var(--pink),var(--purple2),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 .proof p{
@@ -504,10 +593,12 @@ nav a:hover{
 }
 
 .cta h2{
-  font-size:76px;
+  font-family:var(--heading-font);
+  font-size:78px;
   line-height:.95;
-  letter-spacing:-4px;
+  letter-spacing:-3px;
   margin-bottom:22px;
+  font-weight:700;
 }
 
 .cta p{
@@ -602,6 +693,7 @@ footer{
 
 <section class="hero">
   <div class="glow"></div>
+  <div class="glow2"></div>
 
   <div class="container">
     <div class="hero-grid">
@@ -616,7 +708,7 @@ footer{
 
         <p>
           Andrew Tate. Gary Vee. Dan Peña. Tai Lopez.
-          The internet’s most intense personalities — rebuilt as AI mentors designed to push you harder than your friends ever will.
+          The internet's most intense personalities — rebuilt as AI mentors designed to push you harder than your friends ever will.
         </p>
 
         <div class="hero-actions">
@@ -803,17 +895,17 @@ footer{
     <div class="quote-grid">
 
       <div class="quote">
-        “You're not tired.<br>
-        <span>You're distracted.</span>”
+        "You're not tired.<br>
+        <span>You're distracted.</span>"
       </div>
 
       <div class="quote">
-        “Your future is being destroyed by <span>comfort.</span>”
+        "Your future is being destroyed by <span>comfort.</span>"
       </div>
 
       <div class="quote">
-        “Average people need motivation.<br>
-        <span>Winners need standards.</span>”
+        "Average people need motivation.<br>
+        <span>Winners need standards.</span>"
       </div>
 
     </div>
@@ -912,7 +1004,6 @@ footer{
 <script>
 (function() {
   // Real, live visit counter via CountAPI (free, no signup, no backend needed).
-  // Namespace+key form a unique global counter at api.countapi.xyz.
   var NAMESPACE = 'pocketmentorxyz-com';
   var KEY = 'site-visits';
   var els = [document.getElementById('hero-visit-count'), document.getElementById('proof-visit-count'), document.getElementById('hero-badge-count')];
