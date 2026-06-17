@@ -911,15 +911,12 @@ footer{
 
 <script>
 (function() {
-  // Real, live visit counter via CountAPI (free, no signup, no backend needed).
-  // Namespace+key form a unique global counter at api.countapi.xyz.
-  var NAMESPACE = 'pocketmentorxyz-com';
-  var KEY = 'site-visits';
+  // Real, live visit counter backed by Vercel KV (see /api/visits.js).
   var els = [document.getElementById('hero-visit-count'), document.getElementById('proof-visit-count'), document.getElementById('hero-badge-count')];
-  fetch('https://api.countapi.xyz/hit/' + NAMESPACE + '/' + KEY)
+  fetch('/api/visits')
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      var formatted = data.value.toLocaleString();
+      var formatted = (typeof data.value === 'number') ? data.value.toLocaleString() : '—';
       els.forEach(function(el) { if (el) el.textContent = formatted; });
     })
     .catch(function() {

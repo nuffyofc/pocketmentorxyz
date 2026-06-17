@@ -4,6 +4,7 @@
   "routes": [
     { "src": "/api/env", "dest": "/api/env.js" },
     { "src": "/character-ai/api/env", "dest": "/api/env.js" },
+    { "src": "/api/visits", "dest": "/api/visits.js" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
