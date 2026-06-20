@@ -519,9 +519,10 @@ function showSuggestions(questions) {
   if (!container || !activeChar) { if (container) container.classList.remove('show'); return; }
   if (quizState.active) return;
   // dynamic AI-generated suggestions
-  if (questions && questions.length === 3) {
+  if (questions && questions.length >= 1) {
     dynamicSugg = questions;
-    container.innerHTML = questions.map(function(q) {
+    var single = [questions[0]];
+    container.innerHTML = single.map(function(q) {
       return '<button class="suggestion-btn" data-dynamic="1">' + escapeHtml(q) + '</button>';
     }).join('');
     container.classList.add('show');
@@ -545,7 +546,7 @@ function showSuggestions(questions) {
   const round = getSuggRound(activeChar.id);
   const sq = mentorSugg.rounds[round];
   if (!sq) { container.classList.remove('show'); return; }
-  container.innerHTML = sq.map(function(q) {
+  container.innerHTML = sq.slice(0,1).map(function(q) {
     return '<button class="suggestion-btn" data-q="' + q.replace(/"/g, '&quot;') + '">' + q + '</button>';
   }).join('');
   container.classList.add('show');
@@ -1546,9 +1547,9 @@ async function generateSuggestions(conversation) {
   try {
     var suggSystemPrompt;
     if (activeChar.id === 'tate') {
-      suggSystemPrompt = 'You generate follow-up questions for a chat with Andrew Tate, who teaches Hustler\'s University business lessons. The lessons cover: L1 Speed, L2 Revenue First, L3 Start Cheap/Dropshipping, L5 Command Respect Through Presence, L6 Resell to Existing Customers, L7 Don\'t Get Legal Before Rich, L9 Use What You Have, L14 Control Your Reputation, L17 Never Compete on Price, L18 Listen to Rich People, L19 Attention is Free Advertising, L20 Plan on Insecurities, L61 Never Say No to Money, L81 How You Sell Beats What You Sell, L82 Outsource Your Weakness, L83 Satisfy Immediate Needs, L85 Everybody Loves a Winner, L86 Steal from Competitors, L99 Create the Problem Solve It, L100 Buying Should Make People Happy. Generate 3 short follow-up questions the user could ask Tate next, grounded in these HU lessons and contextually relevant to the last message. Questions should be practical, business-focused, and direct — like someone learning to make money. Return ONLY a JSON array of 3 strings. Example: ["How do I scale once I get my first sale?", "What skill should I learn first to make money online?", "How do I find a winning product to dropship?"]';
+      suggSystemPrompt = 'You generate a follow-up question for a chat with Andrew Tate, who teaches Hustler\'s University business lessons: L1 Speed, L2 Revenue First, L3 Start Cheap/Dropshipping, L5 Command Respect, L6 Resell, L7 No Legal Before Rich, L14 Control Reputation, L17 Never Compete on Price, L18 Listen to Rich People, L19 Attention is Free Advertising, L61 Never Say No to Money, L81 How You Sell Beats What You Sell, L83 Satisfy Immediate Needs, L85 Everybody Loves a Winner. Generate 1 short practical follow-up question grounded in these lessons and relevant to the last message. Return ONLY a JSON array of 1 string. Example: ["How do I find a winning product to dropship?"]';
     } else {
-      suggSystemPrompt = 'You are a conversation assistant. Based on the chat with ' + activeChar.name + ', generate 3 short follow-up questions the user could ask next. Return ONLY a JSON array of 3 strings, no other text. Example: ["Question 1?", "Question 2?", "Question 3?"]';
+      suggSystemPrompt = 'You are a conversation assistant. Based on the chat with ' + activeChar.name + ', generate 1 short follow-up question the user could ask next. Return ONLY a JSON array of 1 string, no other text. Example: ["Question 1?"]';
     }
     var res = await fetch(baseUrl + '/chat/completions', {
       method: 'POST',
@@ -1560,7 +1561,7 @@ async function generateSuggestions(conversation) {
         model: actualModel,
         messages: [
           { role: 'system', content: suggSystemPrompt },
-          { role: 'user', content: 'Conversation:\n' + conversation.map(function(m) { return m.role + ': ' + m.content.slice(0, 200); }).slice(-6).join('\n') + '\n\nGenerate 3 follow-up questions as JSON array.' }
+          { role: 'user', content: 'Conversation:\n' + conversation.map(function(m) { return m.role + ': ' + m.content.slice(0, 200); }).slice(-6).join('\n') + '\n\nGenerate 1 follow-up question as JSON array.' }
         ],
         temperature: 0.7,
         max_tokens: 120
@@ -1573,7 +1574,7 @@ async function generateSuggestions(conversation) {
     var match = text.match(/\[[\s\S]*?\]/);
     if (match) {
       var parsed = JSON.parse(match[0]);
-      if (Array.isArray(parsed) && parsed.length === 3) return parsed;
+      if (Array.isArray(parsed) && parsed.length >= 1) return parsed;
     }
     return null;
   } catch(e) { return null; }
