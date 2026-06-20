@@ -561,10 +561,13 @@ function showSuggestions(questions) {
         }
       }
       if (matched) {
+        var answerText = Array.isArray(matched.answers)
+          ? matched.answers[Math.floor(Math.random() * matched.answers.length)]
+          : matched.answer;
         messages.push({ role: 'user', content: q });
         appendMessage('user', q);
-        messages.push({ role: 'assistant', content: matched.answer });
-        appendMessage('assistant', matched.answer);
+        messages.push({ role: 'assistant', content: answerText });
+        appendMessage('assistant', answerText);
         saveConversation();
         showSuggestions();
       } else {

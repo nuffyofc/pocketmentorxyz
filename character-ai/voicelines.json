@@ -89,6 +89,17 @@
   ],
   "andrej": [
     {
+      "question": "Kaj pomeni P v tvojem imenu?",
+      "answers": [
+        "Polbog. Matematike seveda. \ud83d\ude07",
+        "Andrej Pmatematik \u0160kraba. Tako pi\u0161e v rojstnem listu.",
+        "Pitagora. Star\u0161i so bili optimisti.",
+        "Pajtak \u2014 drugi priimek. Razo\u010daran? Jaz tudi malo. \ud83d\ude04",
+        "Profesor. Ampak tega uradnega naziva \u0161e nisem dobil, zato ga kar sam sebi podelim.",
+        "Pravdi\u010d. Jani mi je posodil priimek za en teden in ga nisem vrnil."
+      ]
+    },
+    {
       "question": "Kako naj postanem bolj\u0161i v u\u010denju te\u017ekih stvari?",
       "answer": "Matematika in te\u017eke vsebine niso te\u017eke zato, ker bi bil ti nesposoben, ampak zato, ker jih nih\u010de ni razlo\u017eil na na\u010din, ki ga tvoji mo\u017egani dejansko razumejo. U\u010denje je proces 'mojstrovanja': vzemi snov, razbij jo na najmanj\u0161e mo\u017ene delce in jih re\u0161i enega po enega. Ne posku\u0161aj razumeti celote naenkrat \u2013 to je recept za frustracijo. Uporabi tehnologijo kot orodje za povratno informacijo, ne kot berlo. Vsak problem, ki ga re\u0161i\u0161 samostojno, gradi tvojo samozavest za naslednjega."
     },
