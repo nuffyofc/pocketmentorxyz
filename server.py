@@ -4,7 +4,7 @@
 Usage:
     python server.py [port]
 """
-import os,sys,re,json
+import os,sys,re,json,io
 from http.server import HTTPServer,SimpleHTTPRequestHandler
 from pathlib import Path
 
@@ -40,19 +40,22 @@ class Handler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def send_head(self):
-        path = self.translate_path(self.path)
-        if path == DIR / 'index.html':
-            # read original, inject env
+        path = Path(self.translate_path(self.path))
+        # resolve directory requests to their index.html
+        if path.is_dir():
+            path = path / 'index.html'
+        inject_paths = {DIR / 'index.html', DIR / 'character-ai' / 'index.html'}
+        if path in inject_paths and path.exists():
             html = path.read_text(encoding='utf-8')
             script = '<script>window.__ENV__='+json.dumps(ENV)+'</script>'
             html = html.replace('</head>',script+'</head>')
-            # serve modified
+            data = html.encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type','text/html; charset=utf-8')
-            self.send_header('Content-Length',str(len(html.encode())))
+            self.send_header('Content-Length',str(len(data)))
             self.send_header('Last-Modified',self.date_time_string())
             self.end_headers()
-            return html.encode()
+            return io.BytesIO(data)
         return super().send_head()
 
 if __name__ == '__main__':
