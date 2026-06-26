@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="keywords" content="mentor ai, mentor ai app, pocket mentor, pocketmentor, ai mentor, talk to mentor ai, chat with mentor ai, ai mentor chat, talk to ai, chat to ai, chat with ai, ai chat app, ai conversation, talk to ai online, free ai chat, ai chatbot, character ai, ai roleplay, ai self improvement, motivation ai, ai coach, ai life coach, personal mentor ai, mindset coach ai, ai productivity coach, stop being average, discipline ai, ai success coach, find a mentor, learn from mentor, online mentor, virtual mentor, ai mentor free, best ai mentor, business mentor ai, entrepreneur mentor ai, andrew tate ai, gary vee ai, dan pena ai, tai lopez ai, talk to andrew tate ai, andrew tate chatbot, gary vee chatbot, motivational ai character, ai that roasts you, brutal ai coach, harsh motivation ai, ai that calls you out, no excuses ai, tough love ai coach, ai accountability coach, stop procrastinating ai, ai for entrepreneurs, ai for discipline, ai for mindset, ai for business motivation, ai for young men, hustle ai, grind mindset ai" />
 <meta name="description" content="Talk to AI versions of Andrew Tate, Gary Vee, Dan Peña & Tai Lopez. Mentor AI roasts your excuses and pushes you harder than anyone else. No sign-up. No fluff. Just results." />
-<title>Mentor AI — Stop Being Average</title>
+<title>Pocket Mentor — Your friends are too nice to tell you the truth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -116,7 +116,7 @@ header .container{
   letter-spacing:-1px;
 }
 
-.logo span{
+.logo span, .logo{
   background:linear-gradient(135deg,var(--pink),var(--purple2),var(--cyan));
   -webkit-background-clip:text;
   background-clip:text;
@@ -162,6 +162,22 @@ nav a:hover{
   transform:translateY(-1px) rotate(-8deg);
 }
 
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 16px;
+  border-radius:999px;
+  background:linear-gradient(135deg,color-mix(in srgb, var(--pink) 16%, transparent),color-mix(in srgb, var(--cyan) 16%, transparent));
+  border:1px solid color-mix(in srgb, var(--pink) 30%, transparent);
+  color:var(--purple2);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.8px;
+  margin-bottom:20px;
+  text-transform:uppercase;
+}
+
 .btn{
   border:none;
   cursor:pointer;
@@ -178,12 +194,12 @@ nav a:hover{
   color:#fff;
   padding:16px 32px;
   border-radius:16px;
-  box-shadow:0 10px 40px color-mix(in srgb, var(--pink) 40%, transparent);
+  box-shadow:0 6px 0 color-mix(in srgb, var(--pink) 50%, transparent), 0 10px 40px color-mix(in srgb, var(--pink) 40%, transparent);
 }
 
 .btn-primary:hover{
   transform:translateY(-3px) scale(1.04) rotate(-1deg);
-  box-shadow:0 14px 50px color-mix(in srgb, var(--pink) 55%, transparent);
+  box-shadow:0 9px 0 color-mix(in srgb, var(--pink) 60%, transparent), 0 14px 50px color-mix(in srgb, var(--pink) 55%, transparent);
 }
 
 .hero{
@@ -356,6 +372,12 @@ nav a:hover{
   border-radius:20px;
   padding:20px;
   margin-bottom:18px;
+  box-shadow:0 5px 0 color-mix(in srgb, var(--pink) 30%, transparent);
+  transition:all .25s ease;
+}
+.chat:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 0 color-mix(in srgb, var(--pink) 40%, transparent);
 }
 
 .chat small{
@@ -385,6 +407,12 @@ nav a:hover{
   border:1px solid var(--border);
   border-radius:20px;
   padding:18px;
+  box-shadow:0 5px 0 color-mix(in srgb, var(--pink) 30%, transparent);
+  transition:all .25s ease;
+}
+.input-box:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 0 color-mix(in srgb, var(--pink) 40%, transparent);
 }
 
 .input-box label{
@@ -448,6 +476,7 @@ nav a:hover{
   position:relative;
   overflow:hidden;
   transition:.3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 7px 0 color-mix(in srgb, var(--pink) 20%, transparent);
 }
 
 .card::before{
@@ -461,9 +490,9 @@ nav a:hover{
 }
 
 .card:hover{
-  transform:translateY(-10px) rotate(-.5deg);
+  transform:translateY(-7px) rotate(-.5deg);
   border-color:color-mix(in srgb, var(--pink) 40%, transparent);
-  box-shadow:0 30px 60px rgba(0,0,0,.4);
+  box-shadow:0 10px 0 color-mix(in srgb, var(--pink) 30%, transparent), 0 30px 60px rgba(0,0,0,.4);
 }
 
 .card:hover::before{
@@ -544,11 +573,13 @@ nav a:hover{
   font-weight:700;
   letter-spacing:-1px;
   transition:.3s;
+  box-shadow:0 6px 0 color-mix(in srgb, var(--cyan) 20%, transparent);
 }
 
 .quote:hover{
   transform:translateY(-4px);
   border-color:color-mix(in srgb, var(--cyan) 35%, transparent);
+  box-shadow:0 10px 0 color-mix(in srgb, var(--cyan) 30%, transparent);
 }
 
 .quote span{
@@ -560,9 +591,9 @@ nav a:hover{
 
 .social-proof{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:20px;
-  max-width:600px;
+  max-width:720px;
   margin:0 auto;
 }
 
@@ -571,6 +602,12 @@ nav a:hover{
   border:1px solid var(--border);
   border-radius:22px;
   padding:28px;
+  box-shadow:0 5px 0 color-mix(in srgb, var(--purple) 20%, transparent);
+  transition:all .25s ease;
+}
+.proof:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 0 color-mix(in srgb, var(--purple) 30%, transparent);
 }
 
 .proof strong{
@@ -631,9 +668,12 @@ footer{
 @media(max-width:1024px){
   .hero-grid,
   .cards,
-  .quote-grid,
-  .social-proof{
+  .quote-grid{
     grid-template-columns:1fr 1fr;
+  }
+  .social-proof{
+    grid-template-columns:repeat(2,1fr);
+    max-width:500px;
   }
 
   .hero h1,
@@ -649,9 +689,12 @@ footer{
 
   .hero-grid,
   .cards,
-  .quote-grid,
+  .quote-grid{
+    grid-template-columns:1fr;
+  }
   .social-proof{
     grid-template-columns:1fr;
+    max-width:380px;
   }
 
   .hero{
@@ -680,13 +723,12 @@ footer{
 
 <header>
   <div class="container">
-    <div class="logo">🧠 Mentor <span>AI</span></div>
+    <div class="logo"><span>Pocket Mentor</span></div>
 
     <nav>
       <a href="#mentors">Mentors</a>
       <a href="#quotes">Quotes</a>
-      <a href="#proof">Proof</a>
-      <a href="character-ai/" class="btn btn-primary">Try Out App</a>
+      <a href="character-ai/" class="btn btn-primary">→ Start Getting Pushed</a>
     </nav>
 
     <button class="theme-toggle" id="theme-toggle" title="Toggle theme">🌙</button>
@@ -701,32 +743,38 @@ footer{
     <div class="hero-grid">
 
       <div>
-        <div class="badge">🔥 <span id="hero-badge-count">Loading</span> site visits and counting</div>
+        <div class="badge">🔥 <span id="hero-badge-count">Loading</span> conversations started. No sign-up.</div>
 
         <h1>
-          Stop being <span>average.</span><br>
-          Talk to mentors that roast your excuses.
+          Your friends are too nice<br>
+          to tell you the <span>truth.</span>
         </h1>
 
         <p>
-          Andrew Tate. Gary Vee. Dan Peña. Tai Lopez.
-          The internet's most intense personalities — rebuilt as AI mentors designed to push you harder than your friends ever will.
+          Talk to AI versions of the world's most intense minds —
+          Andrew Tate, Gary Vee, Dan Peña, Tai Lopez.
+          They will push you, challenge you, and refuse to let you make excuses.
         </p>
 
         <div class="hero-actions">
-          <a href="character-ai/" class="btn btn-primary">Try Out App</a>
-          <a href="#mentors" class="btn btn-primary" style="background:var(--input-bg);color:var(--text);box-shadow:none;border:1px solid var(--border)">Choose Your Mentor</a>
+          <a href="character-ai/" class="btn btn-primary">→ Pick Your Mentor</a>
+          <a href="#mentors" class="btn btn-primary" style="background:var(--input-bg);color:var(--text);box-shadow:none;border:1px solid var(--border);font-weight:600">See how it works ↓</a>
         </div>
 
         <div class="hero-stats">
           <div class="hero-stat">
             <strong id="hero-visit-count">—</strong>
-            <span>Site Visits</span>
+            <span>Conversations started</span>
           </div>
 
           <div class="hero-stat">
             <strong>24/7</strong>
-            <span>No Excuses</span>
+            <span>Your mentor is always awake</span>
+          </div>
+
+          <div class="hero-stat">
+            <strong>0</strong>
+            <span>Sign-ups required</span>
           </div>
         </div>
       </div>
@@ -739,7 +787,7 @@ footer{
           </div>
 
           <div style="color:var(--muted);font-size:13px">
-            Mentor AI
+            Pocket Mentor
           </div>
         </div>
 
@@ -786,13 +834,15 @@ footer{
 
 <section class="section" id="mentors">
   <div class="container">
+
+    <div class="eyebrow">SIX MENTORS. ZERO FILTER.</div>
+
     <h2 class="section-title">
-      Choose your mentor.
+      Pick the voice that hits hardest.
     </h2>
 
     <p class="section-desc">
-      Every mentor has a completely different personality, philosophy, energy, and communication style.
-      Pick the one that hits hardest.
+      Each one coaches differently — same goal: no more excuses.
     </p>
 
     <div class="cards">
@@ -808,6 +858,7 @@ footer{
         </p>
 
         <div class="power">MENTAL WARFARE</div>
+        <a href="character-ai/" class="btn btn-primary" style="margin-top:16px;width:100%;font-size:13px;padding:12px">Talk to Tate →</a>
       </div>
 
       <div class="card">
@@ -822,6 +873,7 @@ footer{
         </p>
 
         <div class="power">PURE ENERGY</div>
+        <a href="character-ai/" class="btn btn-primary" style="margin-top:16px;width:100%;font-size:13px;padding:12px">Talk to Gary Vee →</a>
       </div>
 
       <div class="card">
@@ -836,6 +888,7 @@ footer{
         </p>
 
         <div class="power">MAX INTENSITY</div>
+        <a href="character-ai/" class="btn btn-primary" style="margin-top:16px;width:100%;font-size:13px;padding:12px">Talk to Dan Peña →</a>
       </div>
 
       <div class="card">
@@ -849,6 +902,7 @@ footer{
         </p>
 
         <div class="power">STATUS MODE</div>
+        <a href="character-ai/" class="btn btn-primary" style="margin-top:16px;width:100%;font-size:13px;padding:12px">Talk to Tai Lopez →</a>
       </div>
 
       <div class="card">
@@ -862,6 +916,7 @@ footer{
         </p>
 
         <div class="power">HIGH IQ MODE</div>
+        <a href="character-ai/" class="btn btn-primary" style="margin-top:16px;width:100%;font-size:13px;padding:12px">Talk to Klemen →</a>
       </div>
 
       <div class="card">
@@ -876,6 +931,7 @@ footer{
         </p>
 
         <div class="power">BUILDER MODE</div>
+        <a href="character-ai/" class="btn btn-primary" style="margin-top:16px;width:100%;font-size:13px;padding:12px">Talk to Jani →</a>
       </div>
 
     </div>
@@ -885,14 +941,7 @@ footer{
 <section class="section quote-section" id="quotes">
   <div class="container">
 
-    <h2 class="section-title">
-      Screenshots people actually share.
-    </h2>
-
-    <p class="section-desc">
-      This isn't productivity advice.
-      It's psychological warfare against your excuses.
-    </p>
+    <div class="eyebrow">WHAT YOUR MENTOR WILL SAY TO YOU</div>
 
     <div class="quote-grid">
 
@@ -912,31 +961,33 @@ footer{
 
     </div>
 
+    <p class="section-desc" style="margin-top:40px;margin-bottom:0">
+      These aren't affirmations. <strong style="color:var(--text)">They're confrontations.</strong>
+    </p>
+
   </div>
 </section>
 
 <section class="section" id="proof">
   <div class="container">
 
-    <h2 class="section-title">
-      Built for obsession.
-    </h2>
-
-    <p class="section-desc">
-      People don't just try Mentor AI.
-      They come back every single day.
-    </p>
+    <div class="eyebrow">BY THE NUMBERS</div>
 
     <div class="social-proof">
 
       <div class="proof">
         <strong id="proof-visit-count">—</strong>
-        <p>Real site visits, tracked live.</p>
+        <p>Conversations started. No sign-up needed.</p>
       </div>
 
       <div class="proof">
         <strong>24/7</strong>
-        <p>Your mentors never sleep.</p>
+        <p>Your mentor is always awake — middle of the night? They're waiting.</p>
+      </div>
+
+      <div class="proof">
+        <strong>0</strong>
+        <p>Sign-ups, accounts, or emails required. Start in 10 seconds.</p>
       </div>
 
     </div>
@@ -948,20 +999,22 @@ footer{
   <div class="container">
 
     <h2>
-      Your excuses are waiting.<br>
-      So are your mentors.
+      Stop reading.<br>
+      <span>Start talking.</span>
     </h2>
 
     <p>
-      No sign up.
-      No corporate HR tone.
-      No fake positivity.
-      Just intense conversations that force you to think bigger and move faster.
+      No account. No warmup. No polite nonsense.
+      Just pick a mentor and say what's holding you back.
     </p>
 
     <a href="character-ai/" class="btn btn-primary" style="font-size:20px;padding:20px 44px">
-      Try Out App
+      → Get Pushed Right Now
     </a>
+
+    <p style="margin-top:20px;font-size:13px;color:var(--muted)">
+      Free. No sign-up. Works on any device.
+    </p>
 
   </div>
 </section>
@@ -970,10 +1023,10 @@ footer{
   <div class="container">
 
     <div class="footer-row">
-      <div class="logo">🧠 Mentor <span>AI</span></div>
+      <div class="logo"><span>Pocket Mentor</span></div>
 
       <p>
-        The internet's most dangerous self-improvement app.
+        Your friends are too nice. Your mentors aren't.
       </p>
     </div>
 
